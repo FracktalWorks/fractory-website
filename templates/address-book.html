@@ -1,0 +1,133 @@
+{% extends "base.html" %}
+
+{% block head %}
+  <title>Fractory</title>
+{% endblock %}
+
+{% block content %}
+            <section class="block displayflex profilewrapper" style="max-width: 1360px">
+                <div class="profilemenuwrapper block whitecolor text-center">
+                    <img src="media/avatar.png" class="img-responsive displayinline marginbottom40" alt="" />
+                    <h3>Hi <span>Kewal</span></h3>
+
+                    <ul class="block sectionpadding50 text-left">
+                        <li><a href="profile.html">Profile</a></li>
+                        <li><a href="orders-listing.html">Orders</a></li>
+                        <li><a href="#0">Payment Methods</a></li>
+                        <li><a href="address-book.html" class="active">Address Book</a></li>
+                    </ul>
+
+                    <button type="button" class="btn block themebg">Logout</button>
+                </div>
+
+                <div class="profilecontentswrapper  block whitebg">
+                    <div class="block">
+                        <h3 class="marginbottom40 displayinlineblock">ADDRESS BOOK</h3>
+                    </div>
+                    <div class="col-lg-5 col-md-5 col-sm-6 col-xs-12">
+                        <div class="added-addresses block scrollbars">
+                            <div class="addresseswrapper block marginbottom30">
+                                <h6 class="marginbottom20">Fracktal Works Pvt Ltd</h6>
+                                <div class="block marginbottom20">
+                                    <p>40, Primrose Rd,</p>
+                                    <p>Sivanchetti Gardens,</p>
+                                    <p>Bengaluru</p>
+                                    <p>Karnataka</p>
+                                    <p>560025</p>
+                                </div>
+                                <a href="#0">Edit</a> <a href="#0">Remove</a>
+                            </div>
+                            <div class="addresseswrapper block marginbottom30">
+                                <h6 class="marginbottom20">Fracktal Works Pvt Ltd</h6>
+                                <div class="block marginbottom20">
+                                    <p>40, Primrose Rd,</p>
+                                    <p>Sivanchetti Gardens,</p>
+                                    <p>Bengaluru</p>
+                                    <p>Karnataka</p>
+                                    <p>560025</p>
+                                </div>
+                                <a href="#0">Edit</a> <a href="#0">Remove</a> <a href="#0">Make Primary</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-lg-offset-1 col-md-5 col-md-offset-2 col-sm-6 col-xs-12">
+                        <div class="profiledetails block editaddress">
+                                <ul class="">
+                                    <li class=" blackcolor text-center boldfont">
+                                        Edit Address
+                                    </li>
+                                </ul>
+                                <ul class="flex">
+                                    <li class="flex1 text-right lightcolorfont">
+                                        Name
+                                    </li>
+                                    <li class="flex2">
+                                        <input type="text" value="" class=" block">
+                                    </li>
+                                </ul>
+                                <ul class="flex">
+                                    <li class="flex1 text-right lightcolorfont">
+                                        Line 1
+                                    </li>
+                                    <li class="flex2">
+                                        <input type="text" value="" class=" block">
+                                    </li>
+                                </ul>
+                                <ul class="flex">
+                                    <li class="flex1 text-right lightcolorfont">
+                                        Line 2
+                                    </li>
+                                    <li class="flex2">
+                                        <input type="text" value="" class=" block">
+                                    </li>
+                                </ul>
+                                <ul class="flex">
+                                    <li class="flex1 text-right lightcolorfont">
+                                        City
+                                    </li>
+                                    <li class="flex2">
+                                        <input type="text" value="" class=" block">
+                                    </li>
+                                </ul>
+                                <ul class="flex phoneinputtype">
+                                    <li class="flex1 text-right lightcolorfont">
+                                        State
+                                    </li>
+                                    <li class="flex2 flex justifycontent">
+                                        <input type="text" value="" class=" block">
+                                    </li>
+                                </ul>
+                                <ul class="flex">
+                                    <li class="flex1 text-right lightcolorfont">
+                                        Zip Code
+                                    </li>
+                                    <li class="flex2">
+                                        <input type="text" value="" class=" block">
+                                    </li>
+                                </ul>
+                            <ul class="block text-center">
+                                <li class="block text-center"><button type="button" class="btn btnwidth greenbg whitecolor ">Save</button></li>
+                            </ul>
+                            </div>
+                    </div>
+                    <div class="backandsavebuttons block">
+                        <button type="button" class="btn btnwidth themebg whitecolor block pull-right savedetails_js">Close</button>
+                    </div>
+
+
+                </div>
+            </section>
+{% endblock %}
+
+{% block styles %}
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="libraries/textrotator/css/jquery.animatedheadline.css" />
+    <link rel="stylesheet" href="libraries/scroll/css/jquery.classyscroll.css" />
+{% endblock %}
+
+{% block scripts %}
+    <script src="libraries/textrotator/js/jquery.animatedheadline.min.js"></script>
+    <script src="libraries/scroll/js/jquery.mousewheel.js"></script>
+    <script src="libraries/scroll/js/jquery.classyscroll.js"></script>
+    <script src="js/profile.js"></script>
+{% endblock %}

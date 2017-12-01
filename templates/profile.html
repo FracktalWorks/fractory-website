@@ -1,0 +1,184 @@
+{% extends "base.html" %}
+
+{% block head %}
+  <title>Fractory</title>
+{% endblock %}
+
+{% block content %}
+  <section class="block displayflex profilewrapper whitebg" style="max-width: 1360px">
+    <div class="profilemenuwrapper block whitecolor text-center">
+      <img src="media/avatar.png" class="img-responsive displayinline marginbottom40" alt="" />
+      <h3>Hi <span>{{ user.fname }}</span></h3>
+      <ul class="block sectionpadding50 text-left">
+        <li><a href="profile.html" class="active">Profile</a></li>
+        <li><a href="orders-listing.html">Orders</a></li>
+        <li><a href="#0">Cart</a></li>
+        <li><a href="address-book.html">Address Book</a></li>
+      </ul>
+      <button type="button" class="btn block themebg">Logout</button>
+    </div>
+    <div class="profilecontentswrapper block">
+      <h3 class="marginbottom40 displayinlineblock">PROFILE</h3>
+      <div class="row">
+        <div class="col-lg-7 col-md-8 col-sm-8 col-xs-12">
+          <div class="profiledetails block activeinputtype">
+            <ul class="flex">
+              <li class="flex1 blackcolor text-right boldfont">Details</li>
+              <li class="flex2"></li>
+            </ul>
+            <ul class="flex" style="padding-bottom: 5px;">
+              <li class="flex1 text-right lightcolorfont"></li>
+              <li class="flex2"><input id="fatal" type="text" value="" class="custominputtype block" disabled="disabled" style="font-size: 0.7em; color: red; visibility:hidden;"/></li>
+            </ul>
+            <ul class="flex">
+              <li class="flex1 text-right lightcolorfont">First Name</li>
+              <li class="flex2"><input type="text" value="{{ user.fname }}" name="fname" class="custominputtype block editable"/></li>
+            </ul>
+            <ul class="flex" style="padding-bottom: 5px;">
+              <li class="flex1 text-right lightcolorfont"></li>
+              <li class="flex2"><input id="fname" type="text" value="" class="custominputtype block" disabled="disabled" style="font-size: 0.7em; color: red; visibility:hidden;"/></li>
+            </ul>
+            <ul class="flex">
+              <li class="flex1 text-right lightcolorfont">Last Name</li>
+              <li class="flex2"><input type="text" value="{{ user.lname }}" name="lname" class="custominputtype block editable"/></li>
+            </ul>
+            <ul class="flex" style="padding-bottom: 5px;">
+              <li class="flex1 text-right lightcolorfont"></li>
+              <li class="flex2"><input id="lname" type="text" value="" class="custominputtype block" disabled="disabled" style="font-size: 0.7em; color: red; visibility:hidden;"/></li>
+            </ul>
+            <ul class="flex">
+              <li class="flex1 text-right lightcolorfont">Email</li>
+              <li class="flex2"><input type="text" value="{{ user.email }}" name="email" class="custominputtype block" disabled="disabled"/></li>
+            </ul>
+            <ul class="flex" style="padding-bottom: 5px;">
+              <li class="flex1 text-right lightcolorfont"></li>
+              <li class="flex2"><input id="email" type="text" value="" class="custominputtype block" disabled="disabled" style="font-size: 0.7em; color: red; visibility:hidden;"/></li>
+            </ul>
+            <ul class="flex">
+              <li class="flex1 text-right lightcolorfont">Organisation</li>
+              <li class="flex2"><input type="text" value="{{ user.organisations[0] }}"  name="organisation" class="custominputtype block editable" placeholder="Organisation"/></li>
+            </ul>
+            <ul class="flex" style="padding-bottom: 5px;">
+              <li class="flex1 text-right lightcolorfont"></li>
+              <li class="flex2"><input id="organisation" type="text" value="" class="custominputtype block" disabled="disabled" style="font-size: 0.7em; color: red; visibility:hidden;"/></li>
+            </ul>
+            <ul class="flex">
+              <li class="flex1 text-right lightcolorfont">Phone</li>
+              <li class="flex2"><input type="phone" value="{{ user.phone }}" name="phone" class="custominputtype block editable" placeholder="Primary Phone"/></li>
+            </ul>
+            <ul class="flex" style="padding-bottom: 5px;">
+              <li class="flex1 text-right lightcolorfont"></li>
+              <li class="flex2"><input id="phone" type="text" value="" class="custominputtype block" disabled="disabled" style="font-size: 0.7em; color: red; visibility:hidden;"/></li>
+            </ul>
+            <ul class="flex">
+              <li class="flex1 text-right lightcolorfont">Password</li>
+              <li class="flex2">
+                <input type="password" value="fracktal" class="custominputtype block editable" name="passwd" id="custompassword_js" placeholder="Old Password"/>
+                <a class="editpassword_js editaddress cursorpointer" style="font-size: 0.7em; right: 1em;position: absolute;">Change?</a>
+              </li>
+            </ul>
+            <ul class="flex" style="padding-bottom: 5px;">
+              <li class="flex1 text-right lightcolorfont"></li>
+              <li class="flex2"><input id="passwd" type="text" value="" class="custominputtype block" disabled="disabled" style="font-size: 0.7em; color: red; visibility:hidden;"/></li>
+            </ul>
+            <ul class="flex">
+              <li class="flex1 text-right lightcolorfont">&nbsp;</li>
+              <li class="flex2"><a class="editprofile_js editaddress cursorpointer">Edit details</a></li>
+            </ul>
+          </div>
+          <div class="changepasswordwrapper block profiledetails activeinputtype">
+            <ul class="flex">
+              <li class="flex1 text-right lightcolorfont">New Password</li>
+              <li class="flex2"><input type="password" value="" name="new_passwd" class="custominputtype block" placeholder="New Password"/></li>
+            </ul>
+            <ul class="flex" style="padding-bottom: 5px;">
+              <li class="flex1 text-right lightcolorfont"></li>
+              <li class="flex2"><input id="new_passwd" type="text" value="" class="custominputtype block" disabled="disabled" style="font-size: 0.7em; color: red; visibility:hidden;"/></li>
+            </ul>
+            <ul class="flex">
+              <li class="flex1 text-right lightcolorfont">Retype Password</li>
+              <li class="flex2"><input type="password" value=""  name="re_new_passwd" class="custominputtype block" placeholder="Retype Password"/></li>
+            </ul>
+            <ul class="flex" style="padding-bottom: 5px;">
+              <li class="flex1 text-right lightcolorfont"></li>
+              <li class="flex2"><input id="re_new_passwd" type="text" value="" class="custominputtype block" disabled="disabled" style="font-size: 0.7em; color: red; visibility:hidden;"/></li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-lg-5 col-md-4 col-sm-4 col-xs-12">
+          <div class="profiledetails block">
+            {% if user.addresses[user.primary_address] %}
+            <h6 class="boldfont marginbottom30">Primary Address</h6>
+            <div class="profiledetails block marginbottom30 addresswrapper">
+              <ul class="block">
+                <input type="text" value="{{ user.addresses[user.primary_address].full_name }}" class="custominputtype block"/>
+              </ul>
+              <ul class="block">
+                <input type="text" value="{{ user.addresses[user.primary_address].organisation }}" class="custominputtype block"/>
+              </ul>
+              <ul class="block">
+                <input type="text" value="{{ user.addresses[user.primary_address].line_1 }}" class="custominputtype block"/>
+              </ul>
+              <ul class="block">
+                <input type="text" value="{{ user.addresses[user.primary_address].line_2 }}" class="custominputtype block"/>
+              </ul>
+              <ul class="block">
+                <input type="text" value="{{ user.addresses[user.primary_address].city }} - {{ user.addresses[user.primary_address].area_code }}" class="custominputtype block"/>
+              </ul>
+              <ul class="block">
+                <input type="text" value="{{ user.addresses[user.primary_address].state }}" class="custominputtype block"/>
+              </ul>
+              <ul class="block">
+                <input type="text" value="{{ user.addresses[user.primary_address].phone }}" class="custominputtype block"/>
+              </ul>
+            </div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+      <div class="backandsavebuttons block transition">
+        <button type="button" class="btn btnwidth btn-boxshadow transition themebg whitecolor block pull-right saveprofile_js">Save</button>
+        <button type="button" class="btn btnwidth btn-boxshadow transition block bluebtn whitecolor pull-right resetprofile_js">Back</button>
+      </div>
+    </div>
+  </section>
+{% endblock %}
+
+
+{% block styles %}
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+  <link rel="stylesheet" href="libraries/textrotator/css/jquery.animatedheadline.css" />
+  <link rel="stylesheet" href="libraries/scroll/css/jquery.classyscroll.css" />
+  <link rel="stylesheet" href="libraries/intlTelInput/css/intlTelInput.css">
+  <style>
+    .intl-tel-input {width: 100%;}
+  </style>
+  <link rel="stylesheet" href="css/profile.css" />
+{% endblock %}
+
+{% block scripts %}
+  <script src="libraries/textrotator/js/jquery.animatedheadline.min.js"></script>
+  <script src="libraries/scroll/js/jquery.mousewheel.js"></script>
+  <script src="libraries/scroll/js/jquery.classyscroll.js"></script>
+  <script src="libraries/intlTelInput/js/intlTelInput.min.js"></script>
+  <script src="js/profile.js"></script>
+  <script>
+  $("[name=phone]").intlTelInput({
+    preferredCountries: ["in"],
+    initialCountry: "in",
+    utilsScript: "libraries/intlTelInput/js/utils.js"
+  });
+
+  function validate_phone() {
+    if ( $("[name=phone]").val() == "" || $("[name=phone]").intlTelInput("isValidNumber") ) {
+      $("#phone").removeClass("error")
+      $("#phone").val("")
+      $("[name=phone]").val($("[name=phone]").intlTelInput("getNumber", 1))
+      return true
+    }
+    $("#phone").addClass("error")
+    $("#phone").val("Please enter a valid number!")
+    return false
+  }
+  </script>
+{% endblock %}
