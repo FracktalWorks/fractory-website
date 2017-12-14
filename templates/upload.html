@@ -1,0 +1,1881 @@
+{% extends "base.html" %}
+
+{% block head %}
+  <title>Fractory</title>
+{% endblock %}
+
+{% block content %}
+            <section class="block sectionpadding50 cartwrapper lightgraybg">
+                <div class="container">
+                    <div class="draganddropwraper block marginbottom40">
+
+                        <h2 class="displayinlineblock">Drag and drop files or Click to <span class="extraboldfont">upload</span></h2>
+
+                        <p>
+                            <strong> Supported file formats:</strong><br/> 3D Printing: STL, OBJ, VF<br/> CNC: STEP<br/> Maximum file size: 60MB
+                        </p>
+                    </div>
+
+
+                    <div class="cartitemswrapper block hidden">
+                        <div class="cartitems marginbottom30">
+                            <div class="row">
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <h3 class="marginbottom20"><span>1.</span> Delta.stl</h3>
+                                </div>
+                                <div class="col-lg-10 col-md-10 col-sm-12 col-xs-12">
+                                    <div class="displayflex justifycontent itemdiv">
+                                        <div class="image whitebg">
+                                            <h6 >Click to view in 3D</h6>
+                                        </div>
+                                        <div class="entereddetails">
+                                            <div class="row">
+                                                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                                                    <div class="form-group selectstyling">
+                                                        <label class="boldfont">Job Type</label>
+                                                        <select class="form-control">
+                                                            <option>3D Print FDM</option>
+                                                            <option>3D Print FDM 1</option>
+                                                            <option>3D Print FDM 2</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                                                    <div class="form-group selectstyling">
+                                                        <label class="boldfont">Quality:</label>
+                                                        <select class="form-control">
+                                                            <option>Select</option>
+                                                            <option>1</option>
+                                                            <option>2</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                                                    <div class="form-group selectstyling">
+                                                        <label class="boldfont">Color:</label>
+                                                        <select class="form-control">
+                                                            <option>Select</option>
+                                                            <option>1</option>
+                                                            <option>2</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                                                    <div class="form-group nomargin selectstyling">
+                                                        <label class="boldfont">Material</label>
+                                                        <select class="form-control">
+                                                            <option>CNC</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                                                    <div class="form-group nomargin selectstyling">
+                                                        <label class="boldfont">Units:</label>
+                                                        <select class="form-control">
+                                                            <option>Select</option>
+                                                            <option>1</option>
+                                                            <option>2</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                                                    <div class="form-group nomargin">
+                                                        <label class="boldfont">Quantity:</label>
+                                                        <input type="text" class="form-control " placeholder="0" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="anylysisofdesignstatus">
+                                            <div class="flex"><span class="displayinlineblock"></span>
+                                                <h6>Analysing Design</h6><i class="fa fa-info-circle" aria-hidden="true"></i></div>
+                                            <p>Please wait while we take a look at your design</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+                                    <div class="calltoactionbtns block">
+                                        <ul>
+                                            <li class=" text-right"><a href="#0" class="redcolor"><i class="fa fa-times" aria-hidden="true"></i>&nbsp;Delete</a></li>
+                                            <li>&nbsp;</li>
+                                            <li><button type="button" class="btn btnwidth addtocartgray whitecolor block pull-right">Add to Cart</button></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="cartitems marginbottom30">
+                            <div class="row">
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <h3 class="marginbottom20"><span>2.</span> Delta.stl</h3>
+                                </div>
+                                <div class="col-lg-10 col-md-10 col-sm-12 col-xs-12">
+                                    <div class="displayflex justifycontent itemdiv">
+                                        <div class="image whitebg">
+                                            <h6>Click to view in 3D</h6>
+                                        </div>
+                                        <div class="entereddetails">
+                                            <div class="row">
+                                                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                                                    <div class="form-group selectstyling">
+                                                        <label class="boldfont">Job Type</label>
+                                                        <select class="form-control">
+                                                            <option>3D Print FDM</option>
+                                                            <option>3D Print FDM 1</option>
+                                                            <option>3D Print FDM 2</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                                                    <div class="form-group selectstyling">
+                                                        <label class="boldfont">Quality:</label>
+                                                        <select class="form-control">
+                                                            <option>Select</option>
+                                                            <option>1</option>
+                                                            <option>2</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                                                    <div class="form-group selectstyling">
+                                                        <label class="boldfont">Color:</label>
+                                                        <select class="form-control">
+                                                            <option>Select</option>
+                                                            <option>1</option>
+                                                            <option>2</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                                                    <div class="form-group nomargin selectstyling">
+                                                        <label class="boldfont">Material</label>
+                                                        <select class="form-control">
+                                                            <option>CNC</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                                                    <div class="form-group nomargin selectstyling">
+                                                        <label class="boldfont">Units:</label>
+                                                        <select class="form-control">
+                                                            <option>Select</option>
+                                                            <option>1</option>
+                                                            <option>2</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                                                    <div class="form-group nomargin">
+                                                        <label class="boldfont">Quantity:</label>
+                                                        <input type="text" class="form-control " placeholder="0" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="anylysisofdesignstatus">
+                                            <div class="flex"><span class="displayinlineblock"></span>
+                                                <h6>Analysing Design</h6><i class="fa fa-info-circle" aria-hidden="true"></i></div>
+                                            <p>Please wait while we take a look at your design</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+                                    <div class="calltoactionbtns block">
+                                        <ul>
+                                            <li class=" text-right"><a href="#0" class="redcolor"><i class="fa fa-times" aria-hidden="true"></i>&nbsp;Delete</a></li>
+                                            <li class=" text-right"><i class="fa fa-inr" aria-hidden="true"></i>&nbsp;2360</li>
+                                            <li><button type="button" class="btn btnwidth greenbg whitecolor block pull-right">Add to Cart</button></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="cartitems marginbottom30">
+                            <div class="row">
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <h3 class="marginbottom20"><span>3.</span> Delta.stl</h3>
+                                </div>
+                                <div class="col-lg-10 col-md-10 col-sm-12 col-xs-12">
+                                    <div class="displayflex justifycontent itemdiv">
+                                        <div class="image whitebg">
+                                            <h6>Click to view in 3D</h6>
+                                        </div>
+                                        <div class="entereddetails">
+                                            <div class="row">
+                                                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                                                    <div class="form-group selectstyling">
+                                                        <label class="boldfont">Job Type</label>
+                                                        <select class="form-control">
+                                                            <option>3D Print FDM</option>
+                                                            <option>3D Print FDM 1</option>
+                                                            <option>3D Print FDM 2</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                                                    <div class="form-group selectstyling">
+                                                        <label class="boldfont">Quality:</label>
+                                                        <select class="form-control">
+                                                            <option>Select</option>
+                                                            <option>1</option>
+                                                            <option>2</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                                                    <div class="form-group selectstyling">
+                                                        <label class="boldfont">Color:</label>
+                                                        <select class="form-control">
+                                                            <option>Select</option>
+                                                            <option>1</option>
+                                                            <option>2</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                                                    <div class="form-group nomargin selectstyling">
+                                                        <label class="boldfont">Material</label>
+                                                        <select class="form-control">
+                                                            <option>CNC</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                                                    <div class="form-group nomargin selectstyling">
+                                                        <label class="boldfont">Units:</label>
+                                                        <select class="form-control">
+                                                            <option>Select</option>
+                                                            <option>1</option>
+                                                            <option>2</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                                                    <div class="form-group nomargin">
+                                                        <label class="boldfont">Quantity:</label>
+                                                        <input type="text" class="form-control " placeholder="0" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="anylysisofdesignstatus">
+                                            <div class="flex"><span class="displayinlineblock"></span>
+                                                <h6>Analysing Design</h6><i class="fa fa-info-circle" aria-hidden="true"></i></div>
+                                            <p>Please wait while we take a look at your design</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+                                    <div class="calltoactionbtns block">
+                                        <ul>
+                                            <li class="block"><a href="#0" class="pull-left"><i class="fa fa-paperclip" aria-hidden="true"></i>&nbsp;Attach</a><a href="#0" class="redcolor pull-right"><i class="fa fa-times" aria-hidden="true"></i>&nbsp;Delete</a></li>
+                                            <li class="block">&nbsp;</li>
+                                            <li class="block"><button type="button" class="btn nobackground getquotebtn btnwidth block pull-right transition">Get Quote</button></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="cartbuttonwrapper block text-center">
+                            <button type="button" class="btn btnwidth  width100 bluebtn whitecolor">Cart</button>
+                        </div>
+                    </div>
+                    <div class="uploadwrapper block marginbottom40">
+                        <div class="row">
+                            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                                <div class="upload-product block cartitems marginbottom30">
+                                    <figure class="block text-center whitebg">
+                                        <img src="/media/2d-product.jpg" class="img-responsive displayinline" alt="" />
+                                        <figcaption class="block flex justifycontent flexend">
+                                            <h3 class="pull-left"><span>1.</span> Delta.stl</h3>
+                                            <h6 class="pull-right triggerthreedpopup_js cursorpointer">Click to view in 3D</h6>
+                                        </figcaption>
+                                        <div class="closeuploadedproduct closeuploadedproduct_js ">
+                                            <i class="fa fa-times" aria-hidden="true"></i>
+                                        </div>
+                                    </figure>
+                                    <div class="uploaddetails block sectionpadding20">
+                                        <div class="row">
+                                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                                <div class="typematerialcolor block">
+                                                    <div class="form-group block jqtransform zindex3">
+                                                        <select class="customselect ">
+                                                            <option>Job Type</option>
+                                                            <option>CNC</option>
+                                                            <option>3D Print - FDM</option>
+                                                            <option>3D Print - SLA</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group block jqtransform zindex2">
+                                                        <select class="customselect">
+                                                            <option>Material</option>
+                                                            <option>Material 1</option>
+                                                            <option>Material 2</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group block nomargin jqtransform zinex1">
+                                                        <select class="customselect">
+                                                            <option>Color</option>
+                                                            <option>Red</option>
+                                                            <option>White</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                                <div class="unitqualityquantity block">
+                                                    <div class="form-group block displayflex">
+                                                        <div class="flex1">
+                                                            Units :
+                                                        </div>
+                                                        <div class="flex2">
+                                                            <ul class="flex justifycontent">
+                                                                <li><a class="units_js unit cursorpointer active">mm</a></li>
+                                                                <li><a class="units_js unit cursorpointer">cm</a></li>
+                                                                <li><a class="units_js unit cursorpointer">inch</a></li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group block displayflex">
+                                                        <div class="flex1">
+                                                            Quality:
+                                                        </div>
+                                                        <div class="flex2">
+                                                            <ul class="flex justifycontent">
+                                                                <li><a class="quality_js quality cursorpointer active">Normal</a></li>
+                                                                <li><a class="quality_js quality cursorpointer">High</a></li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group block flex">
+                                                        <div class="flex1">
+                                                            Quality:
+                                                        </div>
+                                                        <div class="flex2">
+                                                            <input type="text" class="col-lg-6 col-md-6 col-sm-6 col-xs-6 quantityinput" onkeypress="return isNumberKey(event)"/>
+                                                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 flex updowncolumn">
+                                                                <a class="increasequantity_js cursorpointer"><i class="fa fa-caret-up" aria-hidden="true"></i></a>
+                                                                <a class="decreasequantity_js cursorpointer"><i class="fa fa-caret-down" aria-hidden="true"></i></a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                        
+                                    </div>
+                                    <div class="anylysisofdesignstatus block sectionpadding10">
+                                        <div class="flex justifycontent"><span class="displayinlineblock"></span>
+                                            <h6>Analysing Design</h6><a data-toggle="tooltip" data-placement="auto" title="This will indicate whether the modal has issues or not!"> <i class="fa fa-info-circle" aria-hidden="true"></i></a></div>
+                                        <p>Please wait while we take a look at your design</p>
+                                    </div>
+                                    <div class="cartandpricebtn block flex ">
+                                        <div class="flex1 displayflex">
+                                            <div class="price"><i class="fa fa-inr" aria-hidden="true"></i>&nbsp;2360</div>
+                                        </div>
+                                        <div class="flex1">
+                                            <button class="button block  active">Add to Cart</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                                <div class="upload-product block cartitems marginbottom30">
+                                    <figure class="block text-center whitebg">
+                                        <img src="/media/2d-product.jpg" class="img-responsive displayinline" alt="" />
+                                        <figcaption class="block flex justifycontent flexend">
+                                            <h3 class="pull-left"><span>1.</span> Delta.stl</h3>
+                                            <h6 class="pull-right triggerthreedpopup_js cursorpointer">Click to view in 3D</h6>
+                                        </figcaption>
+                                        <div class="closeuploadedproduct closeuploadedproduct_js ">
+                                            <i class="fa fa-times" aria-hidden="true"></i>
+                                        </div>
+                                    </figure>
+                                    <div class="uploaddetails block sectionpadding20">
+                                        <div class="row">
+                                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                                <div class="typematerialcolor block">
+                                                    <div class="form-group block jqtransform zindex3">
+                                                        <select class="customselect ">
+                                                            <option>Job Type</option>
+                                                            <option>CNC</option>
+                                                            <option>3D Print - FDM</option>
+                                                            <option>3D Print - SLA</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group block jqtransform zindex2">
+                                                        <select class="customselect">
+                                                            <option>Material</option>
+                                                            <option>Material 1</option>
+                                                            <option>Material 2</option>
+                                                        </select>
+                                                    </div>
+                                                    
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                                <div class="unitqualityquantity block">
+                                                    <div class="form-group block displayflex">
+                                                        <div class="flex1">
+                                                            Units :
+                                                        </div>
+                                                        <div class="flex2">
+                                                            <ul class="flex justifycontent">
+                                                                <li><a class="units_js unit cursorpointer active">mm</a></li>
+                                                                <li><a class="units_js unit cursorpointer">cm</a></li>
+                                                                <li><a class="units_js unit cursorpointer">inch</a></li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group block displayflex">
+                                                        <div class="flex1">
+                                                            Quality:
+                                                        </div>
+                                                        <div class="flex2">
+                                                            <ul class="flex justifycontent">
+                                                                <li><a class="quality_js quality cursorpointer active">Normal</a></li>
+                                                                <li><a class="quality_js quality cursorpointer">High</a></li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group block flex">
+                                                        <div class="flex1">
+                                                            Quality:
+                                                        </div>
+                                                        <div class="flex2">
+                                                            <input type="text" class="col-lg-6 col-md-6 col-sm-6 col-xs-6 quantityinput" onkeypress="return isNumberKey(event)"/>
+                                                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 flex updowncolumn">
+                                                                <a class="increasequantity_js cursorpointer"><i class="fa fa-caret-up" aria-hidden="true"></i></a>
+                                                                <a class="decreasequantity_js cursorpointer"><i class="fa fa-caret-down" aria-hidden="true"></i></a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                        <div class="attachadditionalfiles block text-left profiledetails">
+                                            <span class="cursorpointer"><i class="fa fa-paperclip" aria-hidden="true"></i> <a class="editaddress" data-toggle="tooltip" data-placement="auto" title="Attach part specifuc files like tolerance, threadings, finish details (PDF Only)"> Attach Additional Files</a></span>
+                                        </div>
+                                    </div>
+                                    <div class="anylysisofdesignstatus block sectionpadding10">
+                                        <div class="flex justifycontent"><span class="displayinlineblock"></span>
+                                            <h6>Analysing Design</h6><a data-toggle="tooltip" data-placement="auto" title="This will indicate whether the modal has issues or not!"> <i class="fa fa-info-circle" aria-hidden="true"></i></a></div>
+                                        <p>Please wait while we take a look at your design</p>
+                                    </div>
+                                    <div class="cartandpricebtn block flex ">
+                                        <div class="flex1 displayflex">
+                                            <div class="price">&nbsp;</div>
+                                        </div>
+                                        <div class="flex1">
+                                            <button class="button block ">Add to Cart</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                                <div class="upload-product block cartitems marginbottom30">
+                                    <figure class="block text-center whitebg">
+                                        <img src="/media/2d-product.jpg" class="img-responsive displayinline" alt="" />
+                                        <figcaption class="block flex justifycontent flexend">
+                                            <h3 class="pull-left"><span>1.</span> Delta.stl</h3>
+                                            <h6 class="pull-right triggerthreedpopup_js cursorpointer">Click to view in 3D</h6>
+                                        </figcaption>
+                                        <div class="closeuploadedproduct closeuploadedproduct_js ">
+                                            <i class="fa fa-times" aria-hidden="true"></i>
+                                        </div>
+                                    </figure>
+                                    <div class="uploaddetails block sectionpadding20">
+                                        <div class="row">
+                                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                                <div class="typematerialcolor block">
+                                                    <div class="form-group block jqtransform zindex3">
+                                                        <select class="customselect ">
+                                                            <option>Job Type</option>
+                                                            <option>CNC</option>
+                                                            <option>3D Print - FDM</option>
+                                                            <option>3D Print - SLA</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group block jqtransform zindex2">
+                                                        <select class="customselect">
+                                                            <option>Material</option>
+                                                            <option>Material 1</option>
+                                                            <option>Material 2</option>
+                                                        </select>
+                                                    </div>
+                                                    
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                                <div class="unitqualityquantity block">
+                                                    <div class="form-group block displayflex">
+                                                        <div class="flex1">
+                                                            Units :
+                                                        </div>
+                                                        <div class="flex2">
+                                                            <ul class="flex justifycontent">
+                                                                <li><a class="units_js unit cursorpointer active">mm</a></li>
+                                                                <li><a class="units_js unit cursorpointer">cm</a></li>
+                                                                <li><a class="units_js unit cursorpointer">inch</a></li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group block displayflex">
+                                                        <div class="flex1">
+                                                            Quality:
+                                                        </div>
+                                                        <div class="flex2">
+                                                            <ul class="flex justifycontent">
+                                                                <li><a class="quality_js quality cursorpointer active">Normal</a></li>
+                                                                <li><a class="quality_js quality cursorpointer">High</a></li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group block flex">
+                                                        <div class="flex1">
+                                                            Quality:
+                                                        </div>
+                                                        <div class="flex2">
+                                                            <input type="text" class="col-lg-6 col-md-6 col-sm-6 col-xs-6 quantityinput" onkeypress="return isNumberKey(event)"/>
+                                                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 flex updowncolumn">
+                                                                <a class="increasequantity_js cursorpointer"><i class="fa fa-caret-up" aria-hidden="true"></i></a>
+                                                                <a class="decreasequantity_js cursorpointer"><i class="fa fa-caret-down" aria-hidden="true"></i></a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                        <div class="attachadditionalfiles block text-left profiledetails">
+                                            <span class="cursorpointer"><i class="fa fa-paperclip" aria-hidden="true"></i> <a class="editaddress"  data-toggle="tooltip" data-placement="auto" title="Attach part specifuc files like tolerance, threadings, finish details (PDF Only)"> Attach Additional Files</a></span>
+                                        </div>
+                                    </div>
+                                    <div class="anylysisofdesignstatus block sectionpadding10">
+                                        <div class="flex justifycontent"><span class="displayinlineblock"></span>
+                                            <h6>Analysing Design</h6><a data-toggle="tooltip" data-placement="auto" title="This will indicate whether the modal has issues or not!"> <i class="fa fa-info-circle" aria-hidden="true"></i></a></div>
+                                        <p>Please wait while we take a look at your design</p>
+                                    </div>
+                                    <div class="cartandpricebtn block flex ">
+                                        <div class="flex1 displayflex">
+                                            <div class="price">&nbsp;</div>
+                                        </div>
+                                        <div class="flex1">
+                                            <button class="button block ">Add to Cart</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                             <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                                <div class="upload-product block cartitems marginbottom30">
+                                    <figure class="block text-center whitebg">
+                                        <img src="/media/2d-product.jpg" class="img-responsive displayinline" alt="" />
+                                        <figcaption class="block flex justifycontent flexend">
+                                            <h3 class="pull-left"><span>1.</span> Delta.stl</h3>
+                                            <h6 class="pull-right triggerthreedpopup_js cursorpointer">Click to view in 3D</h6>
+                                        </figcaption>
+                                        <div class="closeuploadedproduct closeuploadedproduct_js ">
+                                            <i class="fa fa-times" aria-hidden="true"></i>
+                                        </div>
+                                    </figure>
+                                    <div class="uploaddetails block sectionpadding20">
+                                        <div class="row">
+                                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                                <div class="typematerialcolor block">
+                                                    <div class="form-group block jqtransform zindex3">
+                                                        <select class="customselect ">
+                                                            <option>Job Type</option>
+                                                            <option>CNC</option>
+                                                            <option>3D Print - FDM</option>
+                                                            <option>3D Print - SLA</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group block jqtransform zindex2">
+                                                        <select class="customselect">
+                                                            <option>Material</option>
+                                                            <option>Material 1</option>
+                                                            <option>Material 2</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group block nomargin jqtransform zinex1">
+                                                        <select class="customselect">
+                                                            <option>Color</option>
+                                                            <option>Red</option>
+                                                            <option>White</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                                <div class="unitqualityquantity block">
+                                                    <div class="form-group block displayflex">
+                                                        <div class="flex1">
+                                                            Units :
+                                                        </div>
+                                                        <div class="flex2">
+                                                            <ul class="flex justifycontent">
+                                                                <li><a class="units_js unit cursorpointer active">mm</a></li>
+                                                                <li><a class="units_js unit cursorpointer">cm</a></li>
+                                                                <li><a class="units_js unit cursorpointer">inch</a></li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group block displayflex">
+                                                        <div class="flex1">
+                                                            Quality:
+                                                        </div>
+                                                        <div class="flex2">
+                                                            <ul class="flex justifycontent">
+                                                                <li><a class="quality_js quality cursorpointer active">Normal</a></li>
+                                                                <li><a class="quality_js quality cursorpointer">High</a></li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group block flex">
+                                                        <div class="flex1">
+                                                            Quality:
+                                                        </div>
+                                                        <div class="flex2">
+                                                            <input type="text" class="col-lg-6 col-md-6 col-sm-6 col-xs-6 quantityinput" onkeypress="return isNumberKey(event)"/>
+                                                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 flex updowncolumn">
+                                                                <a class="increasequantity_js cursorpointer"><i class="fa fa-caret-up" aria-hidden="true"></i></a>
+                                                                <a class="decreasequantity_js cursorpointer"><i class="fa fa-caret-down" aria-hidden="true"></i></a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                        
+                                    </div>
+                                    <div class="anylysisofdesignstatus block sectionpadding10">
+                                        <div class="flex justifycontent"><span class="displayinlineblock"></span>
+                                            <h6>Analysing Design</h6><a data-toggle="tooltip" data-placement="auto" title="This will indicate whether the modal has issues or not!"> <i class="fa fa-info-circle" aria-hidden="true"></i></a></div>
+                                        <p>Please wait while we take a look at your design</p>
+                                    </div>
+                                    <div class="cartandpricebtn block flex ">
+                                        <div class="flex1 displayflex">
+                                            <div class="price"><i class="fa fa-inr" aria-hidden="true"></i>&nbsp;2360</div>
+                                        </div>
+                                        <div class="flex1">
+                                            <button class="button block  active">Add to Cart</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                             <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                                <div class="upload-product block cartitems marginbottom30">
+                                    <figure class="block text-center whitebg">
+                                        <img src="/media/2d-product.jpg" class="img-responsive displayinline" alt="" />
+                                        <figcaption class="block flex justifycontent flexend">
+                                            <h3 class="pull-left"><span>1.</span> Delta.stl</h3>
+                                            <h6 class="pull-right triggerthreedpopup_js cursorpointer">Click to view in 3D</h6>
+                                        </figcaption>
+                                        <div class="closeuploadedproduct closeuploadedproduct_js ">
+                                            <i class="fa fa-times" aria-hidden="true"></i>
+                                        </div>
+                                    </figure>
+                                    <div class="uploaddetails block sectionpadding20">
+                                        <div class="row">
+                                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                                <div class="typematerialcolor block">
+                                                    <div class="form-group block jqtransform zindex3">
+                                                        <select class="customselect ">
+                                                            <option>Job Type</option>
+                                                            <option>CNC</option>
+                                                            <option>3D Print - FDM</option>
+                                                            <option>3D Print - SLA</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group block jqtransform zindex2">
+                                                        <select class="customselect">
+                                                            <option>Material</option>
+                                                            <option>Material 1</option>
+                                                            <option>Material 2</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group block nomargin jqtransform zinex1">
+                                                        <select class="customselect">
+                                                            <option>Color</option>
+                                                            <option>Red</option>
+                                                            <option>White</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                                <div class="unitqualityquantity block">
+                                                    <div class="form-group block displayflex">
+                                                        <div class="flex1">
+                                                            Units :
+                                                        </div>
+                                                        <div class="flex2">
+                                                            <ul class="flex justifycontent">
+                                                                <li><a class="units_js unit cursorpointer active">mm</a></li>
+                                                                <li><a class="units_js unit cursorpointer">cm</a></li>
+                                                                <li><a class="units_js unit cursorpointer">inch</a></li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group block displayflex">
+                                                        <div class="flex1">
+                                                            Quality:
+                                                        </div>
+                                                        <div class="flex2">
+                                                            <ul class="flex justifycontent">
+                                                                <li><a class="quality_js quality cursorpointer active">Normal</a></li>
+                                                                <li><a class="quality_js quality cursorpointer">High</a></li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group block flex">
+                                                        <div class="flex1">
+                                                            Quality:
+                                                        </div>
+                                                        <div class="flex2">
+                                                            <input type="text" class="col-lg-6 col-md-6 col-sm-6 col-xs-6 quantityinput" onkeypress="return isNumberKey(event)"/>
+                                                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 flex updowncolumn">
+                                                                <a class="increasequantity_js cursorpointer"><i class="fa fa-caret-up" aria-hidden="true"></i></a>
+                                                                <a class="decreasequantity_js cursorpointer"><i class="fa fa-caret-down" aria-hidden="true"></i></a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                        
+                                    </div>
+                                    <div class="anylysisofdesignstatus block sectionpadding10">
+                                        <div class="flex justifycontent"><span class="displayinlineblock"></span>
+                                            <h6>Analysing Design</h6><a data-toggle="tooltip" data-placement="auto" title="This will indicate whether the modal has issues or not!"> <i class="fa fa-info-circle" aria-hidden="true"></i></a></div>
+                                        <p>Please wait while we take a look at your design</p>
+                                    </div>
+                                    <div class="cartandpricebtn block flex ">
+                                        <div class="flex1 displayflex">
+                                            <div class="price"><i class="fa fa-inr" aria-hidden="true"></i>&nbsp;2360</div>
+                                        </div>
+                                        <div class="flex1">
+                                            <button class="button block  active">Add to Cart</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                             <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                                <div class="upload-product block cartitems marginbottom30">
+                                    <figure class="block text-center whitebg">
+                                        <img src="/media/2d-product.jpg" class="img-responsive displayinline" alt="" />
+                                        <figcaption class="block flex justifycontent flexend">
+                                            <h3 class="pull-left"><span>1.</span> Delta.stl</h3>
+                                            <h6 class="pull-right triggerthreedpopup_js cursorpointer">Click to view in 3D</h6>
+                                        </figcaption>
+                                        <div class="closeuploadedproduct closeuploadedproduct_js ">
+                                            <i class="fa fa-times" aria-hidden="true"></i>
+                                        </div>
+                                    </figure>
+                                    <div class="uploaddetails block sectionpadding20">
+                                        <div class="row">
+                                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                                <div class="typematerialcolor block">
+                                                    <div class="form-group block jqtransform zindex3">
+                                                        <select class="customselect ">
+                                                            <option>Job Type</option>
+                                                            <option>CNC</option>
+                                                            <option>3D Print - FDM</option>
+                                                            <option>3D Print - SLA</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group block jqtransform zindex2">
+                                                        <select class="customselect">
+                                                            <option>Material</option>
+                                                            <option>Material 1</option>
+                                                            <option>Material 2</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group block nomargin jqtransform zinex1">
+                                                        <select class="customselect">
+                                                            <option>Color</option>
+                                                            <option>Red</option>
+                                                            <option>White</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                                <div class="unitqualityquantity block">
+                                                    <div class="form-group block displayflex">
+                                                        <div class="flex1">
+                                                            Units :
+                                                        </div>
+                                                        <div class="flex2">
+                                                            <ul class="flex justifycontent">
+                                                                <li><a class="units_js unit cursorpointer active">mm</a></li>
+                                                                <li><a class="units_js unit cursorpointer">cm</a></li>
+                                                                <li><a class="units_js unit cursorpointer">inch</a></li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group block displayflex">
+                                                        <div class="flex1">
+                                                            Quality:
+                                                        </div>
+                                                        <div class="flex2">
+                                                            <ul class="flex justifycontent">
+                                                                <li><a class="quality_js quality cursorpointer active">Normal</a></li>
+                                                                <li><a class="quality_js quality cursorpointer">High</a></li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group block flex">
+                                                        <div class="flex1">
+                                                            Quality:
+                                                        </div>
+                                                        <div class="flex2">
+                                                            <input type="text" class="col-lg-6 col-md-6 col-sm-6 col-xs-6 quantityinput" onkeypress="return isNumberKey(event)"/>
+                                                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 flex updowncolumn">
+                                                                <a class="increasequantity_js cursorpointer"><i class="fa fa-caret-up" aria-hidden="true"></i></a>
+                                                                <a class="decreasequantity_js cursorpointer"><i class="fa fa-caret-down" aria-hidden="true"></i></a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                        
+                                    </div>
+                                    <div class="anylysisofdesignstatus block sectionpadding10">
+                                        <div class="flex justifycontent"><span class="displayinlineblock"></span>
+                                            <h6>Analysing Design</h6><a data-toggle="tooltip" data-placement="auto" title="This will indicate whether the modal has issues or not!"> <i class="fa fa-info-circle" aria-hidden="true"></i></a></div>
+                                        <p>Please wait while we take a look at your design</p>
+                                    </div>
+                                    <div class="cartandpricebtn block flex ">
+                                        <div class="flex1 displayflex">
+                                            <div class="price"><i class="fa fa-inr" aria-hidden="true"></i>&nbsp;2360</div>
+                                        </div>
+                                        <div class="flex1">
+                                            <button class="button block  active">Add to Cart</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                                <div class="upload-product block cartitems marginbottom30">
+                                    <figure class="block text-center whitebg">
+                                        <img src="/media/2d-product.jpg" class="img-responsive displayinline" alt="" />
+                                        <figcaption class="block flex justifycontent flexend">
+                                            <h3 class="pull-left"><span>1.</span> Delta.stl</h3>
+                                            <h6 class="pull-right triggerthreedpopup_js cursorpointer">Click to view in 3D</h6>
+                                        </figcaption>
+                                        <div class="closeuploadedproduct closeuploadedproduct_js ">
+                                            <i class="fa fa-times" aria-hidden="true"></i>
+                                        </div>
+                                    </figure>
+                                    <div class="uploaddetails block sectionpadding20">
+                                        <div class="row">
+                                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                                <div class="typematerialcolor block">
+                                                    <div class="form-group block jqtransform zindex3">
+                                                        <select class="customselect ">
+                                                            <option>Job Type</option>
+                                                            <option>CNC</option>
+                                                            <option>3D Print - FDM</option>
+                                                            <option>3D Print - SLA</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group block jqtransform zindex2">
+                                                        <select class="customselect">
+                                                            <option>Material</option>
+                                                            <option>Material 1</option>
+                                                            <option>Material 2</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group block nomargin jqtransform zinex1">
+                                                        <select class="customselect">
+                                                            <option>Color</option>
+                                                            <option>Red</option>
+                                                            <option>White</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                                <div class="unitqualityquantity block">
+                                                    <div class="form-group block displayflex">
+                                                        <div class="flex1">
+                                                            Units :
+                                                        </div>
+                                                        <div class="flex2">
+                                                            <ul class="flex justifycontent">
+                                                                <li><a class="units_js unit cursorpointer active">mm</a></li>
+                                                                <li><a class="units_js unit cursorpointer">cm</a></li>
+                                                                <li><a class="units_js unit cursorpointer">inch</a></li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group block displayflex">
+                                                        <div class="flex1">
+                                                            Quality:
+                                                        </div>
+                                                        <div class="flex2">
+                                                            <ul class="flex justifycontent">
+                                                                <li><a class="quality_js quality cursorpointer active">Normal</a></li>
+                                                                <li><a class="quality_js quality cursorpointer">High</a></li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group block flex">
+                                                        <div class="flex1">
+                                                            Quality:
+                                                        </div>
+                                                        <div class="flex2">
+                                                            <input type="text" class="col-lg-6 col-md-6 col-sm-6 col-xs-6 quantityinput" onkeypress="return isNumberKey(event)"/>
+                                                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 flex updowncolumn">
+                                                                <a class="increasequantity_js cursorpointer"><i class="fa fa-caret-up" aria-hidden="true"></i></a>
+                                                                <a class="decreasequantity_js cursorpointer"><i class="fa fa-caret-down" aria-hidden="true"></i></a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                        
+                                    </div>
+                                    <div class="anylysisofdesignstatus block sectionpadding10">
+                                        <div class="flex justifycontent"><span class="displayinlineblock"></span>
+                                            <h6>Analysing Design</h6><a data-toggle="tooltip" data-placement="auto" title="This will indicate whether the modal has issues or not!"> <i class="fa fa-info-circle" aria-hidden="true"></i></a></div>
+                                        <p>Please wait while we take a look at your design</p>
+                                    </div>
+                                    <div class="cartandpricebtn block flex ">
+                                        <div class="flex1 displayflex">
+                                            <div class="price">&nbsp;</div>
+                                        </div>
+                                        <div class="flex1">
+                                            <button class="button block  ">Add to Cart</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                                <div class="upload-product block cartitems marginbottom30">
+                                    <figure class="block text-center whitebg">
+                                        <img src="/media/2d-product.jpg" class="img-responsive displayinline" alt="" />
+                                        <figcaption class="block flex justifycontent flexend">
+                                            <h3 class="pull-left"><span>1.</span> Delta.stl</h3>
+                                            <h6 class="pull-right triggerthreedpopup_js cursorpointer">Click to view in 3D</h6>
+                                        </figcaption>
+                                        <div class="closeuploadedproduct closeuploadedproduct_js ">
+                                            <i class="fa fa-times" aria-hidden="true"></i>
+                                        </div>
+                                    </figure>
+                                    <div class="uploaddetails block sectionpadding20">
+                                        <div class="row">
+                                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                                <div class="typematerialcolor block">
+                                                    <div class="form-group block jqtransform zindex3">
+                                                        <select class="customselect ">
+                                                            <option>Job Type</option>
+                                                            <option>CNC</option>
+                                                            <option>3D Print - FDM</option>
+                                                            <option>3D Print - SLA</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group block jqtransform zindex2">
+                                                        <select class="customselect">
+                                                            <option>Material</option>
+                                                            <option>Material 1</option>
+                                                            <option>Material 2</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group block nomargin jqtransform zinex1">
+                                                        <select class="customselect">
+                                                            <option>Color</option>
+                                                            <option>Red</option>
+                                                            <option>White</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                                <div class="unitqualityquantity block">
+                                                    <div class="form-group block displayflex">
+                                                        <div class="flex1">
+                                                            Units :
+                                                        </div>
+                                                        <div class="flex2">
+                                                            <ul class="flex justifycontent">
+                                                                <li><a class="units_js unit cursorpointer active">mm</a></li>
+                                                                <li><a class="units_js unit cursorpointer">cm</a></li>
+                                                                <li><a class="units_js unit cursorpointer">inch</a></li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group block displayflex">
+                                                        <div class="flex1">
+                                                            Quality:
+                                                        </div>
+                                                        <div class="flex2">
+                                                            <ul class="flex justifycontent">
+                                                                <li><a class="quality_js quality cursorpointer active">Normal</a></li>
+                                                                <li><a class="quality_js quality cursorpointer">High</a></li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group block flex">
+                                                        <div class="flex1">
+                                                            Quality:
+                                                        </div>
+                                                        <div class="flex2">
+                                                            <input type="text" class="col-lg-6 col-md-6 col-sm-6 col-xs-6 quantityinput" onkeypress="return isNumberKey(event)"/>
+                                                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 flex updowncolumn">
+                                                                <a class="increasequantity_js cursorpointer"><i class="fa fa-caret-up" aria-hidden="true"></i></a>
+                                                                <a class="decreasequantity_js cursorpointer"><i class="fa fa-caret-down" aria-hidden="true"></i></a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                        
+                                    </div>
+                                    <div class="anylysisofdesignstatus block sectionpadding10">
+                                        <div class="flex justifycontent"><div class="greencolor displayinlineblock"><i class="fa fa-check" aria-hidden="true"></i></div>
+                                            <h6>Analysing Done</h6><a data-toggle="tooltip" data-placement="auto" title="This will indicate whether the modal has issues or not!"> <i class="fa fa-info-circle" aria-hidden="true"></i></a></div>
+                                        <p>The Modal is ready</p>
+                                    </div>
+                                    <div class="cartandpricebtn block flex ">
+                                        <div class="flex1 displayflex">
+                                            <div class="price">&nbsp;</div>
+                                        </div>
+                                        <div class="flex1">
+                                            <button class="button block  ">Add to Cart</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                                <div class="upload-product block cartitems marginbottom30">
+                                    <figure class="block text-center whitebg">
+                                        <img src="/media/2d-product.jpg" class="img-responsive displayinline" alt="" />
+                                        <figcaption class="block flex justifycontent flexend">
+                                            <h3 class="pull-left"><span>1.</span> Delta.stl</h3>
+                                            <h6 class="pull-right triggerthreedpopup_js cursorpointer">Click to view in 3D</h6>
+                                        </figcaption>
+                                        <div class="closeuploadedproduct closeuploadedproduct_js ">
+                                            <i class="fa fa-times" aria-hidden="true"></i>
+                                        </div>
+                                    </figure>
+                                    <div class="uploaddetails block sectionpadding20">
+                                        <div class="row">
+                                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                                <div class="typematerialcolor block">
+                                                    <div class="form-group block jqtransform zindex3">
+                                                        <select class="customselect ">
+                                                            <option>Job Type</option>
+                                                            <option>CNC</option>
+                                                            <option>3D Print - FDM</option>
+                                                            <option>3D Print - SLA</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group block jqtransform zindex2">
+                                                        <select class="customselect">
+                                                            <option>Material</option>
+                                                            <option>Material 1</option>
+                                                            <option>Material 2</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group block nomargin jqtransform zinex1">
+                                                        <select class="customselect">
+                                                            <option>Color</option>
+                                                            <option>Red</option>
+                                                            <option>White</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                                <div class="unitqualityquantity block">
+                                                    <div class="form-group block displayflex">
+                                                        <div class="flex1">
+                                                            Units :
+                                                        </div>
+                                                        <div class="flex2">
+                                                            <ul class="flex justifycontent">
+                                                                <li><a class="units_js unit cursorpointer active">mm</a></li>
+                                                                <li><a class="units_js unit cursorpointer">cm</a></li>
+                                                                <li><a class="units_js unit cursorpointer">inch</a></li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group block displayflex">
+                                                        <div class="flex1">
+                                                            Quality:
+                                                        </div>
+                                                        <div class="flex2">
+                                                            <ul class="flex justifycontent">
+                                                                <li><a class="quality_js quality cursorpointer active">Normal</a></li>
+                                                                <li><a class="quality_js quality cursorpointer">High</a></li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group block flex">
+                                                        <div class="flex1">
+                                                            Quality:
+                                                        </div>
+                                                        <div class="flex2">
+                                                            <input type="text" class="col-lg-6 col-md-6 col-sm-6 col-xs-6 quantityinput" onkeypress="return isNumberKey(event)"/>
+                                                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 flex updowncolumn">
+                                                                <a class="increasequantity_js cursorpointer"><i class="fa fa-caret-up" aria-hidden="true"></i></a>
+                                                                <a class="decreasequantity_js cursorpointer"><i class="fa fa-caret-down" aria-hidden="true"></i></a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                        
+                                    </div>
+                                    <div class="anylysisofdesignstatus block sectionpadding10">
+                                        <div class="flex justifycontent"><div class="redcolor displayinlineblock"><i class="fa fa-times" aria-hidden="true"></i></div>
+                                            <h6>Analysing Failed</h6><a data-toggle="tooltip" data-placement="auto" title="This will indicate whether the modal has issues or not!"> <i class="fa fa-info-circle" aria-hidden="true"></i></a></div>
+                                        <p class="profiledetails">The Modal has issues. <a class="editaddress cursorpointer">Contact Support</a></p>
+                                    </div>
+                                    <div class="cartandpricebtn block flex ">
+                                        <div class="flex1 displayflex">
+                                            <div class="price">&nbsp;</div>
+                                        </div>
+                                        <div class="flex1">
+                                            <button class="button block  ">Add to Cart</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="clearfix">&nbsp;</div>
+                            <div class="block marginbottom20"><h6>Uploading States</h6></div>
+                            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                                <div class="upload-product block cartitems marginbottom30">
+                                    <figure class="block text-center whitebg">
+                                        <img src="/media/2d-product.jpg" class="img-responsive displayinline" alt="" />
+                                        <figcaption class="block flex justifycontent flexend">
+                                            <h3 class="pull-left"><span>1.</span> Delta.stl</h3>
+                                            <h6 class="pull-right">Uploading...&nbsp;<span>86<span>%</span></span></h6>
+                                        </figcaption>
+                                        <div class="closeuploadedproduct closeuploadedproduct_js ">
+                                            <i class="fa fa-times" aria-hidden="true"></i>
+                                        </div>
+                                    </figure>
+                                    <div class="uploaddetails block sectionpadding20">
+                                        <div class="uploading-status block"><span class="completedstatus transition" style="width: 20%"></span></div>
+                                        <div class="row">
+                                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                                <div class="typematerialcolor block">
+                                                    <div class="form-group block jqtransform zindex3">
+                                                        <select class="customselect ">
+                                                            <option>Job Type</option>
+                                                            <option>CNC</option>
+                                                            <option>3D Print - FDM</option>
+                                                            <option>3D Print - SLA</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group block jqtransform zindex2">
+                                                        <select class="customselect">
+                                                            <option>Material</option>
+                                                            <option>Material 1</option>
+                                                            <option>Material 2</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group block nomargin jqtransform zinex1">
+                                                        <select class="customselect">
+                                                            <option>Color</option>
+                                                            <option>Red</option>
+                                                            <option>White</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                                <div class="unitqualityquantity block">
+                                                    <div class="form-group block displayflex">
+                                                        <div class="flex1">
+                                                            Units :
+                                                        </div>
+                                                        <div class="flex2">
+                                                            <ul class="flex justifycontent">
+                                                                <li><a class="units_js unit cursorpointer active">mm</a></li>
+                                                                <li><a class="units_js unit cursorpointer">cm</a></li>
+                                                                <li><a class="units_js unit cursorpointer">inch</a></li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group block displayflex">
+                                                        <div class="flex1">
+                                                            Quality:
+                                                        </div>
+                                                        <div class="flex2">
+                                                            <ul class="flex justifycontent">
+                                                                <li><a class="quality_js quality cursorpointer active">Normal</a></li>
+                                                                <li><a class="quality_js quality cursorpointer">High</a></li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group block flex">
+                                                        <div class="flex1">
+                                                            Quality:
+                                                        </div>
+                                                        <div class="flex2">
+                                                            <input type="text" class="col-lg-6 col-md-6 col-sm-6 col-xs-6 quantityinput" onkeypress="return isNumberKey(event)"/>
+                                                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 flex updowncolumn">
+                                                                <a class="increasequantity_js cursorpointer"><i class="fa fa-caret-up" aria-hidden="true"></i></a>
+                                                                <a class="decreasequantity_js cursorpointer"><i class="fa fa-caret-down" aria-hidden="true"></i></a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                        
+                                    </div>
+                                    <div class="anylysisofdesignstatus block sectionpadding10">
+                                        <div class="flex justifycontent"><span class="displayinlineblock"></span>
+                                            <h6>Analysing Design</h6><a data-toggle="tooltip" data-placement="auto" title="This will indicate whether the modal has issues or not!"> <i class="fa fa-info-circle" aria-hidden="true"></i></a></div>
+                                        <p>Please wait while we take a look at your design</p>
+                                    </div>
+                                    <div class="cartandpricebtn block flex ">
+                                        <div class="flex1 displayflex">
+                                            <div class="price">&nbsp;</div>
+                                        </div>
+                                        <div class="flex1">
+                                            <button class="button block">Add to Cart</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                                <div class="upload-product block cartitems marginbottom30">
+                                    <figure class="block text-center whitebg">
+                                        <img src="/media/uploading-complete.png" class="img-responsive displayinline" alt="" />
+                                        <figcaption class="block flex justifycontent flexend">
+                                            <h3 class="pull-left"><span>1.</span> Delta.stl</h3>
+                                            <h6 class="pull-right triggerthreedpopup_js cursorpointer">Click to view in 3D</h6>
+                                        </figcaption>
+                                        <div class="closeuploadedproduct closeuploadedproduct_js ">
+                                            <i class="fa fa-times" aria-hidden="true"></i>
+                                        </div>
+                                    </figure>
+                                    <div class="uploaddetails block sectionpadding20">
+                                        
+                                        <div class="row">
+                                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                                <div class="typematerialcolor block">
+                                                    <div class="form-group block jqtransform zindex3">
+                                                        <select class="customselect ">
+                                                            <option>Job Type</option>
+                                                            <option>CNC</option>
+                                                            <option>3D Print - FDM</option>
+                                                            <option>3D Print - SLA</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group block jqtransform zindex2">
+                                                        <select class="customselect">
+                                                            <option>Material</option>
+                                                            <option>Material 1</option>
+                                                            <option>Material 2</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group block nomargin jqtransform zinex1">
+                                                        <select class="customselect">
+                                                            <option>Color</option>
+                                                            <option>Red</option>
+                                                            <option>White</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                                <div class="unitqualityquantity block">
+                                                    <div class="form-group block displayflex">
+                                                        <div class="flex1">
+                                                            Units :
+                                                        </div>
+                                                        <div class="flex2">
+                                                            <ul class="flex justifycontent">
+                                                                <li><a class="units_js unit cursorpointer active">mm</a></li>
+                                                                <li><a class="units_js unit cursorpointer">cm</a></li>
+                                                                <li><a class="units_js unit cursorpointer">inch</a></li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group block displayflex">
+                                                        <div class="flex1">
+                                                            Quality:
+                                                        </div>
+                                                        <div class="flex2">
+                                                            <ul class="flex justifycontent">
+                                                                <li><a class="quality_js quality cursorpointer active">Normal</a></li>
+                                                                <li><a class="quality_js quality cursorpointer">High</a></li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group block flex">
+                                                        <div class="flex1">
+                                                            Quality:
+                                                        </div>
+                                                        <div class="flex2">
+                                                            <input type="text" class="col-lg-6 col-md-6 col-sm-6 col-xs-6 quantityinput" onkeypress="return isNumberKey(event)"/>
+                                                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 flex updowncolumn">
+                                                                <a class="increasequantity_js cursorpointer"><i class="fa fa-caret-up" aria-hidden="true"></i></a>
+                                                                <a class="decreasequantity_js cursorpointer"><i class="fa fa-caret-down" aria-hidden="true"></i></a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                        
+                                    </div>
+                                    <div class="anylysisofdesignstatus block sectionpadding10">
+                                        <div class="flex justifycontent"><span class="displayinlineblock"></span>
+                                            <h6>Analysing Design</h6><a data-toggle="tooltip" data-placement="auto" title="This will indicate whether the modal has issues or not!"> <i class="fa fa-info-circle" aria-hidden="true"></i></a></div>
+                                        <p>Please wait while we take a look at your design</p>
+                                    </div>
+                                    <div class="cartandpricebtn block flex ">
+                                        <div class="flex1 displayflex">
+                                            <div class="price">&nbsp;
+                                            </div>
+                                        </div>
+                                        <div class="flex1">
+                                            <button class="button block ">Add to Cart</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                                <div class="upload-product block cartitems marginbottom30">
+                                    <figure class="block text-center whitebg">
+                                        <img src="/media/2d-product.jpg" class="img-responsive displayinline" alt="" />
+                                        <figcaption class="block flex justifycontent flexend">
+                                            <h3 class="pull-left"><span>1.</span> Delta.stl</h3>
+                                            <h6 class="pull-right triggerthreedpopup_js cursorpointer">Click to view in 3D</h6>
+                                        </figcaption>
+                                        <div class="closeuploadedproduct closeuploadedproduct_js ">
+                                            <i class="fa fa-times" aria-hidden="true"></i>
+                                        </div>
+                                    </figure>
+                                    <div class="uploaddetails block sectionpadding20">
+                                        <div class="row">
+                                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                                <div class="typematerialcolor block">
+                                                    <div class="form-group block jqtransform zindex3">
+                                                        <select class="customselect ">
+                                                            <option>Job Type</option>
+                                                            <option>CNC</option>
+                                                            <option>3D Print - FDM</option>
+                                                            <option>3D Print - SLA</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group block jqtransform zindex2">
+                                                        <select class="customselect">
+                                                            <option>Material</option>
+                                                            <option>Material 1</option>
+                                                            <option>Material 2</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group block nomargin jqtransform zinex1">
+                                                        <select class="customselect">
+                                                            <option>Color</option>
+                                                            <option>Red</option>
+                                                            <option>White</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                                <div class="unitqualityquantity block">
+                                                    <div class="form-group block displayflex">
+                                                        <div class="flex1">
+                                                            Units :
+                                                        </div>
+                                                        <div class="flex2">
+                                                            <ul class="flex justifycontent">
+                                                                <li><a class="units_js unit cursorpointer active">mm</a></li>
+                                                                <li><a class="units_js unit cursorpointer">cm</a></li>
+                                                                <li><a class="units_js unit cursorpointer">inch</a></li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group block displayflex">
+                                                        <div class="flex1">
+                                                            Quality:
+                                                        </div>
+                                                        <div class="flex2">
+                                                            <ul class="flex justifycontent">
+                                                                <li><a class="quality_js quality cursorpointer active">Normal</a></li>
+                                                                <li><a class="quality_js quality cursorpointer">High</a></li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group block flex">
+                                                        <div class="flex1">
+                                                            Quality:
+                                                        </div>
+                                                        <div class="flex2">
+                                                            <input type="text" class="col-lg-6 col-md-6 col-sm-6 col-xs-6 quantityinput" onkeypress="return isNumberKey(event)"/>
+                                                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 flex updowncolumn">
+                                                                <a class="increasequantity_js cursorpointer"><i class="fa fa-caret-up" aria-hidden="true"></i></a>
+                                                                <a class="decreasequantity_js cursorpointer"><i class="fa fa-caret-down" aria-hidden="true"></i></a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                        
+                                    </div>
+                                    <div class="anylysisofdesignstatus block sectionpadding10">
+                                        <div class="flex justifycontent"><span class="displayinlineblock"></span>
+                                            <h6>Analysing Design</h6><a data-toggle="tooltip" data-placement="auto" title="This will indicate whether the modal has issues or not!"> <i class="fa fa-info-circle" aria-hidden="true"></i></a></div>
+                                        <p>Please wait while we take a look at your design</p>
+                                    </div>
+                                    <div class="cartandpricebtn block flex ">
+                                        <div class="flex1 displayflex">
+                                            <div class="price">&nbsp;</div>
+                                        </div>
+                                        <div class="flex1">
+                                            <button class="button block">Add to Cart</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                                <div class="upload-product block cartitems marginbottom30">
+                                    <figure class="block text-center whitebg">
+                                        <img src="/media/uploading-failed.png" class="img-responsive displayinline" alt="" />
+                                        <figcaption class="block flex justifycontent flexend">
+                                            <h3 class="pull-left"><span>1.</span> Delta.stl</h3>
+                                            <h6 class="pull-right triggerthreedpopup_js cursorpointer">Click to view in 3D</h6>
+                                        </figcaption>
+                                        <div class="closeuploadedproduct closeuploadedproduct_js ">
+                                            <i class="fa fa-times" aria-hidden="true"></i>
+                                        </div>
+                                    </figure>
+                                    <div class="uploaddetails block sectionpadding20">
+                                        <div class="row">
+                                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                                <div class="typematerialcolor block">
+                                                    <div class="form-group block jqtransform zindex3">
+                                                        <select class="customselect ">
+                                                            <option>Job Type</option>
+                                                            <option>CNC</option>
+                                                            <option>3D Print - FDM</option>
+                                                            <option>3D Print - SLA</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group block jqtransform zindex2">
+                                                        <select class="customselect">
+                                                            <option>Material</option>
+                                                            <option>Material 1</option>
+                                                            <option>Material 2</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group block nomargin jqtransform zinex1">
+                                                        <select class="customselect">
+                                                            <option>Color</option>
+                                                            <option>Red</option>
+                                                            <option>White</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                                <div class="unitqualityquantity block">
+                                                    <div class="form-group block displayflex">
+                                                        <div class="flex1">
+                                                            Units :
+                                                        </div>
+                                                        <div class="flex2">
+                                                            <ul class="flex justifycontent">
+                                                                <li><a class="units_js unit cursorpointer active">mm</a></li>
+                                                                <li><a class="units_js unit cursorpointer">cm</a></li>
+                                                                <li><a class="units_js unit cursorpointer">inch</a></li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group block displayflex">
+                                                        <div class="flex1">
+                                                            Quality:
+                                                        </div>
+                                                        <div class="flex2">
+                                                            <ul class="flex justifycontent">
+                                                                <li><a class="quality_js quality cursorpointer active">Normal</a></li>
+                                                                <li><a class="quality_js quality cursorpointer">High</a></li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group block flex">
+                                                        <div class="flex1">
+                                                            Quality:
+                                                        </div>
+                                                        <div class="flex2">
+                                                            <input type="text" class="col-lg-6 col-md-6 col-sm-6 col-xs-6 quantityinput" onkeypress="return isNumberKey(event)"/>
+                                                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 flex updowncolumn">
+                                                                <a class="increasequantity_js cursorpointer"><i class="fa fa-caret-up" aria-hidden="true"></i></a>
+                                                                <a class="decreasequantity_js cursorpointer"><i class="fa fa-caret-down" aria-hidden="true"></i></a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                        
+                                    </div>
+                                    <div class="anylysisofdesignstatus block sectionpadding10">
+                                        <div class="flex justifycontent"><span class="displayinlineblock"></span>
+                                            <h6>Analysing Design</h6><a data-toggle="tooltip" data-placement="auto" title="This will indicate whether the modal has issues or not!"> <i class="fa fa-info-circle" aria-hidden="true"></i></a></div>
+                                        <p>Please wait while we take a look at your design</p>
+                                    </div>
+                                    <div class="cartandpricebtn block flex ">
+                                        <div class="flex1 displayflex">
+                                            <div class="price">&nbsp;</div>
+                                        </div>
+                                        <div class="flex1">
+                                            <button class="button block">Add to Cart</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="clearfix">&nbsp;</div>
+                            <div class="block marginbottom20"><h6>Done Requested Quote</h6></div>
+                            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                                <div class="upload-product block cartitems marginbottom30">
+                                    <figure class="block text-center whitebg">
+                                        <img src="/media/2d-product.jpg" class="img-responsive displayinline" alt="">
+                                        <figcaption class="block flex justifycontent flexend">
+                                            <h3 class="pull-left"><span>1.</span> Delta.stl</h3>
+                                            <h6 class="pull-right triggerthreedpopup_js cursorpointer">Click to view in 3D</h6>
+                                        </figcaption>
+                                        <div class="closeuploadedproduct closeuploadedproduct_js ">
+                                            <i class="fa fa-times" aria-hidden="true"></i>
+                                        </div>
+                                    </figure>
+                                    <div class="uploaddetails block sectionpadding20">
+                                        <div class="row">
+                                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                                <div class="typematerialcolor block">
+                                                    <div class="form-group block jqtransform zindex3">
+                                                        <select class="customselect ">
+                                                            <option>Job Type</option>
+                                                            <option>CNC</option>
+                                                            <option>3D Print - FDM</option>
+                                                            <option>3D Print - SLA</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group block jqtransform zindex2">
+                                                        <select class="customselect">
+                                                            <option>Material</option>
+                                                            <option>Material 1</option>
+                                                            <option>Material 2</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                                <div class="unitqualityquantity block">
+                                                    <div class="form-group block displayflex">
+                                                        <div class="flex1">
+                                                            Units :
+                                                        </div>
+                                                        <div class="flex2">
+                                                            <ul class="flex justifycontent">
+                                                                <li><a class="units_js unit cursorpointer active">mm</a></li>
+                                                                <li><a class="units_js unit cursorpointer">cm</a></li>
+                                                                <li><a class="units_js unit cursorpointer">inch</a></li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group block displayflex">
+                                                        <div class="flex1">
+                                                            Quality:
+                                                        </div>
+                                                        <div class="flex2">
+                                                            <ul class="flex justifycontent">
+                                                                <li><a class="quality_js quality cursorpointer active">Normal</a></li>
+                                                                <li><a class="quality_js quality cursorpointer">High</a></li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group block flex">
+                                                        <div class="flex1">
+                                                            Quality:
+                                                        </div>
+                                                        <div class="flex2">
+                                                            <input type="text" class="col-lg-6 col-md-6 col-sm-6 col-xs-6 quantityinput" onkeypress="return isNumberKey(event)">
+                                                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 flex updowncolumn">
+                                                                <a class="increasequantity_js cursorpointer"><i class="fa fa-caret-up" aria-hidden="true"></i></a>
+                                                                <a class="decreasequantity_js cursorpointer"><i class="fa fa-caret-down" aria-hidden="true"></i></a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                        <div class="attachadditionalfiles block text-left profiledetails">
+                                            <span class="cursorpointer"><i class="fa fa-paperclip" aria-hidden="true"></i> <a class="editaddress" data-toggle="tooltip" data-placement="auto" title="" data-original-title="Attach part specifuc files like tolerance, threadings, finish details (PDF Only)"> Attach Additional Files</a></span>
+                                        </div>
+                                    </div>
+                                    <div class="anylysisofdesignstatus block sectionpadding10">
+                                        <div class="flex justifycontent"><div class="greencolor displayinlineblock"><i class="fa fa-check" aria-hidden="true"></i></div>
+                                            <h6>Analysing Done</h6><a data-toggle="tooltip" data-placement="auto" title="" data-original-title="This will indicate whether the modal has issues or not!"> <i class="fa fa-info-circle" aria-hidden="true"></i></a></div>
+                                        <p>The Modal is ready</p>
+                                    </div>
+                                    <div class="cartandpricebtn block flex ">
+                                        <div class="flex1 displayflex">
+                                            <div class="price">&nbsp;</div>
+                                        </div>
+                                        <div class="flex1">
+                                            <button class="button block getquote">Get Quote</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                                <div class="upload-product block cartitems marginbottom30">
+                                    <figure class="block text-center whitebg">
+                                        <img src="/media/2d-product.jpg" class="img-responsive displayinline" alt="">
+                                        <figcaption class="block flex justifycontent flexend">
+                                            <h3 class="pull-left"><span>1.</span> Delta.stl</h3>
+                                            <h6 class="pull-right triggerthreedpopup_js cursorpointer">Click to view in 3D</h6>
+                                        </figcaption>
+                                        <div class="closeuploadedproduct closeuploadedproduct_js ">
+                                            <i class="fa fa-times" aria-hidden="true"></i>
+                                        </div>
+                                    </figure>
+                                    <div class="uploaddetails block sectionpadding20">
+                                        <div class="row">
+                                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                                <div class="typematerialcolor block">
+                                                    <div class="form-group block jqtransform zindex3">
+                                                        <select class="customselect ">
+                                                            <option>Job Type</option>
+                                                            <option>CNC</option>
+                                                            <option>3D Print - FDM</option>
+                                                            <option>3D Print - SLA</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group block jqtransform zindex2">
+                                                        <select class="customselect">
+                                                            <option>Material</option>
+                                                            <option>Material 1</option>
+                                                            <option>Material 2</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                                <div class="unitqualityquantity block">
+                                                    <div class="form-group block displayflex">
+                                                        <div class="flex1">
+                                                            Units :
+                                                        </div>
+                                                        <div class="flex2">
+                                                            <ul class="flex justifycontent">
+                                                                <li><a class="units_js unit cursorpointer active">mm</a></li>
+                                                                <li><a class="units_js unit cursorpointer">cm</a></li>
+                                                                <li><a class="units_js unit cursorpointer">inch</a></li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group block displayflex">
+                                                        <div class="flex1">
+                                                            Quality:
+                                                        </div>
+                                                        <div class="flex2">
+                                                            <ul class="flex justifycontent">
+                                                                <li><a class="quality_js quality cursorpointer active">Normal</a></li>
+                                                                <li><a class="quality_js quality cursorpointer">High</a></li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group block flex">
+                                                        <div class="flex1">
+                                                            Quality:
+                                                        </div>
+                                                        <div class="flex2">
+                                                            <input type="text" class="col-lg-6 col-md-6 col-sm-6 col-xs-6 quantityinput" onkeypress="return isNumberKey(event)">
+                                                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 flex updowncolumn">
+                                                                <a class="increasequantity_js cursorpointer"><i class="fa fa-caret-up" aria-hidden="true"></i></a>
+                                                                <a class="decreasequantity_js cursorpointer"><i class="fa fa-caret-down" aria-hidden="true"></i></a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                        <div class="attachadditionalfiles block text-left profiledetails">
+                                            <span class="cursorpointer"><i class="fa fa-paperclip" aria-hidden="true"></i> <a class="editaddress" data-toggle="tooltip" data-placement="auto" title="" data-original-title="Attach part specifuc files like tolerance, threadings, finish details (PDF Only)"> Attach Additional Files</a></span>
+                                        </div>
+                                    </div>
+                                    <div class="anylysisofdesignstatus block sectionpadding10">
+                                        <div class="flex justifycontent"><div class="greencolor displayinlineblock"><i class="fa fa-check" aria-hidden="true"></i></div>
+                                            <h6>Analysing Done</h6><a data-toggle="tooltip" data-placement="auto" title="" data-original-title="This will indicate whether the modal has issues or not!"> <i class="fa fa-info-circle" aria-hidden="true"></i></a></div>
+                                        <p>The Modal is ready</p>
+                                    </div>
+                                    <div class="cartandpricebtn block flex ">
+                                        <div class="flex1 displayflex">
+                                            <div class="price">&nbsp;</div>
+                                        </div>
+                                        <div class="flex1">
+                                            <button class="button block getrequested">Get Requested</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                                <div class="upload-product block cartitems marginbottom30">
+                                    <figure class="block text-center whitebg">
+                                        <img src="/media/2d-product.jpg" class="img-responsive displayinline" alt="">
+                                        <figcaption class="block flex justifycontent flexend">
+                                            <h3 class="pull-left"><span>1.</span> Delta.stl</h3>
+                                            <h6 class="pull-right triggerthreedpopup_js cursorpointer">Click to view in 3D</h6>
+                                        </figcaption>
+                                        <div class="closeuploadedproduct closeuploadedproduct_js ">
+                                            <i class="fa fa-times" aria-hidden="true"></i>
+                                        </div>
+                                    </figure>
+                                    <div class="uploaddetails block sectionpadding20">
+                                        <div class="row">
+                                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                                <div class="typematerialcolor block">
+                                                    <div class="form-group block jqtransform zindex3">
+                                                        <select class="customselect ">
+                                                            <option>Job Type</option>
+                                                            <option>CNC</option>
+                                                            <option>3D Print - FDM</option>
+                                                            <option>3D Print - SLA</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group block jqtransform zindex2">
+                                                        <select class="customselect">
+                                                            <option>Material</option>
+                                                            <option>Material 1</option>
+                                                            <option>Material 2</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                                <div class="unitqualityquantity block">
+                                                    <div class="form-group block displayflex">
+                                                        <div class="flex1">
+                                                            Units :
+                                                        </div>
+                                                        <div class="flex2">
+                                                            <ul class="flex justifycontent">
+                                                                <li><a class="units_js unit cursorpointer active">mm</a></li>
+                                                                <li><a class="units_js unit cursorpointer">cm</a></li>
+                                                                <li><a class="units_js unit cursorpointer">inch</a></li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group block displayflex">
+                                                        <div class="flex1">
+                                                            Quality:
+                                                        </div>
+                                                        <div class="flex2">
+                                                            <ul class="flex justifycontent">
+                                                                <li><a class="quality_js quality cursorpointer active">Normal</a></li>
+                                                                <li><a class="quality_js quality cursorpointer">High</a></li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group block flex">
+                                                        <div class="flex1">
+                                                            Quality:
+                                                        </div>
+                                                        <div class="flex2">
+                                                            <input type="text" class="col-lg-6 col-md-6 col-sm-6 col-xs-6 quantityinput" onkeypress="return isNumberKey(event)">
+                                                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 flex updowncolumn">
+                                                                <a class="increasequantity_js cursorpointer"><i class="fa fa-caret-up" aria-hidden="true"></i></a>
+                                                                <a class="decreasequantity_js cursorpointer"><i class="fa fa-caret-down" aria-hidden="true"></i></a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                        <div class="attachadditionalfiles block text-left profiledetails">
+                                            <span class="cursorpointer"><i class="fa fa-paperclip" aria-hidden="true"></i> <a class="editaddress" data-toggle="tooltip" data-placement="auto" title="" data-original-title="Attach part specifuc files like tolerance, threadings, finish details (PDF Only)"> Attach Additional Files</a></span>
+                                        </div>
+                                    </div>
+                                    <div class="anylysisofdesignstatus block sectionpadding10">
+                                        <div class="flex justifycontent"><div class="greencolor displayinlineblock"><i class="fa fa-check" aria-hidden="true"></i></div>
+                                            <h6>Analysing Done</h6><a data-toggle="tooltip" data-placement="auto" title="" data-original-title="This will indicate whether the modal has issues or not!"> <i class="fa fa-info-circle" aria-hidden="true"></i></a></div>
+                                        <p>The Modal is ready</p>
+                                    </div>
+                                    <div class="cartandpricebtn block flex ">
+                                        <div class="flex1 displayflex">
+                                            <div class="price">&nbsp;</div>
+                                        </div>
+                                        <div class="flex1">
+                                            <button class="button block active">Add to Cart</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <div class="cartfloatingbutton whitecolor">
+                        <div class="cartcount whitebg displayflex"><span class="redcolor">2</span></div>
+                        <i class="fa fa-shopping-cart displayinlineblock" aria-hidden="true" style="margin: auto;font-size: 2rem;padding: 5px 0;"></i>
+                        <h6 style="text-align: center; margin: 0px 10px 35px 10px;"><b>CART</b></h6>
+                    </div>
+            <div class="threedviewpopup block displayflex transition">
+                <div class="poupcontent whitebg displayflex transition">
+                    <div class="closethreedviewpopup cursorpointer closethreedviewpopup_js">
+                    <i class="fa fa-times" aria-hidden="true"></i>
+                </div>
+                <div class="threedimage">
+                    <img src="/media/threedview.png" class="img-responsive" alt=""/>
+                </div>
+                <div class="details"><span class="boldfont">Max part volume :</span> 250*250*250mm</div>
+                </div>
+            </div>
+{% endblock %}
+
+
+{% block styles %}
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+  <link rel="stylesheet" href="libraries/textrotator/css/jquery.animatedheadline.css" />
+  <link rel="stylesheet" href="libraries/scroll/css/jquery.classyscroll.css" />
+  <link rel="stylesheet" href="libraries/jq/css/jqtransform.css" />
+  <link rel="stylesheet" href="css/upload.css" />
+{% endblock %}
+
+{% block scripts %}
+  <script>
+    jQuery(document).ready(function(){
+      $('[data-toggle="tooltip"]').tooltip(); 
+    });
+  </script>
+  <script src="libraries/textrotator/js/jquery.animatedheadline.min.js"></script>
+  <script src="libraries/scroll/js/jquery.mousewheel.js"></script>
+  <script src="libraries/scroll/js/jquery.classyscroll.js"></script>
+  <script src="libraries/jq/js/jquery.jqtransform.js"></script>
+  <script src="js/upload.js"></script>
+{% endblock %}

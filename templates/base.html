@@ -96,6 +96,9 @@
     Fractory is loading<span id="overlay_loader" class="loader"/>
   </div>
   <script>
+    window.intercomSettings = {
+      app_id: "n4rj23sy"
+    };
     window.onresize = function() {
       document.getElementById('overlay').style.fontSize = Math.min(32, document.getElementById('overlay').offsetWidth / 24) + "px";
       document.getElementById('overlay_loader').style.width = Math.min(24, document.getElementById('overlay').offsetWidth / 32) + "px";
@@ -109,14 +112,14 @@
         <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12">
           <div class="flex">
             <div class="logodiv active  hidden-md hidden-lg hidden-sm">
-              <a href="#body" class="logo transition"><img src="media/fractory.svg" class="img-responsive" alt=""/></a>
+              <a href="#body" class="logo transition"><img src="/media/fractory.svg" class="img-responsive" alt=""/></a>
             </div>
             <a class="mobilemenu_js cursorpointer hidden-md hidden-lg hidden-sm"><i class="fa fa-bars" aria-hidden="true"></i></a>
             <div class="logoandmenudiv">
               <ul class="flex">
                 <li class="transition active hidden-xs">
                   <div class="logodiv ">
-                    <a href="#body" class="logo transition"><img src="media/fractory.svg" class="img-responsive" alt=""/></a>
+                    <a href="#body" class="logo transition"><img src="/media/fractory.svg" class="img-responsive" alt=""/></a>
                   </div>
                 </li>
                 <li class="transition inactive"><a href="#0" class="transition">Services</a></li>
@@ -186,16 +189,12 @@
       </div>
     </footer>
   </section>
-  <link rel="stylesheet" href="css/bootstrap.css"/>
-  <link rel="stylesheet" href="css/style.css"/>
+  <link rel="stylesheet" href="/css/bootstrap.css"/>
   {% block styles %}{% endblock %}
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
   {% block scripts %}{% endblock %}
   <script>
-    window.intercomSettings = {
-      app_id: "n4rj23sy"
-    };
     (function(){var w=window;var ic=w.Intercom;if(typeof ic==="function"){ic('reattach_activator');ic('update',intercomSettings);}else{var d=document;var i=function(){i.c(arguments)};i.q=[];i.c=function(args){i.q.push(args)};w.Intercom=i;function l(){var s=d.createElement('script');s.type='text/javascript';s.async=true;s.src='https://widget.intercom.io/widget/' + window.intercomSettings.app_id;var x=d.getElementsByTagName('script')[0];x.parentNode.insertBefore(s,x);}if(w.attachEvent){w.attachEvent('onload',l);}else{w.addEventListener('load',l,false);}}})()
   </script>
   {% block modal %}{% endblock %}

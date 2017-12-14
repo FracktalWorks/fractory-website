@@ -5,22 +5,22 @@
 {% endblock %}
 
 {% block content %}
-  <section class="block displayflex profilewrapper whitebg" style="max-width: 1360px">
+  <section id="main_content" class="block displayflex profilewrapper whitebg" style="max-width: 1360px">
     <div class="profilemenuwrapper block whitecolor text-center">
       <img src="media/avatar.png" class="img-responsive displayinline marginbottom40" alt="" />
       <h3>Hi <span>{{ user.fname }}</span></h3>
       <ul class="block sectionpadding50 text-left">
-        <li><a href="profile.html" class="active">Profile</a></li>
-        <li><a href="orders-listing.html">Orders</a></li>
-        <li><a href="#0">Cart</a></li>
-        <li><a href="address-book.html">Address Book</a></li>
+        <li><a href="#0" class="active">Profile</a></li>
+        <li><a href="orders">Orders</a></li>
+        <li><a href="upload">Upload</a></li>
+        <li><a href="address-book">Address Book</a></li>
       </ul>
       <button type="button" class="btn block themebg">Logout</button>
     </div>
     <div class="profilecontentswrapper block">
       <h3 class="marginbottom40 displayinlineblock">PROFILE</h3>
       <div class="row">
-        <div class="col-lg-7 col-md-8 col-sm-8 col-xs-12">
+        <form action="" method="post" enctype="multipart/form-data" class="col-lg-7 col-md-8 col-sm-8 col-xs-12">
           <div class="profiledetails block activeinputtype">
             <ul class="flex">
               <li class="flex1 blackcolor text-right boldfont">Details</li>
@@ -48,7 +48,12 @@
             </ul>
             <ul class="flex">
               <li class="flex1 text-right lightcolorfont">Email</li>
-              <li class="flex2"><input type="text" value="{{ user.email }}" name="email" class="custominputtype block" disabled="disabled"/></li>
+              <li class="flex2">
+                <input type="text" value="{{ user.email }}" name="email" class="custominputtype block" readonly="readonly"/>
+                {% if not user.verified %}
+                <a class="verifyemail_js editaddress cursorpointer" style="font-size: 0.7em; right: 1em;position: absolute;">Verify?</a>
+                {% endif %}
+            </li>
             </ul>
             <ul class="flex" style="padding-bottom: 5px;">
               <li class="flex1 text-right lightcolorfont"></li>
@@ -104,7 +109,7 @@
               <li class="flex2"><input id="re_new_passwd" type="text" value="" class="custominputtype block" disabled="disabled" style="font-size: 0.7em; color: red; visibility:hidden;"/></li>
             </ul>
           </div>
-        </div>
+        </form>
         <div class="col-lg-5 col-md-4 col-sm-4 col-xs-12">
           <div class="profiledetails block">
             {% if user.addresses[user.primary_address] %}
@@ -113,9 +118,11 @@
               <ul class="block">
                 <input type="text" value="{{ user.addresses[user.primary_address].full_name }}" class="custominputtype block"/>
               </ul>
+              {% if user.addresses[user.primary_address].organisation %}
               <ul class="block">
                 <input type="text" value="{{ user.addresses[user.primary_address].organisation }}" class="custominputtype block"/>
               </ul>
+              {% endif %}
               <ul class="block">
                 <input type="text" value="{{ user.addresses[user.primary_address].line_1 }}" class="custominputtype block"/>
               </ul>
@@ -126,7 +133,7 @@
                 <input type="text" value="{{ user.addresses[user.primary_address].city }} - {{ user.addresses[user.primary_address].area_code }}" class="custominputtype block"/>
               </ul>
               <ul class="block">
-                <input type="text" value="{{ user.addresses[user.primary_address].state }}" class="custominputtype block"/>
+                <input type="text" value="{{ user.addresses[user.primary_address].state }}, {{ user.addresses[user.primary_address].country }}" class="custominputtype block"/>
               </ul>
               <ul class="block">
                 <input type="text" value="{{ user.addresses[user.primary_address].phone }}" class="custominputtype block"/>
@@ -138,7 +145,7 @@
       </div>
       <div class="backandsavebuttons block transition">
         <button type="button" class="btn btnwidth btn-boxshadow transition themebg whitecolor block pull-right saveprofile_js">Save</button>
-        <button type="button" class="btn btnwidth btn-boxshadow transition block bluebtn whitecolor pull-right resetprofile_js">Back</button>
+        <button type="button" class="btn btnwidth btn-boxshadow transition block bluebtn whitecolor pull-right reset_js">Back</button>
       </div>
     </div>
   </section>
@@ -161,24 +168,53 @@
   <script src="libraries/scroll/js/jquery.mousewheel.js"></script>
   <script src="libraries/scroll/js/jquery.classyscroll.js"></script>
   <script src="libraries/intlTelInput/js/intlTelInput.min.js"></script>
-  <script src="js/profile.js"></script>
   <script>
-  $("[name=phone]").intlTelInput({
-    preferredCountries: ["in"],
-    initialCountry: "in",
-    utilsScript: "libraries/intlTelInput/js/utils.js"
-  });
+    window.user = {};
+    window.user.type             = "{{ user.type }}";
+    window.user.subscription     = "{{ user.subscription }}";
+    window.user.rating           = "{{ user.rating }}";
+    window.user.email            = "{{ user.email }}";
+    window.user.verified         = "{{ user.verified }}";
+    window.user.fname            = "{{ user.fname }}";
+    window.user.lname            = "{{ user.lname }}";
+    window.user.phone            = "{{ user.phone }}";
+    window.user.referral         = "{{ user.referral }}";
+    window.user.referred_by      = "{{ user.referred_by }}";
+    window.user.referred         = [];
+    {% for referred in user.referred %}
+      window.user.referred.push("{{ referred }}");
+    {% endfor %}
+    window.user.organisations    = [];
+    {% for organisation in user.organisations %}
+      window.user.organisations.push("{{ organisation }}");
+    {% endfor %}
+    window.user.surveys          = [];
+    {% for survey in user.surveys %}
+      window.user.surveys.push("{{ survey }}");
+    {% endfor %}
+    window.user.offers          = [];
+    {% for offer in user.offers %}
+      window.user.offers.push("{{ offer }}");
+    {% endfor %}
+    window.user.primary_address  = "{{ user.primary_address }}";
+    window.user.addresses        = [];
+    var address                  = {};
+    {% for address in user.addresses %}
+      address                    = {};
+      address.identifier         = "{{ address.identifier }}";
+      address.full_name          = "{{ address.full_name }}";
+      address.organisation       = "{{ address.organisation }}";
+      address.line_1             = "{{ address.line_1 }}";
+      address.line_2             = "{{ address.line_2 }}";
+      address.city               = "{{ address.city }}";
+      address.state              = "{{ address.state }}";
+      address.area_code          = "{{ address.area_code }}";
+      address.phone              = "{{ address.phone }}";
+      address.country            = "{{ address.country }}";
+      window.user.addresses.push(address);
+    {% endfor %}
 
-  function validate_phone() {
-    if ( $("[name=phone]").val() == "" || $("[name=phone]").intlTelInput("isValidNumber") ) {
-      $("#phone").removeClass("error")
-      $("#phone").val("")
-      $("[name=phone]").val($("[name=phone]").intlTelInput("getNumber", 1))
-      return true
-    }
-    $("#phone").addClass("error")
-    $("#phone").val("Please enter a valid number!")
-    return false
-  }
+    window.intercomSettings.email = "{{ user.email }}";
   </script>
+  <script src="js/profile.js"></script>
 {% endblock %}

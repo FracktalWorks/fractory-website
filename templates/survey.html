@@ -1,0 +1,549 @@
+<html>
+<head>
+  <title>Fractory :: Pre-Launch Survey!</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Google Tag Manager -->
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-PMQTDZN');</script>
+  <!-- End Google Tag Manager -->
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-108721934-2"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'UA-108721934-2');
+  </script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <link href="https://fonts.googleapis.com/css?family=Montserrat:300,500" rel="stylesheet">
+  <style type = "text/css">
+    body {
+      font-family: "Montserrat";
+      font-size: 16px;
+      font-weight: 300;
+    }
+    form {
+      visibility: hidden;
+      position: relative;
+      width: 100%;
+      max-width: 640px;
+      min-width: 270px;
+      margin: 0 auto;
+    }
+    label {
+      font-weight: 300;
+    }
+    .radio {
+      margin-left: 1.5em;
+      text-align: left;
+    }
+    .flush-left {
+      margin-left: 0;
+    }
+    .radio label {
+      font-weight: 300;
+      margin-bottom: 0.5em;
+    }
+    .btn {
+      font-size: 1.1em;
+      font-weight: 300;
+      position: absolute;
+      bottom: 2em;
+      margin: 2em auto 0em auto;
+      color: #ffffff;
+      background-color: #63a52e;
+      border-radius: 0;
+      -moz-box-shadow: 2px 3px 5px rgba(0, 0, 0, 0.2);
+      -webkit-box-shadow: 2px 3px 5px rgba(0, 0, 0, 0.2);   
+      box-shadow: 2px 3px 5px rgba(0, 0, 0, 0.2);
+      padding: 0.4em 2em;
+      -o-transition: all 0.25s cubic-bezier(0.85, -0.03, 0.16, 0.99);
+      -ms-transition: all 0.25s cubic-bezier(0.85, -0.03, 0.16, 0.99);
+      -moz-transition: all 0.25s cubic-bezier(0.85, -0.03, 0.16, 0.99);
+      -webkit-transition: all 0.25s cubic-bezier(0.85, -0.03, 0.16, 0.99);
+      transition: all 0.25s cubic-bezier(0.85, -0.03, 0.16, 0.99);
+    }
+    .shadow {
+    }
+    .shadow:hover {
+      border-radius: 0;
+      -moz-box-shadow: 4px 5px 7px rgba(243, 74, 56, 0.5);
+      -webkit-box-shadow: 4px 5px 7px rgba(243, 74, 56, 0.5);   
+      box-shadow: 4px 5px 7px rgba(243, 74, 56, 0.5);
+    }
+    .shadow:checked {
+    }
+    .btn:hover {
+      opacity: 0.8;
+      color: #fff;
+      transform: translateY(-2px);
+      -moz-box-shadow: 4px 5px 7px rgba(0, 0, 0, 0.2);
+      -webkit-box-shadow: 4px 5px 7px rgba(0, 0, 0, 0.2);
+      box-shadow: 4px 5px 7px rgba(0, 0, 0, 0.2);
+    }
+    .btn:focus {
+      color: #fff;
+    }
+    .red {
+      background-color: #f34a38;
+    }
+    .blue {
+      background-color: #2962ff;
+    }
+    .btn-right {
+      right: 1em;
+      padding-right: 0.8em;
+    }
+    .btn-center {
+      padding: 0.4em 1.4em;
+      right: 50%;
+      transform: translateX(50%);
+    }
+    .btn-center:hover {
+      transform:translate(50%,-2px);
+    }
+    .btn-left {
+      left: 1em;
+      padding-left: 0.8em;
+    }
+    .intro {
+      font-size: 1em;
+      position: relative;
+      width: 100%;
+      max-width: 640px;
+      min-width: 270px;
+      margin: 2em auto;
+      text-align: center;
+    }
+    .question {
+      font-size: 1.6em;
+      margin: 1.0em 0.0em 0.0em 0.0em;
+    }
+    .help-block {
+      font-size: 0.75em;
+      margin: 0.0em 0.0em 1.0em 0.0em;
+      visibility: hidden;
+    }
+    .form-group {
+      position: absolute;
+      width: 100%;
+    }
+    .img-label {
+      padding: 0 !important;
+      margin: 10px !important;
+    }
+    .img-label > input{
+      visibility: hidden;
+      position: absolute;
+    }
+    .img-label > input + img{
+      cursor:pointer;
+      border-radius: 0;
+      -moz-box-shadow: 2px 3px 5px rgba(0, 0, 0, 0.2);
+      -webkit-box-shadow: 2px 3px 5px rgba(0, 0, 0, 0.2);   
+      box-shadow: 2px 3px 5px rgba(0, 0, 0, 0.2);
+      border: 1px solid rgba(0,0,0,0.2);
+    }
+    .img-label > input:checked + img{
+      -moz-box-shadow: 4px 5px 7px rgba(243, 74, 56, 0.2);
+      -webkit-box-shadow: 4px 5px 7px rgba(243, 74, 56, 0.2);   
+      box-shadow: 4px 5px 7px rgba(243, 74, 56, 0.2);
+      border: 1px solid rgba(243,74,56,0.2);
+    }
+    .img-label > input + img:hover{
+      cursor:pointer;
+      -moz-box-shadow: 4px 5px 7px rgba(243, 74, 56, 0.4);
+      -webkit-box-shadow: 4px 5px 7px rgba(243, 74, 56, 0.4);   
+      box-shadow: 4px 5px 7px rgba(243, 74, 56, 0.4);
+      border: 1px solid rgba(243,74,56,0.4);
+    }
+    .other {
+      width: 100%;
+      border: 0; 
+      outline: 0;
+      background: transparent;
+      border-bottom: 1px solid black;
+      border-radius: 0;
+    }
+    .active {
+      visibility: visible !important;
+    }
+  </style>
+  <style>
+    @media (max-width: 480px){
+      body {
+        font-size: 14px;
+      }
+    }
+  </style>
+  <script>
+    window.questions = [{},
+      {'other':{'min':1,'max':24}, 'required':true, 'type': "radio"},
+      {'other':{'min':1,'max':24}, 'required':true, 'type': "radio"},
+      {'other':{'min':1,'max':24}, 'required':true, 'type': "radio", 'if':{2:['Manufacturing','Automotive Parts']}},
+      {'other':{'min':1,'max':24}, 'required':true, 'type': "radio"},
+      {'required':true, 'type': "radio"},
+      {'required':true, 'type': "radio"},
+      {'min':0,'max':511, 'required':false, 'type': "textarea"}
+    ];
+  </script>
+  <script>
+    toggle_other = function(i, other) {
+      if ( other ) {
+        $("#a" + i + "_other").fadeOut(100);
+        setTimeout(function() { $("[name=a" + i + "_other]").fadeIn(100); }, 90);
+      } else {
+        $("[name=a" + i + "_other]").fadeOut(100);
+        setTimeout(function() { $("#a" + i + "_other").fadeIn(100); }, 90);
+      }
+      on_click(i);
+    };
+    on_click = function(i) {
+      reset_error(i);
+    };
+    reset_error = function(i) {
+      $("#a" + i + "_error").removeClass("active");
+      $("#q" + i + "_group").removeClass("has-error");
+      $("#a" + i + "_error").html("You shouldn't see this!");
+    }
+    validate = function(i) {
+      if ( i == 0 || i == window.n + 1 ) {
+        return true;
+      }
+      reset_error(i);
+      try {
+        var constraints = window.questions[i];
+        if ( constraints['type'] == "radio" ) {
+          var checked = $("[name=a" + i + "]:checked").length;
+          if ( checked == 0 && constraints['required'] ) {
+            $("#a" + i + "_error").html("Please select a value!");
+            $("#a" + i + "_error").addClass("active");
+            $("#q" + i + "_group").addClass("has-error");
+            return false;
+          }
+          if ( $("[name=a" + i + "]:checked").val() == "" ) {
+            var len = $("[name=a" + i + "_other]").val().length;
+            if ( len < constraints['other']['min'] ) {
+              $("#a" + i + "_error").html("Text input too short!");
+              $("#a" + i + "_error").addClass("active");
+              $("#q" + i + "_group").addClass("has-error");
+              return false;
+            }
+            if ( len > constraints['other']['max'] ) {
+              $("#a" + i + "_error").html("Text input too long!");
+              $("#a" + i + "_error").addClass("active");
+              $("#q" + i + "_group").addClass("has-error");
+              return false;
+            }
+          }
+        }
+      } catch(err) {
+        $("#a" + i + "_error").val("Some error occured! Please try again later...");
+        $("#a" + i + "_error").addClass("active");
+        $("#q" + i + "_group").addClass("has-error");
+        return false;
+      }
+      return true;
+    }
+    submit_survey = function() {
+      gtag('send', 'pageview', '/survey/end/1508943509_pre_launch_survey');
+      if ( $("[name=email]").val() == "" ) {
+                $("#a" + window.i + "_error").val("Some error occured! Please try again later...");
+                $("#a" + window.i + "_error").addClass("active");
+                $("#q" + window.i + "_group").addClass("has-error");
+                return false
+      }
+      if ( validate(window.i) ) {
+        $("#submit_button").prop("disabled", true)
+        $.post({
+            url: "{{ url_for('signup.survey_route') }}",
+            data: $("form").serialize(),
+            success: function (data) {
+                next();
+            },
+            error: function(e) {
+                $("#a" + window.i + "_error").val("Some error occured! Please try again later...");
+                $("#a" + window.i + "_error").addClass("active");
+                $("#q" + window.i + "_group").addClass("has-error");
+            },
+            complete: function(e) {
+                $("#submit_button").prop("disabled", false)
+            }
+         });
+      }
+      return false;
+    }
+    condition_fail = function(i) {
+      if ( i != 3 ) { return false; }
+      try {
+        var constraints = window.questions[i];
+        //hardcoding for now
+        if ( $("[name=a2]:checked").val() == "Manufacturing" || $("[name=a2]:checked").val() == "Automative Parts" ) {
+          return false;
+        } else {
+          return true;
+        }
+      } catch(err) {
+        return false;
+      }
+      return false;
+    }
+    next = function() {
+      if ( validate(window.i) ) {
+        var oi = window.i;
+        window.i++;
+        while ( condition_fail(window.i) && window.i < window.n ) {
+          window.i++;
+        }
+        $("#q" + oi + "_group").fadeOut(200);
+        setTimeout(function() { $("#q" + window.i + "_group").fadeIn(200); }, 180);
+        if ( window.i == window.n ) {
+          $("#next_btn").fadeOut(200);
+          setTimeout(function() { $("#submit_btn").fadeIn(200); }, 180);
+        }
+        if ( window.i == window.n + 1 ) {
+          $("#submit_btn").fadeOut(200);
+          $("#back_btn").fadeOut(200);
+          setTimeout(function() { $("#close_btn").fadeIn(200); }, 180);
+        }
+        if ( window.i >= 2 && window.i <= window.n ) {
+          $("#back_btn").fadeIn(200);
+        }
+        if ( window.i == 1 ) {
+          $("#take_btn").fadeOut(200);        
+          setTimeout(function() { $("#next_btn").fadeIn(200); }, 180);
+          gtag('send', 'pageview', '/survey/begin/1508943509_pre_launch_survey');
+        }
+      }
+      return false;
+    }
+    back = function() {
+      if ( window.i == 2 ) {
+        $("#back_btn").fadeOut(200);
+      }
+      if ( window.i == window.n ) {
+        $("#submit_btn").fadeOut(200);
+        setTimeout(function() { $("#next_btn").fadeIn(200); }, 180);
+      }
+      oi = window.i;
+      window.i--;
+      while ( condition_fail(window.i) && window.i > 1 ) {
+        window.i--;
+      }
+      $("#q" + oi + "_group").fadeOut(200);
+      setTimeout(function() { $("#q" + window.i + "_group").fadeIn(200); }, 180);
+    }
+    window.onresize = function() {
+      var h = 0;
+      for (var i = 0; i <= window.n + 1; i++) { 
+        h = Math.max($("#q" + i + "_group").height(), h);
+      }
+      $("form").height(h+100);
+      for (var i = 0; i <= window.n + 1; i++) {
+        $("#q" + i + "_group").css('margin-top',(h - $("#q" + i + "_group").height() ) / 2);
+      }
+//      $("#q1_group").css('margin-left',($("form").width() - $("#q1_group").find("label.question").width()) / 2);
+      try {
+        window.parent.onresize();
+      }
+      catch(err) {}
+    }
+    $(document).ready(function (){
+      window.n = parseInt($("[name='n']").val());
+      window.i = 0;
+      $("#submit_btn").fadeOut(0);
+      $("#back_btn").fadeOut(0);
+      $("#next_btn").fadeOut(0);
+      $("#close_btn").fadeOut(0);
+      window.onresize();
+      for (var i = 0; i <= window.n + 1; i++) { 
+        $("#q" + i + "_group").fadeOut(0);
+        $("[name=a" + i + "_other]").fadeOut(0);
+      }
+      $("form").css("visibility", "visible");
+      $("#q0_group").fadeIn();
+    });
+    set_email = function(email) {
+      $("[name=email]").val(email);
+    }
+  </script>
+</head>
+<div class="container-fluid">
+  <form action="/survey" method="post" onsubmit="return false">
+    <input type="hidden" name="sid" value="1508943509_pre_launch_survey">
+    <input type="hidden" name="n" value="7">
+    <input type="hidden" name="email" value="">
+    <div id="q0_group" class="form-group">
+      <div class="intro" style="font-size: 1.5em">Thank you for subscribing!</div>
+      <div class="intro" style="margin-top: 4em; font-size: 1.2em">We're working on new ways to improve how individuals and businesses use Fracktory.</div>
+      <div class="intro" style="font-size: 1.2em">Take this quick survey which will take less than a minute and get upto 20% off on your first order!</div>
+    </div>
+    <div id="q1_group" class="form-group">
+      <input type="hidden" name="q1" value="Hey! What can we call you?">
+      <label class="question" for="a1">Hey! What can we call you?</label>
+      <span id="a1_error" class="help-block">You shouldn't see this!</span>
+      <div class="radio">
+        <label><input type="radio" name="a1" value="Designer" onclick="toggle_other(1, false)">Designer</label>
+      </div>
+      <div class="radio">
+        <label><input type="radio" name="a1" value="Student" onclick="toggle_other(1, false)">Student</label>
+      </div>
+      <div class="radio">
+        <label><input type="radio" name="a1" value="Educator" onclick="toggle_other(1, false)">Educator</label>
+      </div>
+      <div class="radio">
+        <label><input type="radio" name="a1" value="" onclick="toggle_other(1, true)"><span id="a1_other">Other</span><input class="other" type="text" name="a1_other" placeholder="Other" onclick="toggle_other(1, true)"></label>
+      </div>
+    </div>
+    <div id="q2_group" class="form-group">
+      <input type="hidden" name="q2" value="What do you make?">
+      <label class="question" for="a2">What do you make?</label>
+      <span id="a2_error" class="help-block">You shouldn't see this!</span>
+      <div class="container-fluid" style="padding: 0">
+        <div class="col-xs-6">
+          <div class="radio flush-left">
+            <label><input type="radio" name="a2" value="Consumer Electronics" onclick="toggle_other(2,false)">Consumer Electronics</label>
+          </div>
+          <div class="radio flush-left">
+            <label><input type="radio" name="a2" value="FMCG" onclick="toggle_other(2,false)">FMCG</label>
+          </div>
+          <div class="radio flush-left">
+            <label><input type="radio" name="a2" value="Design Services" onclick="toggle_other(2,false)">Design Services</label>
+          </div>
+          <div class="radio flush-left">
+            <label><input type="radio" name="a2" value="Manufacturing" onclick="toggle_other(2,false)">Manufacturing</label>
+          </div>
+        </div>
+        <div class="col-xs-6">
+          <div class="radio flush-left">
+            <label><input type="radio" name="a2" value="Medical Equipments" onclick="toggle_other(2,false)">Medical Equipments</label>
+          </div>
+          <div class="radio flush-left">
+            <label><input type="radio" name="a2" value="Lighting" onclick="toggle_other(2,false)">Lighting</label>
+          </div>
+          <div class="radio flush-left">
+            <label><input type="radio" name="a2" value="Automotive Parts" onclick="toggle_other(2,false)">Automotive Parts</label>
+          </div>
+          <div class="radio flush-left">
+            <label><input type="radio" name="a2" value="" onclick="toggle_other(2,true)"><span id="a2_other">Other</span><input class="other" type="text" name="a2_other" placeholder="Other" onclick="toggle_other(2,true)"></label>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="q3_group" class="form-group">
+      <input type="hidden" name="q3" value="What do you make?">
+      <label class="question" for="a3">What is the application?</label>
+      <span id="a3_error" class="help-block">You shouldn't see this!</span>
+      <div class="container-fluid" style="padding: 0">
+        <div class="col-xs-6">
+          <div class="radio flush-left">
+            <label><input type="radio" name="a3" value="Investment Casting" onclick="toggle_other(3,false)">Investment Casting</label>
+          </div>
+          <div class="radio flush-left">
+            <label><input type="radio" name="a3" value="Glass/Carbon Fiber Layup" onclick="toggle_other(3,false)">Glass/Carbon Fiber Layup</label>
+          </div>
+          <div class="radio flush-left">
+            <label><input type="radio" name="a3" value="Casting Patterns" onclick="toggle_other(3,false)">Casting Patterns</label>
+          </div>
+          <div class="radio flush-left">
+            <label><input type="radio" name="a3" value="Prototyping" onclick="toggle_other(3,false)">Prototyping</label>
+          </div>
+        </div>
+        <div class="col-xs-6">
+          <div class="radio flush-left">
+            <label><input type="radio" name="a3" value="Jigs &amp; Fixtures" onclick="toggle_other(3,false)">Jigs &amp; Fixtures</label>
+          </div>
+          <div class="radio flush-left">
+            <label><input type="radio" name="a3" value="Metal Forming" onclick="toggle_other(3,false)">Metal Forming</label>
+          </div>
+          <div class="radio flush-left">
+            <label><input type="radio" name="a3" value="Functional or End Use parts" onclick="toggle_other(3,false)">Functional parts</label>
+          </div>
+          <div class="radio flush-left">
+            <label><input type="radio" name="a3" value="" onclick="toggle_other(3,true)"><span id="a3_other">Other</span><input class="other" type="text" name="a3_other" placeholder="Other" onclick="toggle_other(3,true)"></label>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="q4_group" class="form-group">
+      <input type="hidden" name="q4" value="Which Materials do you work with?">
+      <label class="question" for="a4">Which Materials do you work with?</label>
+      <span id="a4_error" class="help-block">You shouldn't see this!</span>
+      <div class="radio">
+        <label><input type="radio" name="a4" value="Plastics" onclick="toggle_other(4,false)">Plastics</label>
+      </div>
+      <div class="radio">
+        <label><input type="radio" name="a4" value="Metal" onclick="toggle_other(4,false)">Metal</label>
+      </div>
+      <div class="radio">
+        <label><input type="radio" name="a4" value="Composites" onclick="toggle_other(4,false)">Composites</label>
+      </div>
+      <div class="radio">
+        <label><input type="radio" name="a4" value="" onclick="toggle_other(4,true)"><span id="a4_other">Other</span><input class="other" type="text" name="a4_other" placeholder="Other" onclick="toggle_other(4,true)"></label>
+      </div>
+    </div>
+    <div id="q5_group" class="form-group">
+      <input type="hidden" name="q5" value="How many prototypes did you make last year?">
+      <label class="question" for="a5">How many prototypes did you make last year?</label>
+      <span id="a5_error" class="help-block">You shouldn't see this!</span>
+      <div class="radio">
+        <label><input type="radio" name="a5" value="1-5" onclick="on_click(5)">1-5</label>
+      </div>
+      <div class="radio">
+        <label><input type="radio" name="a5" value="6-10" onclick="on_click(5)">6-10</label>
+      </div>
+      <div class="radio">
+        <label><input type="radio" name="a5" value="11-20" onclick="on_click(5)">11-20</label>
+      </div>
+      <div class="radio">
+        <label><input type="radio" name="a5" value="More than 20" onclick="on_click(5)">More than 20</label>
+      </div>
+    </div>
+    <div id="q6_group" class="form-group">
+      <input type="hidden" name="q6" value="Pick the closest size to your prototypes">
+      <label class="question" for="a6">Pick the closest size to your prototypes</label>
+      <span id="a6_error" class="help-block">You shouldn't see this!</span>
+      <div class="container-fluid">
+        <div class="col-xs-6">
+          <div class="radio flush-left">
+            <label class="img-label"><input type="radio" name="a6" value="bulb" onclick="on_click(6)"><img src="media/bulb.jpg" alt="bulb" height="auto" width="100%"></label>
+          </div>
+          <div class="radio flush-left">
+            <label class="img-label"><input type="radio" name="a6" value="telephone" onclick="on_click(6)"><img src="media/telephone.jpg" alt="telephone" height="auto" width="100%"></label>
+          </div>
+        </div>
+        <div class="col-xs-6">
+          <div class="radio flush-left">
+            <label class="img-label"><input type="radio" name="a6" value="helmet" onclick="on_click(6)"><img src="media/helmet.jpg" alt="helmet" height="auto" width="100%"></label>
+          </div>
+          <div class="radio flush-left">
+            <label class="img-label"><input type="radio" name="a6" value="chair" onclick="on_click(6)"><img src="media/chair.jpg" alt="chair" height="auto" width="100%"></label>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="q7_group" class="form-group">
+      <input type="hidden" name="q7" value="What is the most frustrating thing about prototyping?">
+      <label class="question" for="a7">What is the most frustrating thing about prototyping? <span style="font-size: 0.5em;">(Optional)</span></label>
+      <span id="a7_error" class="help-block">You shouldn't see this!</span>
+      <textarea class="form-control" rows="8" name="a7" style="width: 90%;" onclick="on_click(7)"></textarea>
+    </div>
+    <div id="q8_group" class="form-group">
+      <div class="intro" style="font-size: 1.5em">Thank you for taking the survey!</div>
+      <div class="intro" style="margin-top: 4em; font-size: 1.2em">To avail the offer, sign up with the same email address.</div>
+    </div>
+    <button id="submit_btn" type="button" class="btn btn-right" onclick="submit_survey()" style="padding: 0.4em 1.4em;">Submit</button>
+    <button id="next_btn" type="button" class="btn btn-right" onclick="next()">Next&nbsp;&nbsp;&nbsp;<span style="font-weight: 500;">></span></button>
+    <button id="take_btn" type="button" class="btn btn-center" onclick="next()">Take Survey&nbsp;&nbsp;&nbsp;<span style="font-weight: 500;">></span></button>
+<!--
+    <button id="close_btn" type="button" class="btn btn-center" onclick="close()">Close</span></button>
+-->
+    <button id="back_btn" type="button" class="btn btn-left" onclick="back()"><span style="font-weight: 500;"><</span>&nbsp;&nbsp;&nbsp;Back</button>
+  </form>
+</div>

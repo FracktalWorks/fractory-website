@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block head %}
+  <title>Fractory</title>
+  <meta name="google-signin-scope" content="profile email">
+  <meta name="google-signin-client_id" content="317797157742-6gqrvar819paknl4msbo6kpm443vn5kl.apps.googleusercontent.com">
+  <script>
+    window.fbAsyncInit = function() {
+      FB.init({
+        appId      : '1480757708657474',
+        cookie     : true,
+        xfbml      : true,
+        version    : 'v2.11'
+      });
+      FB.AppEvents.logPageView();
+    };
+    (function(d, s, id){
+       var js, fjs = d.getElementsByTagName(s)[0];
+       if (d.getElementById(id)) {return;}
+       js = d.createElement(s); js.id = id;
+       js.src = "https://connect.facebook.net/en_US/sdk.js";
+       fjs.parentNode.insertBefore(js, fjs);
+     }(document, 'script', 'facebook-jssdk'));
+  </script>
+  <script src="https://apis.google.com/js/platform.js" async defer></script>
+{% endblock %}
+
+{% block content %}
+<section id="main_content" class="banner-container block lightgraybg">
+</section>
+{% endblock %}
+
+{% block styles %}
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+  <link rel="stylesheet" href="/css/style.css">
+{% endblock %}
+
+{% block scripts %}
+  <script src="/js/recovery.js"></script>
+{% endblock %}

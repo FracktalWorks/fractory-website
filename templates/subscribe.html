@@ -1,0 +1,290 @@
+<html>
+<head>
+  <title>Fractory :: Subscribe for updates!</title>
+  <meta charset="utf-8"> 
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Google Tag Manager -->
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-PMQTDZN');</script>
+  <!-- End Google Tag Manager -->
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-108721934-2"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'UA-108721934-2');
+  </script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <link href="https://fonts.googleapis.com/css?family=Montserrat:300,500" rel="stylesheet">
+  <!--[if lt IE 9]>
+    <script type="text/javascript">
+      window.location = "{{ url_for('misc.upgrade_route') }}";
+    </script>
+  <![endif]-->
+<style>
+  body {
+    font-family: "Montserrat";
+    font-size: 20px;
+    font-weight: 300;
+    background-color: #f6f6f6;
+  }
+  input[type="button"][disabled] {
+    opacity: 0.5;
+  }
+  input[type="button"][disabled]:hover {
+    -moz-box-shadow: none;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    opacity: 0.5;
+    transform: none;
+  }
+  .has-error .form-control {
+    border-color: rgba(169,68,66,0.3) !important;
+    -webkit-box-shadow: 0 1px 1px rgba(169,68,66,0.3) !important;
+    box-shadow: 0 1px 1px rgba(169,68,66,0.3) !important;
+  }
+  .has-error .checkbox, .has-error .checkbox-inline, .has-error .control-label, .has-error .help-block, .has-error .radio, .has-error .radio-inline, .has-error.checkbox label, .has-error.checkbox-inline label, .has-error.radio label, .has-error.radio-inline label {
+    color: #a94442;
+    visibility: visible !important;
+  }
+  .modal-content {
+    padding: 1em;
+  }
+  .btn {
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    color: #ffffff;
+    background-color: #63a52e;
+    border-radius: 0;
+    width: 100%;
+    font-size: 1em;
+    font-family: Montserrat;
+    font-weight: 300;
+    -moz-box-shadow: 2px 3px 5px rgba(0, 0, 0, 0.2);
+    -webkit-box-shadow: 2px 3px 5px rgba(0, 0, 0, 0.2);
+    box-shadow: 2px 3px 5px rgba(0, 0, 0, 0.2);
+    -o-transition: all 0.25s cubic-bezier(0.85, -0.03, 0.16, 0.99);
+    -ms-transition: all 0.25s cubic-bezier(0.85, -0.03, 0.16, 0.99);
+    -moz-transition: all 0.25s cubic-bezier(0.85, -0.03, 0.16, 0.99);
+    -webkit-transition: all 0.25s cubic-bezier(0.85, -0.03, 0.16, 0.99);
+    transition: all 0.25s cubic-bezier(0.85, -0.03, 0.16, 0.99);
+  }
+  .btn:hover {
+    opacity: 0.8;
+    color: #fff;
+    transform: translateY(-2px);
+    -moz-box-shadow: 4px 5px 8px rgba(0, 0, 0, 0.2);
+    -webkit-box-shadow: 4px 5px 7px rgba(0, 0, 0, 0.2);
+    box-shadow: 4px 5px 7px rgba(0, 0, 0, 0.2);
+  }
+  .btn:focus {
+    color: #fff;
+  }
+</style>
+<style>
+  @media (max-width: 480px){
+    body {
+      font-size: 16px;
+    }
+  }
+  @media (max-width: 360px){
+    .modal-content {
+      padding: 0;
+    }
+  }
+  @media (min-width: 768px) {
+    .col-sm-3 {
+      min-width: 360px;
+    }
+  }
+  @media (max-width: 768px) {
+    .col-sm-3 {
+      max-width: 480px;
+    }
+  }
+</style>
+<script>
+  function validate_length(label, form, field, min, max, required) {
+    $("#" + form + "_" + field + "_group").removeClass("has-error")
+    $("#" + form + "_error_" + field).html("You shouldn't see this!")
+    if ( $("#" + form + "_" + field).val().length == 0 && required) {
+      $("#" + form + "_" + field + "_group").addClass("has-error")
+      $("#" + form + "_error_" + field).html(label + " is required!")
+      return false
+    }
+    if ( $("#" + form + "_" + field).val().length < min ) {
+      $("#" + form + "_" + field + "_group").addClass("has-error")
+      $("#" + form + "_error_" + field).html(label + " too short!")
+      return false
+    }
+    if ( $("#" + form + "_" + field).val().length > max ) {
+      $("#" + form + "_" + field + "_group").addClass("has-error")
+      $("#" + form + "_error_" + field).html(label + " too long!")
+      return false
+    }
+    return true
+  }
+
+  function validate_email(form) {
+    if ( ! validate_length("Email", form, "email", 5, 255, true) ) { return false }
+    var email = $("#" + form + "_email").val()
+    var index_of_at = email.indexOf("@");
+    var index_of_dot = email.lastIndexOf(".");
+    if ( index_of_at < 1 || index_of_dot < index_of_at + 2 || index_of_dot + 3 > email.length ) {
+      $("#" + form + "_email_group").addClass("has-error")
+      $("#" + form + "_error_email").html("Please enter a valid email!")
+      return false;
+    }
+    return true
+  }
+
+  function subscribe() {
+        if (validate_email("subscribe")) {
+            $("#subscribe_button").prop("disabled", true);
+            $.post({
+                    url: "{{ url_for('signup.subscribe_route') }}",
+                    data: $("#subscribe_form").serialize(),
+                    success: function (data) {
+                        if ( data ) {
+                          document.getElementById("iframe").contentWindow.set_email($('#subscribe_email').val());
+                          $('#survey').modal({backdrop: 'static', keyboard: true,  show: true});
+                          gtag('send', 'pageview', '/survey/pending/1508943509_pre_launch_survey');
+                        }
+                        $("#subscribe_div").html("<p style='display: block; margin: auto; text-align: center; margin-top: 1em; font-family: Montserrat;font-size: 1.5em;font-weight: 300;'>We will keep you updated on " + $('#subscribe_email').val() + "!</p>");
+                    },
+                    error: function(e) {
+                        $("#subscribe_email_group").addClass("has-error")
+                        $("#subscribe_error_email").html("Some error occured! Please try again later...")
+                    },
+                    complete: function(e) {
+                        $("#subscribe_button").prop("disabled", false)
+                    }
+                 });
+            
+        }
+        return false
+  }
+  function video_on_load() {
+    var canvas = document.createElement("canvas");
+    canvas.width = 1;
+    canvas.height = 1;
+    var ctx = canvas.getContext("2d");
+    ctx.drawImage(document.getElementById("video"), 0, 0, 1, 1);
+    var p = ctx.getImageData(0, 0, 1, 1).data;
+    if ( p[0] < 250 && p[0] > 200 && p[1] < 250 && p[1] > 200 && p[2] < 250 && p[2] > 200 ) {
+      document.body.style.backgroundColor = "rgb(" + p[0] + "," + p[1] + "," + p[2] + ")";
+    }
+  }
+  image_on_load = function() {
+    var canvas = document.createElement("canvas");
+    canvas.width = 1;
+    canvas.height = 1;
+    var ctx = canvas.getContext("2d");
+    var img = new Image;
+    img.onload = function(){
+      ctx.drawImage(img, 0, 0, 1, 1, 0, 0, 1, 1);
+      var p = ctx.getImageData(0, 0, 1, 1).data;
+      p_avg = ( p[0] + p[1] + p[2] ) / 3;
+      if ( p[0] < (p_avg * 1.1) && p[0] > (p_avg * 0.9) && p[1] < (p_avg * 1.1) && p[1] > (p_avg * 0.9) && p[2] < (p_avg * 1.1) && p[2] > (p_avg * 0.9) &&
+           p[0] < 250 && p[0] > 150 && p[1] < 250 && p[1] > 150 && p[2] < 250 && p[2] > 150 ) {
+        document.body.style.backgroundColor = "rgb(" + p[0] + "," + p[1] + "," + p[2] + ")";
+      }
+    };
+    img.src = document.getElementById("video").poster;
+  }
+
+  $(document).ready(function(){
+    $("#subscribe_email").on("change", function() { validate_email("subscribe") })
+    $("#subscribe_email").on("keyup", function() { validate_email("subscribe") })
+    image_on_load();
+    document.getElementById("video").play()
+    window.onresize();
+  });
+  window.onresize = function () {
+    var logo_text_bbox = document.getElementById("logo_text").getBBox();
+    document.getElementById("logo_p1").setAttribute("transform","scale(" + logo_text_bbox.height / 61 + ")");
+    document.getElementById("logo_p2").setAttribute("transform","scale(" + logo_text_bbox.height / 61 + ")");
+    document.getElementById("logo_p3").setAttribute("transform","scale(" + logo_text_bbox.height / 61 + ")");
+
+    var logo = document.getElementById("logo")
+    var logo_bbox = logo.getBBox();
+    logo.setAttribute("viewBox", (logo_bbox.x-10)+" "+(logo_bbox.y-10)+" "+(logo_bbox.width+20)+" "+(logo_bbox.height+20));
+    logo.setAttribute("width", (logo_bbox.width+20)  + "px");
+    logo.setAttribute("height",(logo_bbox.height+20) + "px");
+
+    try {
+    var iframe = document.getElementById("iframe");
+    iframe.style.height = iframe.contentWindow.document.body.scrollHeight + 'px';
+    iframe.style.minWidth = iframe.contentWindow.document.getElementsByTagName("form")[0].offsetWidth + 'px';
+    var content = document.getElementById("survey-content");
+    var w = $("body").width();
+    if ( w > 480 ) {
+      content.style.minWidth = ( parseInt(iframe.offsetWidth) + 40 ) + 'px';
+    } else if ( w > 360 ) {
+      content.style.minWidth = ( parseInt(iframe.offsetWidth) + 32 ) + 'px';
+    } else {
+      content.style.minWidth = ( parseInt(iframe.offsetWidth) + 00 ) + 'px';
+    }
+    } catch(err) {}
+  }
+</script>
+</head>
+<body>
+<div class="container" style="display: block; height: 100%;">
+    <svg version="1.1" id="logo" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"  style="display: block; margin-left: auto; margin-right: auto; margin-top: 1em">
+      <path id="logo_p1" d="M83.895,24.778c-0.479-0.301-1.078-0.323-1.583-0.071l-17.171,8.585v-7.13c0-0.564-0.293-1.087-0.772-1.384
+                            c-0.48-0.301-1.081-0.323-1.583-0.072l-17.171,8.586v-7.13c0-0.564-0.292-1.087-0.772-1.384c-0.48-0.301-1.081-0.323-1.583-0.072
+                            l-13.825,6.913l-3.36-25.198c-0.108-0.809-0.797-1.413-1.613-1.413h-9.763c-0.815,0-1.504,0.604-1.612,1.413L7.436,48.786
+                            c-0.581,4.355-0.874,8.787-0.874,13.175c0,0.899,0.728,1.627,1.627,1.627h22.781h52.07c0.9,0,1.628-0.728,1.628-1.627V26.163
+                            C84.667,25.598,84.374,25.075,83.895,24.778z M9.831,60.333c0.063-3.711,0.341-7.443,0.831-11.119l5.461-40.951h6.913
+                            l5.462,40.951c0.489,3.676,0.767,7.408,0.831,11.119H9.831L9.831,60.333z M31.093,44.061h4.757v3.255h-4.324L31.093,44.061z
+                            M81.412,60.333h-48.87c-0.053-3.258-0.27-6.522-0.642-9.764h5.578c0.899,0,1.627-0.728,1.627-1.627v-6.509
+                            c0-0.899-0.728-1.627-1.627-1.627h-6.819l-0.77-5.776l12.471-6.235v7.13c0,0.564,0.292,1.087,0.772,1.384
+                            c0.478,0.297,1.075,0.321,1.583,0.071l17.171-8.585v7.13c0,0.564,0.292,1.087,0.772,1.384c0.477,0.297,1.074,0.321,1.583,0.072
+                            l17.171-8.586L81.412,60.333L81.412,60.333z"/>
+      <path id="logo_p2" d="M57.004,40.807h-9.763c-0.9,0-1.628,0.728-1.628,1.627v6.508c0,0.899,0.728,1.627,1.628,1.627h9.763
+                            c0.899,0,1.627-0.728,1.627-1.627v-6.509C58.631,41.535,57.904,40.807,57.004,40.807z M55.377,47.316h-6.508v-3.255h6.508V47.316z"/>
+      <path id="logo_p3" d="M66.768,50.57h9.763c0.899,0,1.626-0.728,1.626-1.627v-6.509c0-0.899-0.727-1.627-1.626-1.627h-9.763
+                            c-0.899,0-1.627,0.729-1.627,1.627v6.509C65.141,49.842,65.868,50.57,66.768,50.57z M68.395,44.061h6.509v3.255h-6.509V44.061z"/>
+      <text id="logo_text" x="1.885em" y="1.232em" font-family="Montserrat" font-size="2.5em">FRACTORY</text>
+    </svg>
+    <video poster="/media/poster.jpg" id="video" muted playsinline loop autoplay onplay="video_on_load()" onclick="this.play()" style="display: block; min-width: 270; min-height: 152; max-width: 1280; max-height: 720; margin-left: auto; margin-right: auto; margin-top: 2%; width: 50%">
+      <source src="{{ url_for('static', filename='media/intro.mp4')}}" type="video/mp4">
+      https://fractory.in/media/intro.mp4
+    </video>
+    <div id="subscribe_div" style="display: block; margin-left: auto; margin-right: auto;">
+      <p style="display: block; margin: auto; text-align: center; margin-top: 1em; font-family: Montserrat;font-size: 1.5em;font-weight: 300;">Fractory is launching <span style="font-weight: 500;">soon</span>! Subscribe for <span style="font-weight: 500;">updates</span> and <span style="font-weight: 500;">offers</span></p>
+      <div class="col-sm-3 center-block" style="float: none; margin-top: 4%;">
+        <form id="subscribe_form" onsubmit="return subscribe()">
+          <div id="subscribe_email_group" class="form-group" style="margin-bottom: 0;">
+            <div style="padding-top: 13.4%; position: relative; width: 100%;">
+              <input id="subscribe_email" name="email" type="email" placeholder="Email" class="form-control input-lg" style="height: 100%; position: absolute; top: 0; left: 0; bottom: 0; right: 0; text-align: center; border-radius: 0; -webkit-box-shadow: 0px 1px 1px rgba(115,115,115,0.3); box-shadow: 0px 1px 1px rgba(115,115,115,0.3); border-color: rgba(115,115,115,0.3); font-family: Montserrat;font-size: 1em;font-weight: 300;">
+            </div>
+            <span id="subscribe_error_email" class="help-block" style="margin-top: 1%; margin-bottom: 2%; font-size: 0.6em; text-align: center; visibility:hidden;">Please enter a valid email!</span>
+          </div>
+          <div style="padding-top: 13.7%; position: relative; width: 42%; margin-bottom: 1em; margin-left: auto; margin-right: auto;">
+            <input id="subscribe_button" type="submit" class="btn btn-lg center-block" value="Subscribe!">
+          </div>
+        </form>
+      </div>
+  </div>
+</div>
+<div id="survey" class="modal fade">
+  <div class="modal-dialog">
+    <div id="survey-content" class="modal-content">
+      <iframe id="iframe" src="/survey?k=l" frameborder="0" scrolling="no" style="width: 100%;"></iframe>
+    </div>
+  </div>
+</div>
+</body>
+</html>
