@@ -1209,12 +1209,34 @@ section.bodycontainer {
     margin: 0;
 }
 
-.cartitems .anylysisofdesignstatus span {
+.cartitems .anylysisofdesignstatus .analysing {
     width: 25px;
     height: 25px;
     background-color: #2962ff;
     border-radius: 50%;
     border: 3px solid #7d9ffa;
+}
+
+.cartitems .anylysisofdesignstatus .analysisfailed {
+    color: #f94b4b;
+    width: 25px;
+    height: 25px;
+    text-align: center;
+}
+
+.cartitems .anylysisofdesignstatus .analysisdone {
+    color: #4caf50;
+    width: 25px;
+    height: 25px;
+    text-align: center;
+}
+
+.cartitems .anylysisofdesignstatus .analysisfailed i{
+    vertical-align: middle;
+}
+
+.cartitems .anylysisofdesignstatus .analysisdone i{
+    vertical-align: middle;
 }
 
 .cartitems .anylysisofdesignstatus h6 {
@@ -1225,12 +1247,26 @@ section.bodycontainer {
 }
 
 .cartitems .anylysisofdesignstatus p {
-    padding-left: 0;
+    padding-left: 33px;
     font-size: 0.75rem;
-    text-align: center;
     padding-top: 5px;
 }
 
+.cartitems .anylysisofdesignstatus p > a{
+    position: relative;
+    cursor: pointer;
+}
+
+.cartitems .anylysisofdesignstatus p > a:after{
+    content: "";
+    position: absolute;
+    height: 2px;
+    width: 100%;
+    background-color: #000;
+    bottom: 0px;
+    left: 0;
+    display: inline-block;
+}
 .cartitems .entereddetails .form-group label {
     margin-bottom: 5px;
     font-size: 0.9rem;
@@ -1285,10 +1321,6 @@ select:focus::-ms-value {
 
 .calltoactionbtns ul li {
     line-height: 50px;
-}
-
-.cartitems {
-    border-bottom: 2px solid #c8c8c8;
 }
 
 .calltoactionbtns {
