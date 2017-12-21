@@ -105,6 +105,55 @@
       document.getElementById('overlay_loader').style.height = Math.min(24, document.getElementById('overlay').offsetWidth / 32) + "px";
     }
     window.onresize();
+    window.user = {};
+    window.user.referred         = [];
+    window.user.organisations    = [];
+    window.user.surveys          = [];
+    window.user.offers          = [];
+    window.user.addresses        = [];
+    {% if user %}
+    window.user.id               = "{{ user.id }}";
+    window.user.type             = "{{ user.type }}";
+    window.user.subscription     = "{{ user.subscription }}";
+    window.user.rating           = "{{ user.rating }}";
+    window.user.email            = "{{ user.email }}";
+    window.user.verified         = "{{ user.verified }}";
+    window.user.fname            = "{{ user.fname }}";
+    window.user.lname            = "{{ user.lname }}";
+    window.user.phone            = "{{ user.phone }}";
+    window.user.referral         = "{{ user.referral }}";
+    window.user.referred_by      = "{{ user.referred_by }}";
+    {% for referred in user.referred %}
+      window.user.referred.push("{{ referred }}");
+    {% endfor %}
+    {% for organisation in user.organisations %}
+      window.user.organisations.push("{{ organisation }}");
+    {% endfor %}
+    {% for survey in user.surveys %}
+      window.user.surveys.push("{{ survey }}");
+    {% endfor %}
+    {% for offer in user.offers %}
+      window.user.offers.push("{{ offer }}");
+    {% endfor %}
+    window.user.primary_address  = "{{ user.primary_address }}";
+    var address                  = {};
+    {% for address in user.addresses %}
+      address                    = {};
+      address.identifier         = "{{ address.identifier }}";
+      address.full_name          = "{{ address.full_name }}";
+      address.organisation       = "{{ address.organisation }}";
+      address.line_1             = "{{ address.line_1 }}";
+      address.line_2             = "{{ address.line_2 }}";
+      address.city               = "{{ address.city }}";
+      address.state              = "{{ address.state }}";
+      address.area_code          = "{{ address.area_code }}";
+      address.phone              = "{{ address.phone }}";
+      address.country            = "{{ address.country }}";
+      window.user.addresses.push(address);
+    {% endfor %}
+
+    window.intercomSettings.email = "{{ user.email }}";
+    {% endif %}
   </script>
   <header class="block lightgraybg mainheader">
     <div class="container">

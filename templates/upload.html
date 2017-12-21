@@ -45,7 +45,7 @@
 
 
 {% block styles %}
-<div id="survey" class="modal fade">
+<div id="survey" class="modal fade" tabindex="-1">
   <div class="modal-dialog">
     <div id="survey-content" class="modal-content">
     </div>
@@ -80,7 +80,12 @@
     });
 
 var viewJob = function(id) {
-  console.log(this);
+  if ( mesh != null ) {
+    scene.remove(mesh);
+    mesh = null;
+  }
+  workers[id].postMessage({action: "geometry"});
+  $("#survey").modal({keyboard: true, show: true});
 }
 
 var deleteJob = function(id) {
@@ -385,7 +390,7 @@ var onFilesDrop = function(e) {
       }
 
       var job               = JSON.parse(JSON.stringify(configuration.JOB_TEMPLATE));
-      job.id                = /*window.user.id +*/ ((new Date()).getTime().toString() + Math.random().toString().substring(2));
+      job.id                = window.user.id + "-" +  ((new Date()).getTime().toString() + Math.random().toString().substring(2));
       job.name              = e.originalEvent.dataTransfer.files[i].name;
       job.settings.job_type = configuration.FILE_TYPE_TO_DEFAULT_JOB_TYPE[job.name.split('.').pop().toUpperCase()];
 
@@ -403,11 +408,13 @@ var onFilesDrop = function(e) {
       jobs[job.id] = job;
 
       logger.debug("[" + job.id + "] Creating a new worker...");
-      worker = new Worker("/libraries/mesh-analysis/js/mesh-analysis-worker.js");
+      var worker = new Worker("/libraries/mesh-analysis/js/mesh-analysis-worker.js");
 
       worker.onmessage = function(event) {
         try {
-          logger.debug("[" + job.id + "] Received message from worker " + event.data.action);
+          if (event.data.action != "geometry") {
+            logger.debug("[" + job.id + "] Received message from worker " + JSON.stringify(event.data, null, 3));
+          }
           switch(event.data.action) {
             case 'status':
               jobs[job.id].analysis_progress = event.data.analysis_progress;
@@ -431,7 +438,6 @@ var onFilesDrop = function(e) {
                 vertices.push(new THREE.Vector3(event.data.vertices[i].x,event.data.vertices[i].y,event.data.vertices[i].z));
               }
 
-              console.log(event.data);
               var geometry = new THREE.Geometry;
               geometry.vertices = vertices;
               geometry.faces = faces;
@@ -465,6 +471,87 @@ var onFilesDrop = function(e) {
       worker.postMessage({'action': 'init', 'job': job, 'file': e.originalEvent.dataTransfer.files[i]});
     }
   }
+}
+
+var load_job = function(job) {
+    logger.debug("[" + job.id + "] Creating a new job:\n" + JSON.stringify(job, null, 3));
+    createJob(job);
+    job.upload_progress = 100;
+    job.errors = job.error;
+    jobs[job.id] = job;
+
+    logger.debug("[" + job.id + "] Creating a new worker...");
+    var worker = new Worker("/libraries/mesh-analysis/js/mesh-analysis-worker.js");
+
+    worker.onmessage = function(event) {
+      try {
+        logger.debug("[" + job.id + "] Received message from worker " + JSON.stringify(event.data, null, 3));
+        switch(event.data.action) {
+          case 'status':
+            jobs[job.id].analysis_progress = event.data.analysis_progress;
+            jobs[job.id].upload_progress = 100;
+            jobs[job.id].analysis_tag = event.data.analysis_tag;
+            jobs[job.id].errors = event.data.errors;
+            refresh_job(job.id);
+            break;
+          case 'cache':
+            jobs[job.id].cache = event.data;
+            refresh_job(job.id);
+            break;
+          case 'geometry':
+            if (mesh!=null) {scene.remove(mesh);mesh=null};
+            var faces = [];
+            var vertices = [];
+            for ( var i = 0; i < event.data.faces.length; i++ ) {
+              faces.push(new THREE.Face3(event.data.faces[i].a,event.data.faces[i].b,event.data.faces[i].c))
+            }
+            for ( var i = 0; i < event.data.vertices.length; i++ ) {
+              vertices.push(new THREE.Vector3(event.data.vertices[i].x,event.data.vertices[i].y,event.data.vertices[i].z));
+            }
+
+            var geometry = new THREE.Geometry;
+            geometry.vertices = vertices;
+            geometry.faces = faces;
+            geometry.computeBoundingBox();
+            geometry.computeFaceNormals();
+            THREE.GeometryUtils.center(geometry);
+
+            mesh = new THREE.Mesh(geometry, material);
+            directionalLight.position.z = geometry.boundingBox.max.z + geometry.boundingBox.max.x;
+            directionalLight.position.x = geometry.boundingBox.max.z + geometry.boundingBox.max.x;
+            directionalLight.position.y = geometry.boundingBox.max.y * 2;
+            pointLight.position.z = 0;
+            pointLight.position.x = 0;
+            pointLight.position.y = geometry.boundingBox.max.y * 2;
+
+            camera.position.set(0,0,Math.max(geometry.boundingBox.max.x*3,geometry.boundingBox.max.y*3,geometry.boundingBox.max.z*3));
+            controls.reset();
+
+            scene.add(mesh);
+            setTimeout(function() {
+              $("#job" + job.id).find("img").attr("src", renderer.domElement.toDataURL("image/png").replace("image/png", "image/octet-stream"))
+            }, 100);
+            break;
+          default:
+        }
+      } catch(err) {
+      }
+    };
+    workers[job.id] = worker;
+
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', "/jobs/" + job.id + "/model", true);
+    xhr.responseType = 'arraybuffer';
+    xhr.onload = function(e) {
+      if (this.status == 200) {
+        var data = this.response;
+        worker.postMessage({'action': 'init', 'job': job, data: data});
+      }
+    };
+    xhr.send();
+
+    $.get("/jobs/" + job.id + "/model", function(data, status){
+    });
 }
 
 var refresh_job = function(id) {
@@ -535,5 +622,11 @@ function render_loop() {
   controls.update();
 }
 render_loop();
+
+    {% for job in jobs %}
+      load_job({{ job }});
+    {% endfor %}
+
+
   </script>
 {% endblock %}

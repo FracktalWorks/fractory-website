@@ -79,7 +79,7 @@ var waiting_for_params = 0;
 
 self.onmessage = function(e) {
   try {
-    logger.debug("Received message: " + e.data.toString());
+    logger.debug("Received message: " + JSON.stringify(e.data, null, 3));
     if ( typeof job.id != "string" || job.id == "undefined" ) {
       job.id = "undefined";
       logger.sub_label = job.id.toString();
@@ -94,22 +94,23 @@ self.onmessage = function(e) {
         if ( e.data.file ) {
           load_from_file( e.data.file );
         } else {
-          load_from_server( job.id );
+          load_from_data( e.data.data );
         }
       } else {
-        log.critical("Recevied '" + e.data.action + "' message before worker is initialised! Skipping...");
+        logger.critical("Recevied '" + e.data.action + "' message before worker is initialised! Skipping...");
       }
       return;
     }
     switch (e.data.action) {
       case 'init':
-        log.critical("Recevied 'init' message after worker is initialised! Skipping...");
+        logger.critical("Recevied 'init' message after worker is initialised! Skipping...");
         break;
       case 'settings':
         job.settings = e.data.settings;
         break;
       case 'geometry':
-        self.postmessage(geometry);
+        var vf_data = {action: "geometry", vertices: geometry.vertices, faces: geometry.faces};
+        self.postMessage(vf_data);
         break;
       case 'stop':
         break;
@@ -486,15 +487,16 @@ do_full_analysis = function() {
 create_mesh = function(vf_data) {
   vf_data.action = "geometry";
   self.postMessage(vf_data);
+
   geometry = null;
   geometry = new THREE.Geometry;
   geometry.vertices = vf_data.vertices;
   geometry.faces = vf_data.faces;
   geometry.computeBoundingBox();
   geometry.computeFaceNormals();
-  THREE.GeometryUtils.center(geometry);
-  // geometry.center();
-  setTimeout(do_full_analysis, 1000);
+  geometry.center();
+
+  do_full_analysis();
 }
 
 var parse_file = function(buffer) {
@@ -654,6 +656,22 @@ var load_from_file = function(file) {
       }
     };
     reader.readAsArrayBuffer(file);
+  } catch(err) {
+    logger.error("Something went wrong while loading from file!\n" + err.stack);
+  }
+}
+
+var load_from_data = function(data) {
+  try {
+    logger.debug("Attempting to load '" + job.name + "'...");
+    logger.debug("RECEIVED " + (typeof data));
+
+//    var buffer = new ArrayBuffer(data.length*2);
+//    var view = new Uint16Array(buffer);
+//    for (var i=0, len=data.length; i<len; i++) {
+//      view[i] = data.charCodeAt(i);
+//    }
+    parse_file(data);
   } catch(err) {
     logger.error("Something went wrong while loading from file!\n" + err.stack);
   }
