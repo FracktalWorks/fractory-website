@@ -177,6 +177,11 @@ var onChangeJobType = function(id) {
       materials += "                <option value=" + configuration[val].MATERIALS[i] + ">" + configuration[val].MATERIALS[i] + "</option>\n";
     }
     materials += "              </select>\n";
+    if ( materials.indexOf("value='" + configuration[val].DEFAULT_MATERIAL + "'") > 0 ) {
+      materials.replace("value='" + configuration[val].DEFAULT_MATERIAL + "'", "value='" + configuration[val].DEFAULT_MATERIAL + "' selected")
+    } else {
+      materials.replace("value='---'", "value='---' selected")
+    }
 
     var finish = "";
     finish += "\n              <select class='customselect' onchange='onChangeJobFinish(\"" + id + "\")'>\n";
@@ -241,7 +246,7 @@ var onChangeJobType = function(id) {
 
     requestQuote(id);
   } else {
-    var index = $("#job" + id).find(".zindex3").find("option").index($("#job" + id).find(".zindex3").find("[value=" + jobs[id].settings.job_type + "]"));
+    var index = $("#job" + id).find(".zindex3").find("option").index($("#job" + id).find(".zindex3").find("[value='" + jobs[id].settings.job_type + "']"));
     if (index > 0) {
       $("#job" + id).find(".zindex3").find("select").prev('ul').find('li').eq(index).find('a').click();
     }
@@ -251,7 +256,7 @@ var onChangeJobType = function(id) {
 var onChangeJobMaterial = function(id) {
   var val = $("#job" + id).find(".zindex2").find("select").val();
   if ( val == '---' || val == null ) {
-    var index = $("#job" + id).find(".zindex2").find("option").index($("#job" + id).find(".zindex2").find("[value=" + jobs[id].settings.material + "]"));
+    var index = $("#job" + id).find(".zindex2").find("option").index($("#job" + id).find(".zindex2").find("[value='" + jobs[id].settings.material + "']"));
     if (index > 0) {
       $("#job" + id).find(".zindex2").find("select").prev('ul').find('li').eq(index).find('a').click();
     }
@@ -268,7 +273,7 @@ var onChangeJobMaterial = function(id) {
 var onChangeJobFinish = function(id) {
   var val = $("#job" + id).find(".zindex1").find("select").val();
   if ( val == '---' || val == null ) {
-    var index = $("#job" + id).find(".zindex1").find("option").index($("#job" + id).find(".zindex1").find("[value=" + jobs[id].settings.finish + "]"));
+    var index = $("#job" + id).find(".zindex1").find("option").index($("#job" + id).find(".zindex1").find("[value='" + jobs[id].settings.finish + "']"));
     if (index > 0) {
       $("#job" + id).find(".zindex1").find("select").prev('ul').find('li').eq(index).find('a').click();
     }
@@ -466,17 +471,17 @@ var createJob = function(job) {
   $('.uploadwrapper > div.row').prepend(jobDiv);
   $(".jqtransform").jqTransform();
 
-  var index = $("#job" + job.id).find(".zindex3").find("option").index($("#job" + job.id).find(".zindex3").find("[value=" + job.settings.job_type + "]"));
+  var index = $("#job" + job.id).find(".zindex3").find("option").index($("#job" + job.id).find(".zindex3").find("[value='" + job.settings.job_type + "']"));
   if (index > 0) {
     $("#job" + job.id).find(".zindex3").find("select").prev('ul').find('li').eq(index).find('a').click();
   }
 
-  var index = $("#job" + job.id).find(".zindex2").find("option").index($("#job" + job.id).find(".zindex2").find("[value=" + job.settings.material + "]"));
+  var index = $("#job" + job.id).find(".zindex2").find("option").index($("#job" + job.id).find(".zindex2").find("[value='" + job.settings.material + "']"));
   if (index > 0) {
     $("#job" + job.id).find(".zindex2").find("select").prev('ul').find('li').eq(index).find('a').click();
   }
 
-  var index = $("#job" + job.id).find(".zindex1").find("option").index($("#job" + job.id).find(".zindex1").find("[value=" + job.settings.finish + "]"));
+  var index = $("#job" + job.id).find(".zindex1").find("option").index($("#job" + job.id).find(".zindex1").find("[value='" + job.settings.finish + "']"));
   if (index > 0) {
     $("#job" + job.id).find(".zindex1").find("select").prev('ul').find('li').eq(index).find('a').click();
   }
@@ -551,7 +556,8 @@ var configuration = {
   },
   JOB_TYPES             : ['FDM','CNC'],
   FDM                   : {
-    MATERIALS           : ['PLA','ABS'],
+    DEFAULT_MATERIAL    : 'White PLA',
+    MATERIALS           : ['White PLA','Black ABS'],
     DEFAULT_FINISH      : 'NORMAL',
     FINISH              : ['COARSE', 'NORMAL', 'FINE'],
     DEFAULT_DENSITY     : '0.1',

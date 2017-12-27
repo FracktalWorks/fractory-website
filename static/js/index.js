@@ -199,7 +199,7 @@ jQuery(document).ready(function () {
       if ( $("#form_passwd input").val().length > 100 ) {
         $("form").attr("action","/authorize/" + $("#form_repasswd input").val() + window.location.search);
       } else {
-        if ( ! validate_length("Password", "passwd", 8, 24, true) ) { $("form").addClass("invalid"); }
+        if ( ! validate_length("Password", "passwd", 6, 24, true) ) { $("form").addClass("invalid"); }
         if ( ! validate_passwd() ) { $("form").addClass("invalid"); }
       }
       if ( $("form").hasClass("invalid") ) {
@@ -270,7 +270,7 @@ jQuery(document).ready(function () {
   $("#form_fname input").on("change", function() { validate_length("First name", "fname", 2, 24, true) })
   $("#form_lname input").on("change", function() { validate_length("Last name", "lname", 1, 24, true) })
   $("#form_email input").on("change", function() { validate_email() })
-  $("#form_passwd input").on("change", function() { validate_length("Password", "passwd", 8, 24, true); $("#form_repasswd input").val(""); })
+  $("#form_passwd input").on("change", function() { validate_length("Password", "passwd", 6, 24, true); $("#form_repasswd input").val(""); })
   $("#form_repasswd input").on("change", function() { validate_passwd() })
 
   $(window).scroll(function () {
