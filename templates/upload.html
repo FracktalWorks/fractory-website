@@ -167,7 +167,7 @@ var onChangeJobType = function(id) {
   var val = $("#job" + id).find(".zindex3").find("select").val();
 
   if ( val != null && val != '---' && configuration[val] && configuration[val].MATERIALS ) {
-    if ( val == jobs[id].settings.job_type ) { return; }
+    if ( val == jobs[id].settings.job_type && $("#job" + id).find(".zindex2").find("option").length > 1 ) { return; }
 
     logger.debug("[" + id + "] Job type changed to '" + val + "'");
     var materials = "";
@@ -774,7 +774,7 @@ var load_job = function(job) {
     createJob(job);
     job.upload_progress = 100;
     job.errors = job.error;
-
+/*
     logger.debug("[" + job.id + "] Creating a new worker...");
     var worker = new Worker("/libraries/mesh-analysis/js/mesh-analysis-worker.js");
 
@@ -828,6 +828,7 @@ var load_job = function(job) {
       }
     };
     xhr.send();
+*/
 }
 
 var refresh_job = function(id) {
