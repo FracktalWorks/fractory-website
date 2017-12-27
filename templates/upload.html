@@ -6,9 +6,11 @@
 
 {% block content %}
             <section class="block sectionpadding50 cartwrapper lightgraybg">
-                <div class="container">
-                    <div class="draganddropwraper block marginbottom40">
+                        <input id="fileuploadinput" type="file" style="display:none" />
 
+                <div class="container">
+
+                    <div class="draganddropwraper block marginbottom40" onclick="document.getElementById('fileuploadinput').click();">
                         <h2 class="displayinlineblock">Drag and drop files or Click to <span class="extraboldfont">upload</span></h2>
 
                         <p>
@@ -358,6 +360,7 @@ var onJobButtonClick = function(id) {
   if ( $("#job" + id).find("button").hasClass("getquote") ) {
     cancelQuote(id);
     requestQuote(id);
+    $("#job" + id).find("button").removeClass("getquote");    
   } else if ( $("#job" + id).find("button").hasClass("active") ) {
     onAddToCart(id);
   }
@@ -637,21 +640,27 @@ var onFilesDrop = function(e) {
   e.stopPropagation()
   e.preventDefault()
 
-  if ( e.originalEvent.dataTransfer.files.length > 0 ) {
-    for (i = 0; i < e.originalEvent.dataTransfer.files.length; i++ ) {
-      if ( e.originalEvent.dataTransfer.files[i].size > (configuration.MAX_FILE_SIZE * 1048576) ) {
-        alert("File: '" + e.originalEvent.dataTransfer.files[i].name + "' is too big! Maximum allowed size is " + configuration.MAX_FILE_SIZE + "MB");
+  var files = [];
+  if ( e.originalEvent.dataTransfer ) {
+    files = e.originalEvent.dataTransfer.files;
+  } else if ( e.originalEvent.target ) {
+    files = e.originalEvent.target.files;
+  }
+  if ( files.length > 0 ) {
+    for (i = 0; i < files.length; i++ ) {
+      if ( files[i].size > (configuration.MAX_FILE_SIZE * 1048576) ) {
+        alert("File: '" + files[i].name + "' is too big! Maximum allowed size is " + configuration.MAX_FILE_SIZE + "MB");
         continue;
       }
 
       var job               = JSON.parse(JSON.stringify(configuration.JOB_TEMPLATE));
       job.id                = window.user.id + "-" +  ((new Date()).getTime().toString() + Math.random().toString().substring(2));
       job.thumbnail         = "/default-thumbnail.png"
-      job.name              = e.originalEvent.dataTransfer.files[i].name;
+      job.name              = files[i].name;
       job.settings.job_type = configuration.FILE_TYPE_TO_DEFAULT_JOB_TYPE[job.name.split('.').pop().toUpperCase()];
 
       if (!job.settings.job_type) {
-        alert("File: '" + e.originalEvent.dataTransfer.files[i].name + "' is not supported!");
+        alert("File: '" + files[i].name + "' is not supported!");
         continue;
       }
 
@@ -709,7 +718,7 @@ var onFilesDrop = function(e) {
       };
 
       workers[job.id] = worker;
-      worker.postMessage({'action': 'init', 'job': job, 'file': e.originalEvent.dataTransfer.files[i]});
+      worker.postMessage({'action': 'init', 'job': job, 'file': files[i]});
     }
   }
 }
