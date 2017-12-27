@@ -875,6 +875,7 @@ var refresh_job = function(id) {
 $(document.body).on("dragover", function(e) { e.stopPropagation(); e.preventDefault(); });
 $(document.body).on("drop", onFilesDrop);
 
+$("#fileuploadinput").on('change', onFilesDrop)
 
 
 
