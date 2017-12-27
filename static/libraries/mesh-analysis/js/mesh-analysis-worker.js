@@ -71,6 +71,7 @@ var temp = {};
 
 var material = new THREE.MeshLambertMaterial({'color':configuration.MESH_COLOR, 'overdraw': 1, 'flatShading': true, 'vertexColors': THREE.FaceColors, 'side': THREE.DoubleSide});
 var geometry;
+var job_file;
 var reader;
 var abort = 0;
 
@@ -107,8 +108,16 @@ self.onmessage = function(e) {
         break;
       case 'settings':
         job.settings = e.data.settings;
+        if (job_file) {
+          parse_file(job_file);
+          job_file = undefined;
+        }
         break;
       case 'geometry':
+        if (job_file) {
+          parse_file(job_file);
+          job_file = undefined;
+        }
         var vf_data = {action: "geometry", vertices: geometry.vertices, faces: geometry.faces};
         self.postMessage(vf_data);
         break;
@@ -670,8 +679,7 @@ var load_from_data = function(data) {
   try {
     logger.debug("Attempting to load '" + job.name + "'...");
     logger.debug("RECEIVED " + (typeof data));
-
-    parse_file(data);
+    job_file = data;
   } catch(err) {
     logger.error("Something went wrong while loading from file!\n" + err.stack);
   }

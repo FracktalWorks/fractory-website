@@ -780,7 +780,6 @@ var load_job = function(job) {
     createJob(job);
     job.upload_progress = 100;
     job.errors = job.error;
-/*
     logger.debug("[" + job.id + "] Creating a new worker...");
     var worker = new Worker("/libraries/mesh-analysis/js/mesh-analysis-worker.js");
 
@@ -834,7 +833,6 @@ var load_job = function(job) {
       }
     };
     xhr.send();
-*/
 }
 
 var refresh_job = function(id) {
