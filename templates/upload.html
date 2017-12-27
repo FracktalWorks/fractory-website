@@ -26,7 +26,7 @@
                 </div>
             </section>
             <div class="cartfloatingbutton whitecolor">
-                        <div class="cartcount whitebg displayflex"><span class="redcolor">2</span></div>
+                        <div class="cartcount whitebg displayflex"><span class="redcolor">{{ cart }}</span></div>
                         <i class="fa fa-shopping-cart displayinlineblock" aria-hidden="true" style="margin: auto;font-size: 2rem;padding: 5px 0;"></i>
                         <h6 style="text-align: center; margin: 0px 10px 35px 10px;"><b>CART</b></h6>
                     </div>
@@ -89,57 +89,278 @@ var viewJob = function(id) {
 }
 
 var deleteJob = function(id) {
+  logger.debug("[" + id + "] Job delete requested");
+  $.post("/jobs/" + id + "/delete", function(data, status){
+    if ( status == "nocontent" ) {
+      $("#job" + id).remove()
+      jobs[id] = undefined;
+      delete jobs[id];
+    } else {
+      logger.error("[" + id + "] Job delete failed\n" + data);
+    }
+  });
 }
 
-var requestQuote = function() {
+var onAddToCart = function(id) {
+  logger.debug("[" + id + "] Job cart requested");
+  $.post("/jobs/" + id + "/cart", function(data, status){
+    if ( status == "nocontent" ) {
+      $("#job" + id).remove()
+      jobs[id] = undefined;
+      delete jobs[id];
+      var c = parseInt($(".redcolor").html());
+      if ( c >= 0 ) {
+        c = c+1;
+      } else {
+        c = 1;
+      }
+      $(".redcolor").html(c);
+    } else {
+      logger.error("[" + id + "] Job cart failed\n" + data);
+    }
+  });
 }
 
-var cancelQuote = function() {
+var requestQuote = function(id) {
+  logger.debug("[" + id + "] Job quote requested");
+  // TODO send to server
+        var job = jobs[id];
+        var job_form = new FormData();
+
+        job_form.append("name", job.name);
+        job_form.append("cache", JSON.stringify(job.cache));
+        job_form.append("settings", JSON.stringify(job.settings));
+        job_form.append("errors", JSON.stringify(job.errors));
+
+        $.ajax({
+          type        : "POST",
+          method      : "POST",
+          url         : "/jobs/" + job.id,
+          data        : job_form,
+          cache       : false,
+          contentType : false,
+          processData : false,
+          success: function (data) {
+            logger.debug("Job pushed to server :D");
+          },
+          error: function (e) {
+            logger.alert("Job could not be pushed to server!\n" + JSON.stringify(e, null, 3));
+          },
+          async: true,
+          timeout: 30*1000
+        });
+
+  // TODO ask quote from worker
 }
 
-var onChangeJobType = function() {
+var cancelQuote = function(id) {
+  logger.debug("[" + id + "] Job quote reset");
+  $("#job" + id).find(".price").html("");
+  $("#job" + id).find("button").html("Get Quote");
+  $("#job" + id).find("button").removeClass("active");
+  $("#job" + id).find("button").addClass("getquote");
 }
 
-var onChangeJobQuantity = function() {
+var onChangeJobType = function(id) {
+  var val = $("#job" + id).find(".zindex3").find("select").val();
+
+  if ( val != null && val != '---' && configuration[val] && configuration[val].MATERIALS ) {
+    if ( val == jobs[id].settings.job_type ) { return; }
+
+    logger.debug("[" + id + "] Job type changed to '" + val + "'");
+    var materials = "";
+    materials += "\n              <select class='customselect' onchange='onChangeJobMaterial(\"" + id + "\")'>\n";
+    materials += "                <option value='---' disabled selected>Material</option>\n";
+    for ( var i = 0; i < configuration[val].MATERIALS.length; i++ ) {
+      materials += "                <option value=" + configuration[val].MATERIALS[i] + ">" + configuration[val].MATERIALS[i] + "</option>\n";
+    }
+    materials += "              </select>\n";
+
+    var finish = "";
+    finish += "\n              <select class='customselect' onchange='onChangeJobFinish(\"" + id + "\")'>\n";
+    finish += "                <option value='---' disabled>Finish</option>\n";
+    for ( var i = 0; i < configuration[val].FINISH.length; i++ ) {
+      finish += "                <option value=" + configuration[val].FINISH[i] + ">" + configuration[val].FINISH[i] + "</option>\n";
+    }
+    finish += "              </select>\n";
+    if ( finish.indexOf("value='" + configuration[val].DEFAULT_FINISH + "'") > 0 ) {
+      finish.replace("value='" + configuration[val].DEFAULT_FINISH + "'", "value='" + configuration[val].DEFAULT_FINISH + "' selected")
+    } else {
+      finish.replace("value='---'", "value='---' selected")
+    }
+
+    var density = "";
+    density += "\n              <select class='customselect' onchange='onChangeJobDensity(\"" + id + "\")'>\n";
+    density += "                <option value='---' disabled>Density</option>\n";
+    for ( var i = 0; i < configuration[val].DENSITY.length; i++ ) {
+      density += "                <option value=" + configuration[val].DENSITY[i] + ">" + configuration[val].DENSITY[i] + "</option>\n";
+    }
+    density += "              </select>\n";
+    if ( density.indexOf("value='" + configuration[val].DEFAULT_DENSITY + "'") > 0 ) {
+      density.replace("value='" + configuration[val].DEFAULT_DENSITY + "'", "value='" + configuration[val].DEFAULT_DENSITY + "' selected")
+    } else {
+      density.replace("value='---'", "value='---' selected")
+    }
+    if ( configuration[val].DENSITY && configuration[val].DENSITY.length > 0 ) {
+      $("#job" + id).find(".zindex0").slideDown(300);
+    } else {
+      $("#job" + id).find(".zindex0").slideUp(300);
+    }
+
+    $("#job" + id).find(".zindex2").removeClass("jqtransformdone");
+    $("#job" + id).find(".zindex2").html(materials);
+    $("#job" + id).find(".zindex1").removeClass("jqtransformdone");
+    $("#job" + id).find(".zindex1").html(finish);
+    $("#job" + id).find(".zindex0").removeClass("jqtransformdone");
+    $("#job" + id).find(".zindex0").html(density);
+    $(".jqtransform").jqTransform();
+
+    cancelQuote(id);
+
+    jobs[id].settings.job_type = val;
+
+    val = $("#job" + id).find(".zindex2").find("select").val();
+    jobs[id].settings.material = $("#job" + id).find(".zindex2").find("select").val();
+    if ( val == '---' || val == null ) {
+      jobs[id].settings.material = "";
+    }
+
+    val = $("#job" + id).find(".zindex1").find("select").val();
+    jobs[id].settings.finish = $("#job" + id).find(".zindex1").find("select").val();
+    if ( val == '---' || val == null ) {
+      jobs[id].settings.finish = "";
+    }
+
+    val = $("#job" + id).find(".zindex0").find("select").val();
+    jobs[id].settings.density = $("#job" + id).find(".zindex0").find("select").val();
+    if ( val == '---' || val == null ) {
+      jobs[id].settings.density = "";
+    }
+
+    requestQuote(id);
+  } else {
+    var index = $("#job" + id).find(".zindex3").find("option").index($("#job" + id).find(".zindex3").find("[value=" + jobs[id].settings.job_type + "]"));
+    if (index > 0) {
+      $("#job" + id).find(".zindex3").find("select").prev('ul').find('li').eq(index).find('a').click();
+    }
+  }
 }
 
-var onChangeJobMaterial = function() {
+var onChangeJobMaterial = function(id) {
+  var val = $("#job" + id).find(".zindex2").find("select").val();
+  if ( val == '---' || val == null ) {
+    var index = $("#job" + id).find(".zindex2").find("option").index($("#job" + id).find(".zindex2").find("[value=" + jobs[id].settings.material + "]"));
+    if (index > 0) {
+      $("#job" + id).find(".zindex2").find("select").prev('ul').find('li').eq(index).find('a').click();
+    }
+    return;
+  }
+  if ( val == jobs[id].settings.material ) { return; }
+
+  logger.debug("[" + id + "] Job material changed to '" + val + "'");
+  cancelQuote(id);
+  jobs[id].settings.material = val;
+  requestQuote(id);
 }
 
-var onChangeJobFinish = function() {
+var onChangeJobFinish = function(id) {
+  var val = $("#job" + id).find(".zindex1").find("select").val();
+  if ( val == '---' || val == null ) {
+    var index = $("#job" + id).find(".zindex1").find("option").index($("#job" + id).find(".zindex1").find("[value=" + jobs[id].settings.finish + "]"));
+    if (index > 0) {
+      $("#job" + id).find(".zindex1").find("select").prev('ul').find('li').eq(index).find('a').click();
+    }
+    return;
+  }
+  if ( val == jobs[id].settings.finish ) { return; }
+
+  logger.debug("[" + id + "] Job finish changed to '" + val + "'");
+  cancelQuote(id);
+  jobs[id].settings.finish = val;
+  requestQuote(id);
 }
 
-var onChangeJobDensity = function() {
+var onChangeJobDensity = function(id) {
+  var val = $("#job" + id).find(".zindex0").find("select").val();
+  if ( val == '---' || val == null ) {
+    var index = $("#job" + id).find(".zindex0").find("option").index($("#job" + id).find(".zindex0").find("[value='" + jobs[id].settings.density + "']"));
+    if (index > 0) {
+      $("#job" + id).find(".zindex0").find("select").prev('ul').find('li').eq(index).find('a').click();
+    }
+    return;
+  }
+  if ( val == jobs[id].settings.density ) { return; }
+
+  logger.debug("[" + id + "] Job density changed to '" + val + "'");
+  cancelQuote(id);
+  jobs[id].settings.density = val;
+  requestQuote(id);
+}
+
+var onChangeJobQuantity = function(id) {
+  var val = parseInt($("#job" + id).find("input").val());
+  if ( jobs[id].settings.quantity == val ) { return; }
+  if ( val > 0 ) {
+    logger.debug("[" + id + "] Job quantity changed to '" + val + "'");
+    jobs[id].settings.quantity = val;
+
+    logger.debug("[" + id + "] Updating quote...");
+    if ( jobs[id].cache.quote ) {
+      $("#job" + id).find(".price").html("<i class='fa fa-inr' aria-hidden='true'></i>&nbsp;" + Math.round(jobs[id].cache.quote * jobs[id].settings.quantity * 100)/100)
+    }
+    // TODO update on server
+  } else {
+    $("#job" + id).find("input").val(jobs[id].settings.quantity);
+  }
+}
+
+var onChangeJobUnits = function(id, val) {
+  $("#job" + id).find("a.units_js").removeClass("active");
+  $("#job" + id).find("a.units_js:contains('" + val + "')").addClass("active");
+
+  if ( jobs[id].settings.units == val ) {
+    return;
+  }
+  logger.debug("[" + id + "] Job units changed to '" + val + "'");
+
+  cancelQuote(id);
+  jobs[id].settings.units = val;
+  requestQuote(id);
 }
 
 var onChangeJobPrice = function(id) {
   var job = jobs[id];
   if ( job.analysis_progress == 100 && job.analysis_tag == "Analysis...") {
     if ( job.cache.quote ) {
-      $("#job" + id).find(".price").html("<i class='fa fa-inr' aria-hidden='true'></i>&nbsp;" + job.cache.quote)
+      $("#job" + id).find(".price").html("<i class='fa fa-inr' aria-hidden='true'></i>&nbsp;" + Math.round(job.cache.quote * job.settings.quantity * 100)/100)
 
       $("#job" + id).find("button").removeClass("active");
       $("#job" + id).find("button").removeClass("getquote");
       $("#job" + id).find("button").html("Add to Cart");
 
-      if ( job.tracking.state == "Analysed" ) {
+      if ( job.tracking.state != "Uploaded" && job.tracking.state != "Created" ) {
         $("#job" + id).find("button").addClass("active");
       }
     } else {
+      $("#job" + id).find(".price").html("");
       $("#job" + id).find("button").html("Get Quote");
       $("#job" + id).find("button").addClass("getquote");
     }
   } else {
+    $("#job" + id).find(".price").html("");
     $("#job" + id).find("button").html("Get Quote");
     $("#job" + id).find("button").removeClass("active");
     $("#job" + id).find("button").removeClass("getquote");
   }
 }
 
-var onChangeJobUploadProgress = function() {
-}
-
-var onChangeJobAnalysisProgress = function() {
+var onJobButtonClick = function(id) {
+  if ( $("#job" + id).find("button").hasClass("getquote") ) {
+    cancelQuote(id);
+    requestQuote(id);
+  } else if ( $("#job" + id).find("button").hasClass("active") ) {
+    onAddToCart(id);
+  }
 }
 
 var createJob = function(job) {
@@ -147,7 +368,7 @@ var createJob = function(job) {
   jobDiv += "<div id='job" + job.id + "' class='col-lg-4 col-md-4 col-sm-6 col-xs-12'>\n";
   jobDiv += "  <div class='upload-product block cartitems marginbottom30'>\n";
   jobDiv += "    <figure class='block text-center whitebg'>\n";
-  jobDiv += "      <img src='/jobs/" + job.id + "/thumbnail' class='img-responsive displayinline' alt='' style='max-height: 121px; max-width: 310px;'>\n";
+  jobDiv += "      <img src='" + job.thumbnail + "' class='img-responsive displayinline' alt='' style='max-height: 121px; max-width: 310px;'>\n";
   jobDiv += "      <figcaption class='block flex justifycontent flexend'>\n";
   jobDiv += "        <h3 class='pull-left'>" + job.name + "</h3>\n";
   jobDiv += "        <h6 class='pull-right cursorpointer' onclick='viewJob(\"" + job.id + "\")'>Click to view in 3D</h6>\n";
@@ -162,29 +383,32 @@ var createJob = function(job) {
   jobDiv += "          <div class='typematerialcolor block'>\n";
   jobDiv += "            <div class='form-group block jqtransform zindex3'>\n";
   jobDiv += "              <select class='customselect' onchange='onChangeJobType(\"" + job.id + "\")'>\n";
-  jobDiv += "                <option>Job Type</option>\n";
-  jobDiv += "                <option>CNC</option>\n";
-  jobDiv += "                <option>3D Print - FDM</option>\n";
-  jobDiv += "                <option>3D Print - SLA</option>\n";
+  jobDiv += "                <option value='---' disabled selected>Job Type</option>\n";
+  jobDiv += "                <option value='CNC'>CNC</option>\n";
+  jobDiv += "                <option value='FDM'>3D Print - FDM</option>\n";
+  jobDiv += "                <option value='SLA'>3D Print - SLA</option>\n";
   jobDiv += "              </select>\n";
   jobDiv += "            </div>\n";
   jobDiv += "            <div class='form-group block jqtransform zindex2'>\n";
   jobDiv += "              <select class='customselect' onchange='onChangeJobMaterial(\"" + job.id + "\")'>\n";
-  jobDiv += "                <option>Material</option>\n";
-  jobDiv += "                <option>Material 1</option>\n";
-  jobDiv += "                <option>Material 2</option>\n";
+  jobDiv += "                <option value='---' disabled selected>Material</option>\n";
   jobDiv += "              </select>\n";
   jobDiv += "            </div>\n";
-  jobDiv += "            <div class='form-group block nomargin jqtransform zinex1'>\n";
-  jobDiv += "              <select class='customselect' onchange='OnChangeJobFinish(\"" + job.id + "\")'>\n";
-  jobDiv += "                <option>Draft</option>\n";
-  jobDiv += "                <option>Normal</option>\n";
-  jobDiv += "                <option>High</option>\n";
+  jobDiv += "            <div class='form-group block nomargin jqtransform zindex1'>\n";
+  jobDiv += "              <select class='customselect' onchange='onChangeJobFinish(\"" + job.id + "\")'>\n";
+  jobDiv += "                <option value='---' disabled selected>Finish</option>\n";
   jobDiv += "              </select>\n";
   jobDiv += "            </div>\n";
   jobDiv += "          </div>\n";
   jobDiv += "        </div>\n";
   jobDiv += "        <div class='col-lg-6 col-md-6 col-sm-6 col-xs-12'>\n";
+  jobDiv += "          <div class='typematerialcolor block'>\n";
+  jobDiv += "            <div class='form-group block nomargin jqtransform zindex0' style='margin-bottom: 18px'>\n";
+  jobDiv += "              <select class='customselect' onchange='onChangeJobDensity(\"" + job.id + "\")'>\n";
+  jobDiv += "                <option value='---' disabled selected>Density</option>\n";
+  jobDiv += "              </select>\n";
+  jobDiv += "            </div>\n";
+  jobDiv += "          </div>\n";
   jobDiv += "          <div class='unitqualityquantity block'>\n";
   jobDiv += "            <div class='form-group block displayflex'>\n";
   jobDiv += "              <div class='flex1'>\n";
@@ -192,31 +416,19 @@ var createJob = function(job) {
   jobDiv += "              </div>\n";
   jobDiv += "              <div class='flex2'>\n";
   jobDiv += "                <ul class='flex justifycontent'>\n";
-  jobDiv += "                  <li><a class='units_js unit cursorpointer'>mm</a></li>\n";
-  jobDiv += "                  <li><a class='units_js unit cursorpointer'>cm</a></li>\n";
-  jobDiv += "                  <li><a class='units_js unit cursorpointer'>in</a></li>\n";
-  jobDiv += "                </ul>\n";
-  jobDiv += "              </div>\n";
-  jobDiv += "            </div>\n";
-  jobDiv += "            <div class='form-group block displayflex'>\n";
-  jobDiv += "              <div class='flex1'>\n";
-  jobDiv += "                Density:\n";
-  jobDiv += "              </div>\n";
-  jobDiv += "              <div class='flex2'>\n";
-  jobDiv += "                <ul class='flex justifycontent'>\n";
-  jobDiv += "                  <li><a class='quality_js quality cursorpointer'>1</a></li>\n";
-  jobDiv += "                  <li><a class='quality_js quality cursorpointer'>2</a></li>\n";
-  jobDiv += "                  <li><a class='quality_js quality cursorpointer'>3</a></li>\n";
+  jobDiv += "                  <li><a class='units_js unit cursorpointer' onclick='onChangeJobUnits(\"" + job.id + "\", \"mm\")'>mm</a></li>\n";
+  jobDiv += "                  <li><a class='units_js unit cursorpointer' onclick='onChangeJobUnits(\"" + job.id + "\", \"cm\")'>cm</a></li>\n";
+  jobDiv += "                  <li><a class='units_js unit cursorpointer' onclick='onChangeJobUnits(\"" + job.id + "\", \"in\")'>in</a></li>\n";
   jobDiv += "                </ul>\n";
   jobDiv += "              </div>\n";
   jobDiv += "            </div>\n";
   jobDiv += "            <div class='form-group block flex'>\n";
   jobDiv += "              <div class='flex1'>\n";
-  jobDiv += "                Quantity:\n";
+  jobDiv += "                Quantity:&nbsp;&nbsp;&nbsp;\n";
   jobDiv += "              </div>\n";
   jobDiv += "              <div class='flex2'>\n";
-  jobDiv += "                <input type='text' class='col-lg-6 col-md-6 col-sm-6 col-xs-6 quantityinput' onkeypress='return isNumberKey(event)'>\n";
-  jobDiv += "                <div class='col-lg-6 col-md-6 col-sm-6 col-xs-6 flex updowncolumn'>\n";
+  jobDiv += "                <input type='text' class='col-lg-6 col-md-6 col-sm-6 col-xs-6 quantityinput' onkeypress='return isNumberKey(event)' onchange='onChangeJobQuantity(\"" + job.id + "\")'>\n";
+  jobDiv += "                <div class='col-lg-6 col-md-6 col-sm-6 col-xs-6 flex updowncolumn' style='padding-left: 0px; padding-right: 20px;'>\n";
   jobDiv += "                  <a class='increasequantity_js cursorpointer'><i class='fa fa-caret-up' aria-hidden='true'></i></a>\n";
   jobDiv += "                  <a class='decreasequantity_js cursorpointer'><i class='fa fa-caret-down' aria-hidden='true'></i></a>\n";
   jobDiv += "                </div>\n";
@@ -241,30 +453,62 @@ var createJob = function(job) {
   jobDiv += "        <div class='price'></div>\n";
   jobDiv += "      </div>\n";
   jobDiv += "      <div class='flex1'>\n";
-  jobDiv += "        <button class='button block'>Add to Cart</button>\n";
+  jobDiv += "        <button class='button block' onclick='onJobButtonClick(\"" + job.id + "\")'>Get Quote</button>\n";
   jobDiv += "      </div>\n";
   jobDiv += "    </div>\n";
   jobDiv += "  </div>\n";
   jobDiv += "</div>\n";
   $('.uploadwrapper > div.row').prepend(jobDiv);
   $(".jqtransform").jqTransform();
+
+  var index = $("#job" + job.id).find(".zindex3").find("option").index($("#job" + job.id).find(".zindex3").find("[value=" + job.settings.job_type + "]"));
+  if (index > 0) {
+    $("#job" + job.id).find(".zindex3").find("select").prev('ul').find('li').eq(index).find('a').click();
+  }
+
+  var index = $("#job" + job.id).find(".zindex2").find("option").index($("#job" + job.id).find(".zindex2").find("[value=" + job.settings.material + "]"));
+  if (index > 0) {
+    $("#job" + job.id).find(".zindex2").find("select").prev('ul').find('li').eq(index).find('a').click();
+  }
+
+  var index = $("#job" + job.id).find(".zindex1").find("option").index($("#job" + job.id).find(".zindex1").find("[value=" + job.settings.finish + "]"));
+  if (index > 0) {
+    $("#job" + job.id).find(".zindex1").find("select").prev('ul').find('li').eq(index).find('a').click();
+  }
+
+  var index = $("#job" + job.id).find(".zindex0").find("option").index($("#job" + job.id).find(".zindex0").find("[value='" + job.settings.density + "']"));
+  if (index > 0) {
+    $("#job" + job.id).find(".zindex0").find("select").prev('ul').find('li').eq(index).find('a').click();
+  }
+
+  $("#job" + job.id).find("input").val(job.settings.quantity).trigger("change");
+
+  $("#job" + job.id).find("a.units_js:contains('" + job.settings.units + "')").click();
+
+  onChangeJobAnalysis(job.id);
 }
 
-var analysis_result = function(n, result) {
-  var job = $("#job" + n);
-  if (result.status == 100) {
+var onChangeJobAnalysis = function(id) {
+  var job = $("#job" + id);
+  var result = {
+    status : 100,
+    msg    : ""
+  }
+  if ( jobs[id].tracking.state != "Created" ) {
+    result = jobs[id].tracking.analysis_result;
+  }
+  if ( !result ) {
+    result = {};
+    result.status = 202;
+    result.msg = "";
+  }
+
+  if (result == 100) {
     job.find(".anylysisofdesignstatus > div > span").removeClass("analysisfailed");
     job.find(".anylysisofdesignstatus > div > span").removeClass("analysisdone");
     job.find(".anylysisofdesignstatus > div > span").addClass("analysing");
     job.find(".anylysisofdesignstatus > div > span").html('');
     job.find(".anylysisofdesignstatus > div > h6").html('Uploading Design');
-    job.find(".anylysisofdesignstatus > p").html("Please wait while we take a look at your design");
-  } else if (result.status == 202) {
-    job.find(".anylysisofdesignstatus > div > span").removeClass("analysisfailed");
-    job.find(".anylysisofdesignstatus > div > span").removeClass("analysisdone");
-    job.find(".anylysisofdesignstatus > div > span").addClass("analysing");
-    job.find(".anylysisofdesignstatus > div > span").html('');
-    job.find(".anylysisofdesignstatus > div > h6").html('Analysing Design');
     job.find(".anylysisofdesignstatus > p").html("Please wait while we take a look at your design");
   } else if (result.status == 200) {
     job.find(".anylysisofdesignstatus > div > span").removeClass("analysisfailed");
@@ -273,13 +517,20 @@ var analysis_result = function(n, result) {
     job.find(".anylysisofdesignstatus > div > span").html('<i class="fa fa-check" aria-hidden="true"></i>');
     job.find(".anylysisofdesignstatus > div > h6").html('Analysing Done');
     job.find(".anylysisofdesignstatus > p").html("The model is ready");
-  } else {
+  } else if (result.status == 400) {
     job.find(".anylysisofdesignstatus > div > span").removeClass("analysisdone");
     job.find(".anylysisofdesignstatus > div > span").removeClass("analysing");
     job.find(".anylysisofdesignstatus > div > span").addClass("analysisfailed");
     job.find(".anylysisofdesignstatus > div > span").html("<i class='fa fa-times' aria-hidden='true'></i>");
     job.find(".anylysisofdesignstatus > div > h6").html('Analysing Failed');
-    job.find(".anylysisofdesignstatus > p").html('The Modal has <a class="triggerthreedpopup_js">issues</a>. <a style="margin-left: 15px;">Contact Support</a>');
+    job.find(".anylysisofdesignstatus > p").html('The Model has <a class="triggerthreedpopup_js">issues</a>. <a style="margin-left: 15px;">Contact Support</a>');
+  } else {
+    job.find(".anylysisofdesignstatus > div > span").removeClass("analysisfailed");
+    job.find(".anylysisofdesignstatus > div > span").removeClass("analysisdone");
+    job.find(".anylysisofdesignstatus > div > span").addClass("analysing");
+    job.find(".anylysisofdesignstatus > div > span").html('');
+    job.find(".anylysisofdesignstatus > div > h6").html('Analysing Design');
+    job.find(".anylysisofdesignstatus > p").html("Please wait while we take a look at your design");
   }
 }
 
@@ -361,8 +612,12 @@ var configuration = {
     tracking            : {
       state             : "Created",
       progress          : undefined,
-      created_at        : undefined,
+      analysis_result   : {
+        status          : 100,
+        msg             : ""
+      },
       uploaded_at       : undefined,
+      analysed_at       : undefined,
       placed_at         : undefined,
       confirmed_at      : undefined,
       printing_at       : undefined,
@@ -373,8 +628,8 @@ var configuration = {
     fractory            : undefined,
     csr                 : undefined,
     analysis_progress   : 0,
-    analysis_tag        : "Reading (1/4)...",
-    upload_progress     : 0
+    analysis_tag        : "Validating file...",
+    upload_progress     : -1
   }
 }
 
@@ -391,6 +646,7 @@ var onFilesDrop = function(e) {
 
       var job               = JSON.parse(JSON.stringify(configuration.JOB_TEMPLATE));
       job.id                = window.user.id + "-" +  ((new Date()).getTime().toString() + Math.random().toString().substring(2));
+      job.thumbnail         = "/default-thumbnail.png"
       job.name              = e.originalEvent.dataTransfer.files[i].name;
       job.settings.job_type = configuration.FILE_TYPE_TO_DEFAULT_JOB_TYPE[job.name.split('.').pop().toUpperCase()];
 
@@ -404,8 +660,8 @@ var onFilesDrop = function(e) {
       job.settings.density  = configuration[job.settings.job_type]['DEFAULT_DENSITY'];
 
       logger.debug("[" + job.id + "] Creating a new job:\n" + JSON.stringify(job, null, 3));
-      createJob(job);
       jobs[job.id] = job;
+      createJob(job);
 
       logger.debug("[" + job.id + "] Creating a new worker...");
       var worker = new Worker("/libraries/mesh-analysis/js/mesh-analysis-worker.js");
@@ -428,7 +684,6 @@ var onFilesDrop = function(e) {
               refresh_job(job.id);
               break;
             case 'geometry':
-              if (mesh!=null) {scene.remove(mesh);mesh=null};
               var faces = [];
               var vertices = [];
               for ( var i = 0; i < event.data.faces.length; i++ ) {
@@ -445,21 +700,7 @@ var onFilesDrop = function(e) {
               geometry.computeFaceNormals();
               THREE.GeometryUtils.center(geometry);
 
-              mesh = new THREE.Mesh(geometry, material);
-              directionalLight.position.z = geometry.boundingBox.max.z + geometry.boundingBox.max.x;
-              directionalLight.position.x = geometry.boundingBox.max.z + geometry.boundingBox.max.x;
-              directionalLight.position.y = geometry.boundingBox.max.y * 2;
-              pointLight.position.z = 0;
-              pointLight.position.x = 0;
-              pointLight.position.y = geometry.boundingBox.max.y * 2;
-
-              camera.position.set(0,0,Math.max(geometry.boundingBox.max.x*3,geometry.boundingBox.max.y*3,geometry.boundingBox.max.z*3));
-              controls.reset();
-
-              scene.add(mesh);
-              setTimeout(function() {
-                $("#job" + job.id).find("img").attr("src", renderer.domElement.toDataURL("image/png").replace("image/png", "image/octet-stream"))
-              }, 100);
+              update_geometry(job.id, geometry);
               break;
             default:
           }
@@ -473,12 +714,55 @@ var onFilesDrop = function(e) {
   }
 }
 
+var update_geometry = function(jid, geometry) {
+              if ( mesh_lock ) {
+                return setTimeout(function() { update_geometry(jid, geometry); }, 100);
+              }
+              mesh_lock = true;
+              if (mesh!=null) {scene.remove(mesh);mesh=null};
+              mesh = new THREE.Mesh(geometry, material);
+              directionalLight.position.z = geometry.boundingBox.max.z + geometry.boundingBox.max.x;
+              directionalLight.position.x = geometry.boundingBox.max.z + geometry.boundingBox.max.x;
+              directionalLight.position.y = geometry.boundingBox.max.y * 2;
+              pointLight.position.z = 0;
+              pointLight.position.x = 0;
+              pointLight.position.y = geometry.boundingBox.max.y * 2;
+
+              camera.position.set(0,0,Math.max(geometry.boundingBox.max.x*3,geometry.boundingBox.max.y*3,geometry.boundingBox.max.z*3));
+              controls.reset();
+
+              scene.add(mesh);
+              setTimeout(function() {
+                $("#job" + jid).find("img").attr("src", renderer.domElement.toDataURL("image/png").replace("image/png", "image/octet-stream"))
+                mesh_lock = false;
+
+                var job_form = new FormData();
+                job_form.append("data", $("#job" + jid).find("img").attr("src"));
+
+                $.ajax({
+                  type        : "POST",
+                  method      : "POST",
+                  url         : "/jobs/" + jid + "/thumbnail",
+                  data        : job_form,
+                  cache       : false,
+                  contentType : false,
+                  processData : false,
+                  success: function (data) {
+                  },
+                  error: function (e) {
+                  },
+                  async: true,
+                  timeout: 30*1000
+                });
+              }, 100);
+}
+
 var load_job = function(job) {
     logger.debug("[" + job.id + "] Creating a new job:\n" + JSON.stringify(job, null, 3));
+    jobs[job.id] = job;
     createJob(job);
     job.upload_progress = 100;
     job.errors = job.error;
-    jobs[job.id] = job;
 
     logger.debug("[" + job.id + "] Creating a new worker...");
     var worker = new Worker("/libraries/mesh-analysis/js/mesh-analysis-worker.js");
@@ -499,7 +783,6 @@ var load_job = function(job) {
             refresh_job(job.id);
             break;
           case 'geometry':
-            if (mesh!=null) {scene.remove(mesh);mesh=null};
             var faces = [];
             var vertices = [];
             for ( var i = 0; i < event.data.faces.length; i++ ) {
@@ -516,22 +799,7 @@ var load_job = function(job) {
             geometry.computeFaceNormals();
             THREE.GeometryUtils.center(geometry);
 
-            mesh = new THREE.Mesh(geometry, material);
-            directionalLight.position.z = geometry.boundingBox.max.z + geometry.boundingBox.max.x;
-            directionalLight.position.x = geometry.boundingBox.max.z + geometry.boundingBox.max.x;
-            directionalLight.position.y = geometry.boundingBox.max.y * 2;
-            pointLight.position.z = 0;
-            pointLight.position.x = 0;
-            pointLight.position.y = geometry.boundingBox.max.y * 2;
-
-            camera.position.set(0,0,Math.max(geometry.boundingBox.max.x*3,geometry.boundingBox.max.y*3,geometry.boundingBox.max.z*3));
-            controls.reset();
-
-            scene.add(mesh);
-            setTimeout(function() {
-              $("#job" + job.id).find("img").attr("src", renderer.domElement.toDataURL("image/png").replace("image/png", "image/octet-stream"))
-            }, 100);
-            break;
+            update_geometry(job.id, geometry);
           default:
         }
       } catch(err) {
@@ -549,22 +817,50 @@ var load_job = function(job) {
       }
     };
     xhr.send();
-
-    $.get("/jobs/" + job.id + "/model", function(data, status){
-    });
 }
 
 var refresh_job = function(id) {
   var job = jobs[id];
   if ( job.tracking.state == "Created" && job.upload_progress == 100 ) {
     job.tracking.state = "Uploaded";
-    analysis_result(id, {status: 202});
+    job.tracking.uploaded_at = Math.floor( (new Date).getTime() / 1000 );
+    job.tracking.analysis_result = {
+      status: 202,
+      msg   : ""
+    };
+    onChangeJobAnalysis(job.id);
+/*
   } else if ( job.tracking.state == "Uploaded" && job.cache.quote ) {
     job.tracking.state = "Analysed";
-    analysis_result(id, {status: 200});
+    job.tracking.analysed_at = Math.floor( (new Date).getTime() / 1000 );
+    job.tracking.analysis_result = {
+      status: 200,
+      msg   : ""
+    };
+    onChangeJobAnalysis(job.id);
+    var form = new FormData();
+    form.append("status", job.tracking.analysis_result.status);
+    form.append("msg", job.tracking.analysis_result.msg);
+    $.ajax({
+      type        : "POST",
+      method      : "POST",
+      url         : "/jobs/" + job.id + "/analysed",
+      data        : form,
+      cache       : false,
+      contentType : false,
+      processData : false,
+      success: function (data) {
+        logger.debug("Job analysis complete pushed!\n");
+      },
+      error: function (e) {
+        logger.warn("Job analysis complete push failed!\n" + JSON.stringify(e, null, 3));
+      },
+      async: true,
+      timeout: 30*1000
+    });
+*/
   }
   onChangeJobPrice(id);
-  jobs[job.id] = job;
 }
 
 $(document.body).on("dragover", function(e) { e.stopPropagation(); e.preventDefault(); });
@@ -586,6 +882,7 @@ var h = 600
 var scene = new THREE.Scene();
 renderer = new THREE.WebGLRenderer({preserveDrawingBuffer:true, alpha:true})
 var mesh=null;
+var mesh_lock=false;
 var ambientLight     = null;
 var directionalLight = null;
 var pointLight       = null;

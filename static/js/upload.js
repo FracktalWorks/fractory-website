@@ -1,24 +1,5 @@
 jQuery(document).ready(function () {
     //     var getbaseurl = $("#getbaseurl").val();
-    var getbaseurl = "http://bigappcompany.in/demos/Fracktal/";
-    var getlocation = window.location.href;
-    if (getlocation == getbaseurl || getlocation == getbaseurl + "index.php") {
-        $(window).scroll(function () {
-            var getscrolltop = $(window).scrollTop();
-            var getpositionofsignupsignin = $("#showsignupsignin_js").position().top;
-            if (getscrolltop > getpositionofsignupsignin) {
-                $(".signinandsignup").addClass("active");
-            } else {
-                $(".signinandsignup").removeClass("active");
-            }
-        });
-    }
-    if (getlocation == getbaseurl + "index.html?signin") {
-        setTimeout(function () {
-            $('.signinandregister_js[data-option*="signin"]').click();
-        }, 300);
-
-    }
     $(".getformid_js").click(function () {
 
         $(".getformid_js").removeClass("nopointerevents");
@@ -41,14 +22,6 @@ jQuery(document).ready(function () {
             $(".hideforsignin_js").slideDown(500);
             $(".signupandloginwrapper .btn-submit").text("Sign Up");
         }
-    });
-    $('a[href^="#"]').click(function (e) {
-        e.preventDefault();
-        var target = this.hash;
-        var $target = jQuery(target);
-        jQuery('html, body').stop().animate({
-            'scrollTop': $target.offset().top - 0
-        }, 500, 'swing', function () { });
     });
     $('.animate-slide').animatedHeadline({
         animationType: 'slide'
@@ -102,42 +75,31 @@ jQuery(document).ready(function () {
     
     $(".jqtransform").jqTransform();
     
-    $(".units_js").click(function(){
-       $(this).parent().parent().children().find("a.units_js").removeClass("active");
-        $(this).addClass("active");
-    });
-    
     $(".quality_js").click(function(){
         $(this).parent().parent().children().find("a.quality_js").removeClass("active");
         $(this).addClass("active");
     });
     
     $(".increasequantity_js").click(function(){
-        var getval = $(this).parent().prev().val();
-        if(getval == ""){
-            getval=0;
-            
+        var getval = parseInt($(this).parent().prev().val());
+        if(getval >= 0){
+            getval += 1;
+        } else {
+            getval = 1;
         }
-        getval = parseInt(getval) + 1;
-        $(this).parent().prev().val(getval);
+        $(this).parent().prev().val(getval).trigger("change");
     });
-    
+
     $(".decreasequantity_js").click(function(){
-        var getval = $(this).parent().prev().val();
-        if(getval == ""){
-            getval=0;
-            $(this).parent().prev().val(getval);
-            return false;
+        var getval = parseInt($(this).parent().prev().val());
+        if(getval > 1){
+            getval -= 1;
+        } else {
+            getval = 1;
         }
-        if(getval == 0){
-            alert("Quantity Cannot be Negative");
-            return false;
-            
-        }
-        getval = parseInt(getval) - 1;
-        $(this).parent().prev().val(getval);
+        $(this).parent().prev().val(getval).trigger("change");;
     });
-    
+
     $(".closeuploadedproduct_js").click(function(){
         var b =$(this).parent().parent().parent();
         b.remove();

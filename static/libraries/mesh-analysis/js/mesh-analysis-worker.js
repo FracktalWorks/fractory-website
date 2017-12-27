@@ -461,9 +461,13 @@ do_full_analysis = function() {
   job.cache.bounding_box.z = geometry.boundingBox.max.z - geometry.boundingBox.min.z;
   params = undefined;
   waiting_for_params = 0;
-  $.get("/jobs/analysis/params/" + job.settings.units + "/" + job.cache.bounding_box.x + "/" + job.cache.bounding_box.y + "/" + job.cache.bounding_box.z, function(data, status){
-    params = data;
-  });
+//  $.get("/jobs/" + job.id + "/analysis/fetch_params", function(data, status) {
+//    if ( status == success ) {
+//      params = data;
+//    } else {
+//      params = {}
+//    }
+//  });
 
   volume_iterator_start();
   support_iterator_start();
@@ -481,7 +485,8 @@ do_full_analysis = function() {
   volume_iterator_end();
   support_iterator_end();
 
-  finish_full_analysis();
+  self.postMessage(job.cache);
+//  finish_full_analysis();
 }
 
 create_mesh = function(vf_data) {
@@ -666,11 +671,6 @@ var load_from_data = function(data) {
     logger.debug("Attempting to load '" + job.name + "'...");
     logger.debug("RECEIVED " + (typeof data));
 
-//    var buffer = new ArrayBuffer(data.length*2);
-//    var view = new Uint16Array(buffer);
-//    for (var i=0, len=data.length; i<len; i++) {
-//      view[i] = data.charCodeAt(i);
-//    }
     parse_file(data);
   } catch(err) {
     logger.error("Something went wrong while loading from file!\n" + err.stack);
