@@ -375,7 +375,7 @@ var createJob = function(job) {
   jobDiv += "    <figure class='block text-center whitebg'>\n";
   jobDiv += "      <img src='" + job.thumbnail + "' class='img-responsive displayinline' alt='' style='max-height: 121px; max-width: 310px;'>\n";
   jobDiv += "      <figcaption class='block flex justifycontent flexend'>\n";
-  jobDiv += "        <h3 class='pull-left'>" + job.name + "</h3>\n";
+  jobDiv += "        <h3 class='pull-left' style='max-width: 60%; overflow: hidden;'>" + job.name + "</h3>\n";
   jobDiv += "        <h6 class='pull-right cursorpointer' onclick='viewJob(\"" + job.id + "\")'>Click to view in 3D</h6>\n";
   jobDiv += "      </figcaption>\n";
   jobDiv += "      <div class='closeuploadedproduct' onclick='deleteJob(\"" + job.id + "\")'>\n";
