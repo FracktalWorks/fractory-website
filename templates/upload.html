@@ -27,7 +27,7 @@
                     </div>
                 </div>
             </section>
-            <div class="cartfloatingbutton whitecolor">
+            <div class="cartfloatingbutton whitecolor" onclick="window.location='/cart'">
                         <div class="cartcount whitebg displayflex"><span class="redcolor">{{ cart }}</span></div>
                         <i class="fa fa-shopping-cart displayinlineblock" aria-hidden="true" style="margin: auto;font-size: 2rem;padding: 5px 0;"></i>
                         <h6 style="text-align: center; margin: 0px 10px 35px 10px;"><b>CART</b></h6>
@@ -337,6 +337,15 @@ var onChangeJobUnits = function(id, val) {
 
 var onChangeJobPrice = function(id) {
   var job = jobs[id];
+  if ( job.cache.quote ) {
+      $("#job" + id).find(".price").html("<i class='fa fa-inr' aria-hidden='true'></i>&nbsp;" + Math.round(job.cache.quote * job.settings.quantity * 100)/100)
+
+      $("#job" + id).find("button").removeClass("active");
+      $("#job" + id).find("button").removeClass("getquote");
+      $("#job" + id).find("button").html("Add to Cart");
+      $("#job" + id).find("button").addClass("active");
+      return;
+  }
   if ( job.analysis_progress == 100 && job.analysis_tag == "Analysis...") {
     if ( job.cache.quote ) {
       $("#job" + id).find(".price").html("<i class='fa fa-inr' aria-hidden='true'></i>&nbsp;" + Math.round(job.cache.quote * job.settings.quantity * 100)/100)
@@ -847,7 +856,6 @@ var refresh_job = function(id) {
       msg   : ""
     };
     onChangeJobAnalysis(job.id);
-/*
   } else if ( job.tracking.state == "Uploaded" && job.cache.quote ) {
     job.tracking.state = "Analysed";
     job.tracking.analysed_at = Math.floor( (new Date).getTime() / 1000 );
@@ -876,7 +884,6 @@ var refresh_job = function(id) {
       async: true,
       timeout: 30*1000
     });
-*/
   }
   onChangeJobPrice(id);
 }

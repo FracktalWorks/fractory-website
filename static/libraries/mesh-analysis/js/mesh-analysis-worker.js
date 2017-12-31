@@ -494,7 +494,35 @@ do_full_analysis = function() {
   volume_iterator_end();
   support_iterator_end();
 
+  if ( job.settings.job_type == "FDM" ) {
+    job.cache.quote = Math.round(job.cache.part_volume * 0.8)/100;
+  } else {
+    job.cache.quote = undefined;
+  }
   self.postMessage(job.cache);
+
+    var job_form = new FormData();
+
+    job_form.append("settings", JSON.stringify(job.settings));
+    job_form.append("cache", JSON.stringify(job.cache));
+
+    $.ajax({
+      type        : "POST",
+      method      : "POST",
+      url         : "/jobs/" + job.id,
+      data        : job_form,
+      cache       : false,
+      contentType : false,
+      processData : false,
+      success: function (data) {
+        logger.debug("Job cache pushed to server!\n");
+      },
+      error: function (e) {
+        logger.warn("Job cache could not be pushed to server!\n" + JSON.stringify(e, null, 3));
+      },
+      async: true,
+      timeout: 30*1000
+    });
 //  finish_full_analysis();
 }
 
@@ -679,7 +707,7 @@ var load_from_data = function(data) {
   try {
     logger.debug("Attempting to load '" + job.name + "'...");
     logger.debug("RECEIVED " + (typeof data));
-    job_file = data;
+    parse_file(data);
   } catch(err) {
     logger.error("Something went wrong while loading from file!\n" + err.stack);
   }

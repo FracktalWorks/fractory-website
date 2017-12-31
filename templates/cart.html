@@ -41,72 +41,6 @@
                             </div>
 
                         </div>
-                        {% for job in jobs %}
-                        <div id="job{{ job.id }}" class="row flex sectionpadding20 productsaddedtocart">
-                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                                <div class="products flex ">
-                                    <a href="/jobs/" + {{ job.id }} + "/thumbnail">
-                                        <img src="/jobs/" + {{ job.id }} + "/thumbnail" class="img-responsive" alt="Choco Hazlenut">
-                                    </a>
-                                    <div class="checkout-products">
-                                        <h5>{{ job.name }}</h5>
-                                        (% if job.settings.job_type %}<h6 class="weight lightcolor">3D Print - {{ job.settings.job_type }}</h6>{% else %}<h6 class="weight lightcolor">{{ job.settings.job_type }}</h6>{% endif %}
-                                        <h6>Material: {{ job.settings.material }}</h6>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                                <div class="row flex justifycontent">
-                                    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
-                                        <div class="block text-center"><i class='fa fa-inr' aria-hidden='true'></i>
-                                            <span>{{ job.cache.quote }}</span>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
-                                        <div class="enterquantity block text-center">
-                                            <input type="text" placeholder="" class="form-control" value={{ job.settings.quantity }}>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
-                                        <div class="block text-center"><i class='fa fa-inr' aria-hidden='true'></i>
-                                            <span>{{ job.cache.quote }}</span>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
-                                        <div class="block text-right">
-                                            <a class="cursorpointer boldfont redcolor" onclick="removeFromCart('" + job.id + "')">Remove</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        {% endfor %}
-                        <div class="row  sectionpadding20 ">
-                            <div class="col-lg-6 col-md-6 col-sm-6  hidden-xs">
-                                &nbsp;
-                            </div>
-                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                                <div class="row ">
-                                    <div class="col-lg-3 col-md-3 col-sm-3  hidden-xs">
-                                        <div class="block text-center">&nbsp;</div>
-                                    </div>
-                                    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
-                                        <div class="enterquantity block boldfont text-center">Sub Total</div>
-                                    </div>
-                                    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
-                                        <div class="block text-center boldfont"><i class='fa fa-inr' aria-hidden='true'></i>
-                                            <span>{{ order.subtotal }}</span>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-3 col-md-3 col-sm-3  hidden-xs">
-                                        <div class="block text-right">&nbsp;</div>
-                                    </div>
-                                </div>
-
-
-                            </div>
-
-                        </div>
                     </div>
                     <div class="block cartadditional-details">
                         <div class="row">
@@ -120,7 +54,9 @@
                                             <textarea class="block form-control" rows="3" placeholder="Type Your Request Here"></textarea>
                                         </div>
                                         <div class="flex1">
+<!--
                                             <button type="button" class="btn pull-right btnwidth btn-boxshadow transition block bluebtn whitecolor" onclick="onChangeOrderNote()">Submit</button>
+-->
                                         </div>
                                     </div>
                                     <div class="displayflex block">
@@ -134,7 +70,6 @@
                                         </div>
                                     </div>
                                 </div>
-<!--
                                 <div class="block marginbottom40">
                                     <h6 class="text-uppercase marginbottom10">Enter COUPON CODE</h6>
                                     <div class="formelements block displayflex flexend ">
@@ -146,19 +81,18 @@
                                         </div>
                                     </div>
                                 </div>
--->
                                 <div class="block marginbottom40">
                                     <h6 class="text-uppercase marginbottom10">SELECT DELIVERY ADDRESS</h6>
                                     <div class=" block  ">
                                         <div class="row">
                                             {% for address in user.addresses %}
-                                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12" style="padding: 15px;">
                                                 <div class="addressdetails block whitebg displayflex">
-                                                    <address class="displayinlineblock">
+                                                    <address class="displayinlineblock{% if user.primary_address == (loop.index - 1)  %} selected{% endif %}" style="margin-top: 20px; white-space: nowrap; margin-left:15px; margin-right:15px;">
                                                         <h6>{{ address.identifier }}</h6>
                                                         <p class="nomargin">
                                                             {{ address.full_name }}
-                                                            <br/> {{ address.organisation }}
+                                                            {% if address.organisation %}<br/> {{ address.organisation }}{% endif %}
                                                             <br/> {{ address.line_1 }}
                                                             <br/> {{ address.line_2 }}
                                                             <br/> {{ address.city }} {{ address.area_code }}
@@ -169,7 +103,7 @@
                                                 </div>
                                             </div>
                                             {% endfor %}
-                                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12" style="padding: 15px;">
                                                 <div class="block addressdetails addaddressdiv text-center displayflex whitebg">
                                                     <address class="addadresspopup_js cursorpointer triggerthreedpopup_js">
                                                         <i class="fa fa-plus" aria-hidden="true"></i>
@@ -186,6 +120,7 @@
                                 <div class="block marginbottom40">
                                     <h6 class="text-uppercase marginbottom10">Order Summary</h6>
                                     <div class="completesummary block whitebg marginbottom20">
+<!--
                                         <div class="orderidanddate block">
                                             <div class="displayflex block">
                                                 <div class="flex2">
@@ -205,13 +140,14 @@
                                             </div>
                                         </div>
                                         <div class="seperator block"></div>
+-->
                                         <div class="orderidanddate block">
                                             <div class="displayflex block">
                                                 <div class="flex2">
                                                     Cart Subtotal
                                                 </div>
                                                 <div class="flex1">
-                                                    <i class='fa fa-inr' aria-hidden='true'></i>{{ order.subtotal }}
+                                                    <i class='fa fa-inr' aria-hidden='true'></i><span>0</span>
                                                 </div>
                                             </div>
                                             <div class="displayflex block">
@@ -219,7 +155,7 @@
                                                     Discount
                                                 </div>
                                                 <div class="flex1">
-                                                    <i class='fa fa-inr' aria-hidden='true'></i>{{ order.discount }}
+                                                    <i class='fa fa-inr' aria-hidden='true'></i><span>0</span>
                                                 </div>
                                             </div>
                                             <div class="displayflex block">
@@ -227,15 +163,7 @@
                                                     Estimated Tax
                                                 </div>
                                                 <div class="flex1">
-                                                    <i class='fa fa-inr' aria-hidden='true'></i>{{ order.tax }}
-                                                </div>
-                                            </div>
-                                            <div class="displayflex block">
-                                                <div class="flex2">
-                                                    Shipping
-                                                </div>
-                                                <div class="flex1">
-                                                    <i class='fa fa-inr' aria-hidden='true'></i>{{ order.shipping }}
+                                                    <i class='fa fa-inr' aria-hidden='true'></i><span>0</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -246,7 +174,7 @@
                                                         Order Total
                                                     </div>
                                                     <div class="flex1 boldfont">
-                                                       <i class='fa fa-inr' aria-hidden='true'></i>{{ order.total }}
+                                                       <i class='fa fa-inr' aria-hidden='true'></i>0<span style="font-weight: 300; font-size: 0.8rem;"> + shipping</span>
                                                     </div>
                                                 </div>
                                             </div>
@@ -262,8 +190,8 @@
                         </div>
                     </div>
                     <div class="block proceedtopayment text-center">
-                        <button type="button " class="btn  btnwidth btn-boxshadow transition bluebtn whitecolor">Proceed To Payment</button>
-                    </div>                 
+                        <button type="button " class="btn  btnwidth btn-boxshadow transition bluebtn whitecolor block" style="float: none;">Place Order</button>
+                    </div>
                 </div>
             </section>
 {% endblock %}
@@ -277,88 +205,92 @@
     </div>
     <div class="threedimage">
       <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-        <div class="profiledetails block editaddress">
-                                    <ul class="">
+        <form action="" method="post" enctype="multipart/form-data" class="profiledetails block editaddress">
+                                    <ul class="" style="padding-bottom: 0px;">
                                         <li class=" blackcolor text-center boldfont">
                                             ADD NEW ADDRESS
                                         </li>
                                     </ul>
-                                    <ul class="flex">
-                                        <li class="flex1 text-right lightcolorfont">
-                                            Identifier
-                                        </li>
-                                        <li class="flex2">
-                                            <input name="identifier" type="text" value="" class=" block">
-                                        </li>
+                                    <ul class="flex" style="padding-bottom: 5px;">
+                                        <li class="flex1 text-right lightcolorfont"></li>
+                                        <li class="flex2"><input id="fatal" type="text" value="" class="custominputtype block" disabled="disabled" style="font-size: 0.7em; color: red; visibility:hidden;"></li>
                                     </ul>
-                                    <ul class="flex">
-                                        <li class="flex1 text-right lightcolorfont">
-                                            Full Name
-                                        </li>
-                                        <li class="flex2">
-                                            <input name="full_name" type="text" value="" class=" block">
-                                        </li>
+                                    <ul class="flex" style="padding-bottom: 0px;">
+                                        <li class="flex1 text-right lightcolorfont">Identifier</li>
+                                        <li class="flex2"><input name="identifier" type="text" value="" class="block"></li>
                                     </ul>
-                                    <ul class="flex">
-                                        <li class="flex1 text-right lightcolorfont">
-                                            Organisation
-                                        </li>
-                                        <li class="flex2">
-                                            <input name="organisation" type="text" value="" class=" block">
-                                        </li>
+                                    <ul class="flex" style="padding-bottom: 5px;">
+                                        <li class="flex1 text-right lightcolorfont"></li>
+                                        <li class="flex2"><input id="identifier" type="text" value="" class="custominputtype block" disabled="disabled" style="font-size: 0.7em; color: red; visibility:hidden;"></li>
                                     </ul>
-                                    <ul class="flex">
-                                        <li class="flex1 text-right lightcolorfont">
-                                            Line 1
-                                        </li>
-                                        <li class="flex2">
-                                            <input name="line_1" type="text" value="" class=" block">
-                                        </li>
+                                    <ul class="flex" style="padding-bottom: 0px;">
+                                        <li class="flex1 text-right lightcolorfont">Full Name</li>
+                                        <li class="flex2"><input name="full_name" type="text" value="" class="block"></li>
                                     </ul>
-                                    <ul class="flex">
-                                        <li class="flex1 text-right lightcolorfont">
-                                            Line 2
-                                        </li>
-                                        <li class="flex2">
-                                            <input name="line_2" type="text" value="" class=" block">
-                                        </li>
+                                    <ul class="flex" style="padding-bottom: 5px;">
+                                        <li class="flex1 text-right lightcolorfont"></li>
+                                        <li class="flex2"><input id="full_name" type="text" value="" class="custominputtype block" disabled="disabled" style="font-size: 0.7em; color: red; visibility:hidden;"></li>
                                     </ul>
-                                    <ul class="flex">
-                                        <li class="flex1 text-right lightcolorfont">
-                                            City
-                                        </li>
-                                        <li class="flex2">
-                                            <input name="city" type="text" value="" class=" block">
-                                        </li>
+                                    <ul class="flex" style="padding-bottom: 0px;">
+                                        <li class="flex1 text-right lightcolorfont">Organisation</li>
+                                        <li class="flex2"><input name="organisation" type="text" value="" class=" block"></li>
                                     </ul>
-                                    <ul class="flex phoneinputtype">
-                                        <li class="flex1 text-right lightcolorfont">
-                                            State
-                                        </li>
-                                        <li class="flex2 flex justifycontent">
-                                            <input name="state" type="text" value="" class=" block">
-                                        </li>
+                                    <ul class="flex" style="padding-bottom: 5px;">
+                                        <li class="flex1 text-right lightcolorfont"></li>
+                                        <li class="flex2"><input id="organisation" type="text" value="" class="custominputtype block" disabled="disabled" style="font-size: 0.7em; color: red; visibility:hidden;"></li>
                                     </ul>
-                                    <ul class="flex">
-                                        <li class="flex1 text-right lightcolorfont">
-                                            Postal Code
-                                        </li>
-                                        <li class="flex2">
-                                            <input name="area_code" type="text" value="" class=" block">
-                                        </li>
+                                    <ul class="flex" style="padding-bottom: 0px;">
+                                        <li class="flex1 text-right lightcolorfont">Line 1</li>
+                                        <li class="flex2"><input name="line_1" type="text" value="" class=" block"></li>
                                     </ul>
-                                    <ul class="flex">
-                                        <li class="flex1 text-right lightcolorfont">
-                                            Phone
-                                        </li>
-                                        <li class="flex2">
-                                            <input name="phone" type="phone" value="" class=" block">
-                                        </li>
+                                    <ul class="flex" style="padding-bottom: 5px;">
+                                        <li class="flex1 text-right lightcolorfont"></li>
+                                        <li class="flex2"><input id="line_1" type="text" value="" class="custominputtype block" disabled="disabled" style="font-size: 0.7em; color: red; visibility:hidden;"></li>
+                                    </ul>
+                                    <ul class="flex" style="padding-bottom: 0px;">
+                                        <li class="flex1 text-right lightcolorfont">Line 2</li>
+                                        <li class="flex2"><input name="line_2" type="text" value="" class=" block"></li>
+                                    </ul>
+                                    <ul class="flex" style="padding-bottom: 5px;">
+                                        <li class="flex1 text-right lightcolorfont"></li>
+                                        <li class="flex2"><input id="line_2" type="text" value="" class="custominputtype block" disabled="disabled" style="font-size: 0.7em; color: red; visibility:hidden;"></li>
+                                    </ul>
+                                    <ul class="flex" style="padding-bottom: 0px;">
+                                        <li class="flex1 text-right lightcolorfont">City</li>
+                                        <li class="flex2"><input name="city" type="text" value="" class=" block"></li>
+                                    </ul>
+                                    <ul class="flex" style="padding-bottom: 5px;">
+                                        <li class="flex1 text-right lightcolorfont"></li>
+                                        <li class="flex2"><input id="city" type="text" value="" class="custominputtype block" disabled="disabled" style="font-size: 0.7em; color: red; visibility:hidden;"></li>
+                                    </ul>
+                                    <ul class="flex" style="padding-bottom: 0px;">
+                                        <li class="flex1 text-right lightcolorfont">State</li>
+                                        <li class="flex2 flex justifycontent"><input name="state" type="text" value="" class=" block"></li>
+                                    </ul>
+                                    <ul class="flex" style="padding-bottom: 5px;">
+                                        <li class="flex1 text-right lightcolorfont"></li>
+                                        <li class="flex2"><input id="state" type="text" value="" class="custominputtype block" disabled="disabled" style="font-size: 0.7em; color: red; visibility:hidden;"></li>
+                                    </ul>
+                                    <ul class="flex" style="padding-bottom: 0px;">
+                                        <li class="flex1 text-right lightcolorfont">Postal Code</li>
+                                        <li class="flex2"><input name="area_code" type="text" value="" class=" block"></li>
+                                    </ul>
+                                    <ul class="flex" style="padding-bottom: 5px;">
+                                        <li class="flex1 text-right lightcolorfont"></li>
+                                        <li class="flex2"><input id="area_code" type="text" value="" class="custominputtype block" disabled="disabled" style="font-size: 0.7em; color: red; visibility:hidden;"></li>
+                                    </ul>
+                                    <ul class="flex" style="padding-bottom: 0px;">
+                                        <li class="flex1 text-right lightcolorfont">Phone</li>
+                                        <li class="flex2"><input name="phone" type="phone" value="" class=" block"></li>
+                                    </ul>
+                                    <ul class="flex" style="padding-bottom: 5px;">
+                                        <li class="flex1 text-right lightcolorfont"></li>
+                                        <li class="flex2"><input id="phone" type="text" value="" class="custominputtype block" disabled="disabled" style="font-size: 0.7em; color: red; visibility:hidden;"></li>
                                     </ul>
                                     <ul class="block text-center">
-                                        <li class="block text-center"><button type="button" class="btn btnwidth greenbg whitecolor saveaddress_js">Save</button></li>
+                                        <li class="block text-center"><button type="button" class="btn btnwidth greenbg whitecolor block saveaddress_js" style="float: none; margin-top: 15px;">Save</button></li>
                                     </ul>
-        </div>
+        </form>
       </div>
     </div>
   </div>
@@ -395,6 +327,200 @@
           $('[data-toggle="tooltip"]').tooltip();
       });
       var removeFromCart = function(id) {
+
+  logger.debug("[" + id + "] Job decart requested");
+  $.post("/jobs/" + id + "/decart", function(data, status){
+    if ( status == "nocontent" ) {
+      $("#job" + id).remove()
+      jobs[id] = undefined;
+      delete jobs[id];
+refresh_cart();
+    } else {
+      logger.error("[" + id + "] Job cart failed\n" + data);
+    }
+  });
+
       }
+
+function validate_phone() {
+  console.log("validating phone");
+  $("#phone").removeClass("error")
+  $("#phone").val("")
+  if ( $("[name=phone]").val() == "" ) {
+    $("#phone").addClass("error")
+    $("#phone").val("Contact number is required");
+    return false
+  }
+  if ( $("[name=phone]").intlTelInput("isValidNumber") ) {
+    $("[name=phone]").val($("[name=phone]").intlTelInput("getNumber", 1))
+    return true
+  }
+  $("#phone").addClass("error")
+  $("#phone").val("Please enter a valid number!")
+  return false
+}
+
+  $(".saveaddress_js").click(function () {
+$(".saveaddress_js").attr('disabled', 'disabled');
+    $("form").removeClass("invalid");
+    if ( ! validate_length("Identifier", "identifier", 3, 16, true) ) { $("form").addClass("invalid"); }
+    if ( ! validate_length("Name", "full_name", 12, 64, true) ) { $("form").addClass("invalid"); }
+    if ( ! validate_length("Organisation", "organisation", 5, 64, false) ) { $("form").addClass("invalid"); }
+    if ( ! validate_length("Line 1", "line_1", 5, 64, true) ) { $("form").addClass("invalid"); }
+    if ( ! validate_length("Line 2", "line_2", 8, 64, true) ) { $("form").addClass("invalid"); }
+    if ( ! validate_length("City", "city", 2, 24, true) ) { $("form").addClass("invalid"); }
+    if ( ! validate_length("State", "state", 2, 24, true) ) { $("form").addClass("invalid"); }
+    if ( ! validate_length("Postal code", "area_code", 6, 6, true) ) { $("form").addClass("invalid"); }
+    if ( ! validate_phone() ) { $("form").addClass("invalid"); }
+    if ( $("form").hasClass("invalid") ) {
+$(".saveaddress_js").prop('disabled', false);
+      return false;
+    }
+
+    var address_form = new FormData($("form")[0]);
+    
+    $.ajax({
+      type        : "POST",
+      method      : "POST",
+      url         : "/address-book/add",
+      data        : address_form,
+      cache       : false,
+      contentType : false,
+      processData : false,
+      success: function (data) {
+        logger.debug("Form pushed to server!\n");
+$(".saveaddress_js").prop('disabled', false);
+        $(".threedviewpopup").removeClass("active");
+location.reload()
+      },
+      error: function (e) {
+        logger.warn("Job cache could not be pushed to server!\n");
+$(".saveaddress_js").prop('disabled', false);
+        $(".threedviewpopup").removeClass("active");
+location.reload()
+      },
+      async: true,
+      timeout: 30*1000
+    });
+  });
+
+  $("[name=phone]").intlTelInput({
+    preferredCountries: ["in"],
+    initialCountry: "in",
+    utilsScript: "libraries/intlTelInput/js/utils.js"
+  });
+
+  var validate_length = function(label, field, min, max, required) {
+    $("#" + field).removeClass("error");
+    $("#" + field).val("There was some error!");
+    if ( $("[name=" + field + "]").val().length == 0 && required) {
+      $("#" + field).val(label + " is required!");
+      $("#" + field).addClass("error");
+      return false;
+    }
+    if ( $("[name=" + field + "]").val().length == 0 && !required) {
+      return true;
+    }
+    if ( $("[name=" + field + "]").val().length < min ) {
+      $("#" + field).val(label + " too short!");
+      $("#" + field).addClass("error");
+      return false;
+    }
+    if ( $("[name=" + field + "]").val().length > max ) {
+      $("#" + field).val(label + " too long!");
+      $("#" + field).addClass("error");
+      return false;
+    }
+    return true;
+  }
+
+  $("[name=phone]").on("change", function() { validate_phone() })
+  $("[name=organisation]").on("change", function() { validate_length("Organisation", "organisation", 5, 64, false); })
+
+  $("[name=identifier]").on("change", function() { validate_length("Identifier", "identifier", 3, 16, true); })
+  $("[name=full_name]").on("change", function() { validate_length("Name", "full_name", 12, 64, true); })
+  $("[name=line_1]").on("change", function() { validate_length("Line 1", "line_1", 5, 64, true); })
+  $("[name=line_2]").on("change", function() { validate_length("Line 2", "line_2", 8, 64, true); })
+  $("[name=city]").on("change", function() { validate_length("City", "city", 2, 24, true); })
+  $("[name=state]").on("change", function() { validate_length("State", "state", 2, 24, true); })
+  $("[name=area_code]").on("change", function() { validate_length("Postal code", "area_code", 6, 6, true); })
+
+var jobs = []
+var load_job = function(job) {
+
+jobs[job.id] = job;
+var jobDiv = ""
+jobDiv += "<div id='job" + job.id + "' class='row flex sectionpadding20 productsaddedtocart'>\n";
+jobDiv += "  <div class='col-lg-6 col-md-6 col-sm-6 col-xs-12'>\n";
+jobDiv += "    <div class='products flex'>\n";
+jobDiv += "      <a href='/jobs/" + job.id + "/thumbnail'>\n";
+jobDiv += "        <img src='/jobs/" + job.id + "/thumbnail' class='img-responsive' alt='Choco Hazlenut'>\n";
+jobDiv += "      </a>\n";
+jobDiv += "      <div class='checkout-products'>\n";
+jobDiv += "        <h5>" + job.name + "</h5>\n";
+if ( job.settings.job_type == 'FDM' || job.settings.job_type == 'SLA' || job.settings.job_type == 'SLS' ) {
+jobDiv += "        <h6 class='weight lightcolor'>3D Print - " + job.settings.job_type + "</h6>\n";
+} else {
+jobDiv += "        <h6 class='weight lightcolor'>" + job.settings.job_type + "</h6>\n";
+}
+jobDiv += "        <h6>Material:" + job.settings.material + "</h6>\n";
+jobDiv += "      </div>\n";
+jobDiv += "    </div>\n";
+jobDiv += "  </div>\n";
+jobDiv += "  <div class='col-lg-6 col-md-6 col-sm-6 col-xs-12'>\n";
+jobDiv += "    <div class='row flex justifycontent'>\n";
+jobDiv += "      <div class='col-lg-3 col-md-3 col-sm-3 col-xs-12'>\n";
+jobDiv += "        <div class='block text-center'><i class='fa fa-inr' aria-hidden='true'></i>\n";
+jobDiv += "          <span>" + job.cache.quote + "</span>\n";
+jobDiv += "        </div>\n";
+jobDiv += "      </div>\n";
+jobDiv += "      <div class='col-lg-3 col-md-3 col-sm-3 col-xs-12'>\n";
+jobDiv += "        <div class='enterquantity block text-center'>\n";
+jobDiv += "          <span>" + job.settings.quantity + "</span>\n";
+//jobDiv += "          <input type='text' placeholder='' class='form-control' value=" + job.settings.quantity + ">\n";
+jobDiv += "        </div>\n";
+jobDiv += "      </div>\n";
+jobDiv += "      <div class='col-lg-3 col-md-3 col-sm-3 col-xs-12'>\n";
+jobDiv += "        <div class='block text-center'><i class='fa fa-inr' aria-hidden='true'></i>\n";
+jobDiv += "          <span>" + ( job.cache.quote * job.settings.quantity ) + "</span>\n";
+jobDiv += "        </div>\n";
+jobDiv += "      </div>\n";
+jobDiv += "      <div class='col-lg-3 col-md-3 col-sm-3 col-xs-12'>\n";
+jobDiv += "        <div class='block text-right'>\n";
+jobDiv += "          <a class='cursorpointer boldfont redcolor' onclick='removeFromCart(\"" + job.id + "\")'>Remove</a>\n";
+jobDiv += "        </div>\n";
+jobDiv += "      </div>\n";
+jobDiv += "    </div>\n";
+jobDiv += "  </div>\n";
+jobDiv += "</div>\n";
+
+$('.cartitemsheader').append(jobDiv);
+
+
+}
+    {% for job in jobs %}
+      load_job({{ job }});
+    {% endfor %}
+
+var refresh_cart = function() {
+
+var quote = 0;
+for ( var i = 0; i < jobs.length; i++ ) {
+  if ( job.cache ) {
+ quote += parseInt(job.cache.quote) * parseInt(job.settings.quantity);
+  }
+}
+
+var subtotal = $($(".orderidanddate").find(".flex1")[0]).find("span");
+var discount = $($(".orderidanddate").find(".flex1")[1]).find("span");
+var tax = $($(".orderidanddate").find(".flex1")[2]).find("span");
+var total = $($(".orderidanddate").find(".flex1")[3]).find("span");
+
+subtotal.html(quote);
+tax.html(Math.round((quote - parseInt(discount.html()))*18)/100);
+total.html(Math.round((quote - parseInt(discount.html()) + parseInt(tax.html())) * 100)/100);
+}
+
+refresh_quote();
   </script>
 {% endblock %}
