@@ -494,11 +494,11 @@ do_full_analysis = function() {
   volume_iterator_end();
   support_iterator_end();
 
-  if ( job.settings.job_type == "FDM" ) {
-    job.cache.quote = Math.round(job.cache.part_volume * 0.8)/100;
-  } else {
+//  if ( job.settings.job_type == "FDM" ) {
+//    job.cache.quote = Math.round(job.cache.part_volume * 0.8)/100;
+//  } else {
     job.cache.quote = undefined;
-  }
+//  }
   self.postMessage(job.cache);
 
     var job_form = new FormData();
