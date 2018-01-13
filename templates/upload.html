@@ -378,7 +378,7 @@ var onJobButtonClick = function(id) {
     requestQuote(id);
     $("#job" + id).find("button").removeClass("getquote");    
     $("#job" + id).find("button").html("Quote Requested");
-    $.get("/jobs/" + id + "/quote");
+    $.post("/jobs/" + id + "/quote");
   } else if ( $("#job" + id).find("button").hasClass("active") ) {
     onAddToCart(id);
   }
