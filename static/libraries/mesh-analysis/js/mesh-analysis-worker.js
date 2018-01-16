@@ -91,7 +91,7 @@ self.onmessage = function(e) {
       if (e.data.action == 'init') {
         job = e.data.job;
         logger.sub_label = job.id.toString();
-        job.cache = cache_template;
+        job.cache.action = "cache";
         if ( e.data.file ) {
           load_from_file( e.data.file );
         } else {
@@ -478,6 +478,9 @@ do_full_analysis = function() {
 //    }
 //  });
 
+  if ( job.cache.part_volume > 0 ) {
+  logger.debug("Using analysis cache for '" + job.name + "'...");
+  } else {
   volume_iterator_start();
   support_iterator_start();
   logger.debug("Starting stage I analysis for '" + job.name + "'...");
@@ -493,18 +496,16 @@ do_full_analysis = function() {
   }
   volume_iterator_end();
   support_iterator_end();
-
 //  if ( job.settings.job_type == "FDM" ) {
 //    job.cache.quote = Math.round(job.cache.part_volume * 0.8)/100;
 //  } else {
-    job.cache.quote = undefined;
+//    job.cache.quote = undefined;
 //  }
   self.postMessage(job.cache);
 
     var job_form = new FormData();
 
     job_form.append("settings", JSON.stringify(job.settings));
-    job_form.append("cache", JSON.stringify(job.cache));
 
     $.ajax({
       type        : "POST",
@@ -524,6 +525,7 @@ do_full_analysis = function() {
       timeout: 30*1000
     });
 //  finish_full_analysis();
+  }
 }
 
 create_mesh = function(vf_data) {

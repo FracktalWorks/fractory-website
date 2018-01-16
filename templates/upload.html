@@ -222,6 +222,8 @@ var onChangeJobType = function(id) {
     $("#job" + id).find(".zindex0").html(density);
     $(".jqtransform").jqTransform();
 
+    if ( val != jobs[id].settings.job_type ) {
+
     cancelQuote(id);
 
     jobs[id].settings.job_type = val;
@@ -245,6 +247,7 @@ var onChangeJobType = function(id) {
     }
 
     requestQuote(id);
+    }
   } else {
     var index = $("#job" + id).find(".zindex3").find("option").index($("#job" + id).find(".zindex3").find("[value='" + jobs[id].settings.job_type + "']"));
     if (index > 0) {
@@ -856,7 +859,7 @@ var refresh_job = function(id) {
       msg   : ""
     };
     onChangeJobAnalysis(job.id);
-  } else if ( job.tracking.state == "Uploaded" && job.cache.quote ) {
+  } else if ( job.tracking.state == "Uploaded" && job.cache.part_volume ) {
     job.tracking.state = "Analysed";
     job.tracking.analysed_at = Math.floor( (new Date).getTime() / 1000 );
     job.tracking.analysis_result = {
@@ -947,6 +950,7 @@ function render_loop() {
 render_loop();
 
     {% for job in jobs %}
+      console.log({{ job }});
       load_job({{ job }});
     {% endfor %}
 
