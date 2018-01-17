@@ -15,6 +15,9 @@
         <th style="display: none;">Job ID</th>
         <th>Last Updated</th>
         <th>Name</th>
+<!--
+        <th>By</th>
+-->
         <th>Type</th>
         <th>Settings</th>
         <th>File</th>
@@ -45,13 +48,20 @@
     }
 
     var send_msg = function (id) {
-      $("#" + id).find("[name=msg]").val();
+      console.log($("#" + id).find("[name=msg]").val());
+      $.ajax({
+        method: "POST",
+        type: "POST",
+        url: "/jobs/" + id + "/support/msg/usr",
+        data: {body: $("#" + id).find("[name=msg]").val()}
+      });
     }
 
-    var load_job = function(job) {
+    var load_job = function(job, jid) {
+      console.log(jid);
       var jobDiv = ""
       if ( job.cache.quote ) {
-        jobDiv += "<tr>\n";
+        jobDiv += "<tr id='" + job.id + "'>\n";
       } else {
         jobDiv += "<tr class='danger' id='" + job.id + "'>\n";
       }
@@ -59,20 +69,20 @@
       jobDiv += "  <td style='display: none;'>" + job.id + "</td>\n";
       jobDiv += "  <td>" + new Date(job.tracking.updated_at*1000 || job.tracking.uploaded_at*1000) + "</td>\n";
       jobDiv += "  <td>" + job.name + "</td>\n";
+//      jobDiv += "  <td>" + job.user + "</td>\n";
       jobDiv += "  <td>" + job.settings.job_type + "</td>\n";
       jobDiv += "  <td>Material: " + job.settings.material + "<br/>Density: " + job.settings.density + "<br/>Finish: " + job.settings.material + "</td>\n";
       jobDiv += "  <td><a href='/jobs/" + job.id + "/model'><button>Download</button></td></a>\n";
       jobDiv += "  <td><a href='/jobs/" + job.id + "/extra'><button>Download</button></td></a>\n";
       jobDiv += "  <td><button onclick='upload_gcode(\"" + job.id + "\")'>Upload</button></td>\n";
       jobDiv += "  <td><input type='text' name='quote' value='" + job.cache.quote + "'></input><button onclick='update_quote(\"" + job.id + "\")'>Update</button></td>\n";
-      jobDiv += "  <td><input type='text' name='msg'></input><button onclick='send_msg(\"" + job.id + "\")'>Send</button></td>\n";
+      jobDiv += "  <td><textarea rows='4' cols='50' name='msg'><button onclick='send_msg(\"" + job.id + "\")'>Send</button></td>\n";
       jobDiv += "</tr>\n";
 
       $('tbody').prepend(jobDiv);
     }
 
     {% for job in jobs %}
-      var jobb = {{ job }};
       load_job({{ job }});
     {% endfor %}
 
@@ -97,7 +107,7 @@
           x = rows[i].getElementsByTagName("td")[0];
           y = rows[i + 1].getElementsByTagName("td")[0];
           // Check if the two rows should switch place:
-          if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+          if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
             // I so, mark as a switch and break the loop:
             shouldSwitch= true;
             break;
