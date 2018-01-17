@@ -51,12 +51,9 @@
                                     </h6>
                                     <div class="formelements block displayflex flexend ">
                                         <div class="flex2">
-                                            <textarea class="block form-control" rows="3" placeholder="Type Your Request Here"></textarea>
+                                            <textarea class="block form-control" rows="3" placeholder="Type Your Request Here" id="order_note_input"></textarea>
                                         </div>
                                         <div class="flex1">
-<!--
-                                            <button type="button" class="btn pull-right btnwidth btn-boxshadow transition block bluebtn whitecolor" onclick="onChangeOrderNote()">Submit</button>
--->
                                         </div>
                                     </div>
                                     <div class="displayflex block">
@@ -74,7 +71,7 @@
                                     <h6 class="text-uppercase marginbottom10">Enter COUPON CODE</h6>
                                     <div class="formelements block displayflex flexend ">
                                         <div class="flex2 txet-center">
-                                            <input type="text" class="block form-control" placeholder="Type Your Coupon Code Here"/>
+                                            <input type="text" class="block form-control" placeholder="Type Your Coupon Code Here" id="coupon_input"/>
                                         </div>
                                         <div class="flex1">
                                             <button type="button " class="btn pull-right btnwidth btn-boxshadow transition block bluebtn whitecolor">Apply</button>
@@ -87,8 +84,8 @@
                                         <div class="row">
                                             {% for address in user.addresses %}
                                             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12" style="padding: 15px;">
-                                                <div class="addressdetails block whitebg displayflex">
-                                                    <address class="displayinlineblock{% if user.primary_address == (loop.index - 1)  %} selected{% endif %}" style="margin-top: 20px; white-space: nowrap; margin-left:15px; margin-right:15px;">
+                                                <div class="addressdetails block whitebg displayflex" onclick="select_address('{{ address.identifier }}')">
+                                                    <address class="displayinlineblock{% if user.primary_address == (loop.index - 1)  %} selected{% endif %}" id="{{ address.identifier }}" style="margin-top: 20px; white-space: nowrap; margin-left:15px; margin-right:15px;">
                                                         <h6>{{ address.identifier }}</h6>
                                                         <p class="nomargin">
                                                             {{ address.full_name }}
@@ -120,34 +117,30 @@
                                 <div class="block marginbottom40">
                                     <h6 class="text-uppercase marginbottom10">Order Summary</h6>
                                     <div class="completesummary block whitebg marginbottom20">
-<!--
                                         <div class="orderidanddate block">
                                             <div class="displayflex block">
                                                 <div class="flex2">
                                                     Order Id
                                                 </div>
-                                                <div class="flex1">
-                                                    {{ order.id }}
+                                                <div class="flex1" style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis; direction: rtl; text-align: right;" id="order_id_div">
                                                 </div>
                                             </div>
                                             <div class="displayflex block">
                                                 <div class="flex2">
                                                     Shipping Date
                                                 </div>
-                                                <div class="flex1">
-                                                    {{ order.ship_by_date }}
+                                                <div class="flex1" id="ship_by_div">
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="seperator block"></div>
--->
                                         <div class="orderidanddate block">
                                             <div class="displayflex block">
                                                 <div class="flex2">
                                                     Cart Subtotal
                                                 </div>
                                                 <div class="flex1">
-                                                    <i class='fa fa-inr' aria-hidden='true'></i><span>0</span>
+                                                    <i class='fa fa-inr' aria-hidden='true' style="padding-right: 5px;"></i><span id="subtotal_div"></span>
                                                 </div>
                                             </div>
                                             <div class="displayflex block">
@@ -155,7 +148,15 @@
                                                     Discount
                                                 </div>
                                                 <div class="flex1">
-                                                    <i class='fa fa-inr' aria-hidden='true'></i><span>0</span>
+                                                    <i class='fa fa-inr' aria-hidden='true' style="padding-right: 5px;"></i><span id="discount_div"></span>
+                                                </div>
+                                            </div>
+                                            <div class="displayflex block">
+                                                <div class="flex2">
+                                                    Shipping
+                                                </div>
+                                                <div class="flex1">
+                                                    <i class='fa fa-inr' aria-hidden='true' style="padding-right: 5px;"></i><span id="shipping_div"></span>
                                                 </div>
                                             </div>
                                             <div class="displayflex block">
@@ -163,7 +164,7 @@
                                                     Estimated Tax
                                                 </div>
                                                 <div class="flex1">
-                                                    <i class='fa fa-inr' aria-hidden='true'></i><span>0</span>
+                                                    <i class='fa fa-inr' aria-hidden='true' style="padding-right: 5px;"></i><span id="tax_div"></span>
                                                 </div>
                                             </div>
                                         </div>
@@ -174,7 +175,7 @@
                                                         Order Total
                                                     </div>
                                                     <div class="flex1 boldfont">
-                                                       <i class='fa fa-inr' aria-hidden='true'></i>0<span style="font-weight: 300; font-size: 0.8rem;"> + shipping</span>
+                                                       <i class='fa fa-inr' aria-hidden='true' style="padding-right: 5px;"></i><span id="total_div"></span>
                                                     </div>
                                                 </div>
                                             </div>
@@ -190,7 +191,7 @@
                         </div>
                     </div>
                     <div class="block proceedtopayment text-center">
-                        <button type="button " class="btn  btnwidth btn-boxshadow transition bluebtn whitecolor block" style="float: none;">Place Order</button>
+                        <button type="button " class="btn  btnwidth btn-boxshadow transition bluebtn whitecolor block" style="float: none;" onclick="make_payment()">Make Payment</button>
                     </div>
                 </div>
             </section>
@@ -323,22 +324,24 @@
   <script src="libraries/three/js/OrbitControls.js"></script>
   <script src="libraries/three/js/webgl_detector.js"></script>
   <script>
+    var HOST = "http://localhost:9090";
+
       jQuery(document).ready(function () {
           $('[data-toggle="tooltip"]').tooltip();
       });
       var removeFromCart = function(id) {
 
-  logger.debug("[" + id + "] Job decart requested");
-  $.post("/jobs/" + id + "/decart", function(data, status){
-    if ( status == "nocontent" ) {
-      $("#job" + id).remove()
-      jobs[id] = undefined;
-      delete jobs[id];
-refresh_cart();
-    } else {
-      logger.error("[" + id + "] Job cart failed\n" + data);
-    }
-  });
+      logger.debug("[" + id + "] Job decart requested");
+      $.post("/jobs/" + id + "/decart", function(data, status){
+        if ( status == "nocontent" ) {
+          $("#job" + id).remove()
+          jobs[id] = undefined;
+          delete jobs[id];
+          refresh_cart();
+        } else {
+          logger.error("[" + id + "] Job cart failed\n" + data);
+        }
+      });
 
       }
 
@@ -453,9 +456,7 @@ var jobDiv = ""
 jobDiv += "<div id='job" + job.id + "' class='row flex sectionpadding20 productsaddedtocart'>\n";
 jobDiv += "  <div class='col-lg-6 col-md-6 col-sm-6 col-xs-12'>\n";
 jobDiv += "    <div class='products flex'>\n";
-jobDiv += "      <a href='/jobs/" + job.id + "/thumbnail'>\n";
-jobDiv += "        <img src='/jobs/" + job.id + "/thumbnail' class='img-responsive' alt='Choco Hazlenut'>\n";
-jobDiv += "      </a>\n";
+jobDiv += "        <img src='" + job.thumbnail + "' class='img-responsive' alt='Thumb'>\n";
 jobDiv += "      <div class='checkout-products'>\n";
 jobDiv += "        <h5>" + job.name + "</h5>\n";
 if ( job.settings.job_type == 'FDM' || job.settings.job_type == 'SLA' || job.settings.job_type == 'SLS' ) {
@@ -503,24 +504,129 @@ $('.cartitemsheader').append(jobDiv);
     {% endfor %}
 
 var refresh_cart = function() {
+  var id = window.user.id + "-" +  ((new Date()).getTime().toString() + Math.random().toString().substring(2))
+  var ship_date = new Date();
 
-var quote = 0;
-for ( var i = 0; i < jobs.length; i++ ) {
-  if ( job.cache ) {
- quote += parseInt(job.cache.quote) * parseInt(job.settings.quantity);
+  var subtotal = 0;
+  var discount = 0;
+  var tax      = 0;
+  var shipping = 40;
+  var total    = 0;
+
+  var ship_by_div  = $("#ship_by_div");
+  var order_id_div = $("#order_id_div");
+
+  var subtotal_div = $("#subtotal_div");
+  var discount_div = $("#discount_div");
+  var tax_div      = $("#tax_div");
+  var shipping_div = $("#shipping_div");
+  var total_div    = $("#total_div");
+
+  order_id_div.html(id);
+
+  if ( ship_date.getHours() > 15 ) {
+    ship_date.setDate(ship_date.getDate() + 1);
   }
+  if ( ship_date.getDay() > 4 ) {
+    ship_date.setDate(ship_date.getDate() + 1);
+  }
+  ship_date.setDate(ship_date.getDate() + 2);
+
+  var days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+
+  ship_date = days[ship_date.getDay()] + " " + months[ship_date.getMonth()] + " " + ship_date.getDate() + " " + (ship_date.getYear() + 1900);
+  ship_by_div.html(ship_date);
+
+  for ( i in jobs ) {
+    if ( jobs[i].cache && jobs[i].cache.quote && jobs[i].settings.quantity ) {
+      subtotal += parseInt(jobs[i].cache.quote) * parseInt(jobs[i].settings.quantity);
+      shipping += jobs[i].settings.quantity * 30;
+    }
+  }
+
+  // TODO discount
+
+  tax = Math.round((subtotal - discount)*18)/100;
+  total = subtotal - discount + tax + shipping;
+
+  console.log(subtotal);
+  console.log(discount);
+  console.log(tax);
+  console.log(shipping);
+  console.log(total);
+  
+  subtotal_div.html(subtotal);
+  discount_div.html(discount);
+  shipping_div.html(shipping);
+  tax_div.html(tax);
+  total_div.html(total);
 }
 
-var subtotal = $($(".orderidanddate").find(".flex1")[0]).find("span");
-var discount = $($(".orderidanddate").find(".flex1")[1]).find("span");
-var tax = $($(".orderidanddate").find(".flex1")[2]).find("span");
-var total = $($(".orderidanddate").find(".flex1")[3]).find("span");
+refresh_cart();
 
-subtotal.html(quote);
-tax.html(Math.round((quote - parseInt(discount.html()))*18)/100);
-total.html(Math.round((quote - parseInt(discount.html()) + parseInt(tax.html())) * 100)/100);
+var select_address = function(id) {
+  $("address").removeClass("selected");
+  $("#" + id).addClass("selected");
 }
 
-refresh_quote();
+var make_payment = function() {
+  var order = {}
+  order.id = window.user.id + "-" +  ((new Date()).getTime().toString().substring(5) + Math.random().toString().substring(2));
+  order.address = $("address").index($("address.selected"));
+  order.jobs = [];
+
+  for ( job in jobs ) {
+    order.jobs.push(job);
+  }
+
+  var coupon_input = $("#coupon_input");
+  var order_note_input = $("#order_note_input");
+
+  order.coupon          = coupon_input.val();
+  order.note            = order_note_input.val();
+
+  $.ajax({
+      uri:    "/orders/" + order.id + "/create",
+      url:    "/orders/" + order.id + "/create",
+      method: "POST",
+      type:   "POST",
+      cache:  false,
+      data:   JSON.parse(JSON.stringify(order)),
+      dataType: "json",
+      success: function(data) {
+        var f = document.createElement("form");
+        f.setAttribute('method',"post");
+        f.setAttribute('action',"https://secure.paytm.in/oltp-web/processTransaction");
+        f.setAttribute('style',"display: none;");
+
+        for ( var key in data ) {
+          var ele = document.createElement("input");
+          ele.setAttribute('type',"text");
+          ele.setAttribute('name',key);
+          ele.setAttribute('value',data[key]);
+          ele.setAttribute('r',true);
+
+          f.appendChild(ele);
+        }
+        document.body.append(f);
+        f.submit();
+      },
+      error: function(a,b,c) {
+        alert("Some error occurred! Please try again later...");
+      },
+      statusCode: {
+        403: function() {
+          window.location.href = window.location.protocol + "//" + window.location.host + "/?tag=signin&redirect=%2Fcart"
+        },
+        401: function() {
+          window.location.href = window.location.protocol + "//" + window.location.host + "/?tag=signin&redirect=%2Fcart"
+        },
+        302: function() {
+          window.location.href = window.location.protocol + "//" + window.location.host + "/?tag=signin&redirect=%2Fcart"
+        }
+      }
+  });
+}
   </script>
 {% endblock %}
