@@ -474,10 +474,18 @@ var createJob = function(job) {
   jobDiv += "    </div>\n";
   jobDiv += "    <div class='cartandpricebtn block flex'>\n";
   jobDiv += "      <div class='flex1 displayflex'>\n";
-  jobDiv += "        <div class='price'></div>\n";
+  if (job.cache.quote) {
+    jobDiv += "        <div class='price'><i class='fa fa-inr' aria-hidden='true'></i>&nbsp;" + job.cache.quote + "</div>\n";
+  } else {
+    jobDiv += "        <div class='price'></div>\n";
+  }
   jobDiv += "      </div>\n";
   jobDiv += "      <div class='flex1'>\n";
-  jobDiv += "        <button class='button block getquote' onclick='onJobButtonClick(\"" + job.id + "\")'>Get Quote</button>\n";
+  if (job.cache.quote) {
+    jobDiv += "        <button class='button block active' onclick='onJobButtonClick(\"" + job.id + "\")'>Get Quote</button>\n";
+  } else {
+    jobDiv += "        <button class='button block getquote' onclick='onJobButtonClick(\"" + job.id + "\")'>Get Quote</button>\n";
+  }
   jobDiv += "      </div>\n";
   jobDiv += "    </div>\n";
   jobDiv += "  </div>\n";
@@ -527,7 +535,7 @@ var onChangeJobAnalysis = function(id) {
     result.msg = "";
   }
 
-  if (result == 100) {
+  if (result.status == 100) {
     job.find(".anylysisofdesignstatus > div > span").removeClass("analysisfailed");
     job.find(".anylysisofdesignstatus > div > span").removeClass("analysisdone");
     job.find(".anylysisofdesignstatus > div > span").addClass("analysing");
@@ -556,6 +564,24 @@ var onChangeJobAnalysis = function(id) {
     job.find(".anylysisofdesignstatus > div > h6").html('Analysing Design');
     job.find(".anylysisofdesignstatus > p").html("Please wait while we take a look at your design");
   }
+
+  if ( ! $("#job" + id).find("button").hasClass("active") ) {
+    $("#job" + id).find("button").removeClass("active")
+
+    var job_type = $("#job" + id).find(".zindex3").find("select").val();
+    var job_material = $("#job" + id).find(".zindex2").find("select").val();
+    var job_finish = $("#job" + id).find(".zindex1").find("select").val();
+    var job_density = $("#job" + id).find(".zindex0").find("select").val();
+
+    $("#job" + id).find("button").removeClass("getquote");
+
+  if ( job_type != null && job_type != '---' && job_material != null && job_material != '---' ) {
+  
+  }
+
+  }
+
+// TODOOOO
 }
 
 var jobs = [];

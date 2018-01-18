@@ -230,11 +230,22 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
     <link rel="stylesheet" href="libraries/textrotator/css/jquery.animatedheadline.css" />
     <link rel="stylesheet" href="libraries/scroll/css/jquery.classyscroll.css" />
+    <link rel="stylesheet" href="libraries/intlTelInput/css/intlTelInput.css">
+    <style>
+      .intl-tel-input {width: 100%;}
+    </style>
+<link rel="stylesheet" href="css/profile.css" />
 {% endblock %}
 
 {% block scripts %}
     <script src="libraries/textrotator/js/jquery.animatedheadline.min.js"></script>
     <script src="libraries/scroll/js/jquery.mousewheel.js"></script>
     <script src="libraries/scroll/js/jquery.classyscroll.js"></script>
+    <script src="libraries/intlTelInput/js/intlTelInput.min.js"></script>
     <script src="js/profile.js"></script>
+    <script>
+    {% for order in orders %}
+      console.log({{ order }});
+    {% endfor %}
+    </script>
 {% endblock %}
