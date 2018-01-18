@@ -482,7 +482,7 @@ var createJob = function(job) {
   jobDiv += "      </div>\n";
   jobDiv += "      <div class='flex1'>\n";
   if (job.cache.quote) {
-    jobDiv += "        <button class='button block active' onclick='onJobButtonClick(\"" + job.id + "\")'>Get Quote</button>\n";
+    jobDiv += "        <button class='button block active' onclick='onJobButtonClick(\"" + job.id + "\")'>Add to Cart</button>\n";
   } else {
     jobDiv += "        <button class='button block getquote' onclick='onJobButtonClick(\"" + job.id + "\")'>Get Quote</button>\n";
   }
@@ -564,7 +564,7 @@ var onChangeJobAnalysis = function(id) {
     job.find(".anylysisofdesignstatus > div > h6").html('Analysing Design');
     job.find(".anylysisofdesignstatus > p").html("Please wait while we take a look at your design");
   }
-
+/*
   if ( ! $("#job" + id).find("button").hasClass("active") ) {
     $("#job" + id).find("button").removeClass("active")
 
@@ -580,7 +580,7 @@ var onChangeJobAnalysis = function(id) {
   }
 
   }
-
+*/
 // TODOOOO
 }
 
@@ -604,9 +604,9 @@ var configuration = {
     DENSITY             : ['LOW','MEDIUM','HIGH']
   },
   CNC                   : {
-    MATERIALS           : ['ALUMINIUM', 'MS', 'SS 302', 'SS 304', 'HSCR'],
-    DEFAULT_FINISH      : 'NORMAL',
-    FINISH              : ['NORMAL'],
+    MATERIALS           : ['ALUMINIUM', 'MS', 'SS 302', 'SS 304', 'HSCR', 'NYLON', 'BRASS', 'COPPER', 'WOOD'],
+    DEFAULT_FINISH      : 'AS MACHINED',
+    FINISH              : ['AS MACHINED'],
     DENSITY             : []
   },
   JOB_TEMPLATE          : {
