@@ -1,0 +1,91 @@
+<html>
+<head>
+  <title>Order Confirmed!</title>
+  <meta charset="utf-8"> 
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Google Tag Manager -->
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-PMQTDZN');</script>
+  <!-- End Google Tag Manager -->
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-108721934-2"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'UA-108721934-2');
+  </script>
+  <link href="https://fonts.googleapis.com/css?family=Montserrat:300,500" rel="stylesheet">
+  <!--[if gt IE 9]>
+    <script type="text/javascript">
+      window.location = "/";
+    </script>
+  <![endif]-->
+<style>
+  body {
+    font-family: "Montserrat";
+    font-size: 20px;
+    font-weight: 300;
+    background-color: #f6f6f6;
+  }
+</style>
+<style>
+  @media (max-width: 480px){
+    body {
+      font-size: 16px;
+    }
+  }
+  @media (max-width: 360px){
+    .modal-content {
+      padding: 0;
+    }
+  }
+  @media (min-width: 768px) {
+    .col-sm-3 {
+      min-width: 360px;
+    }
+  }
+  @media (max-width: 768px) {
+    .col-sm-3 {
+      max-width: 480px;
+    }
+  }
+</style>
+</head>
+<body>
+<div class="container" style="display: block; height: 100%;">
+  <div style="display: block; margin-left: auto; margin-right: auto; margin-top: 9em">
+    <p style="display: block; margin: auto; text-align: center; margin-top: 1em; font-family: Montserrat;font-size: 2.0em;font-weight: 300;">Payment failed!</p>
+    <p style="display: block; margin: auto; text-align: center; margin-top: 1em; font-family: Montserrat;font-size: 1.0em;font-weight: 300;">If your account has been debited you will receive a refund in 7 days.</p>
+    <p style="display: block; margin: auto; text-align: center; font-family: Montserrat;font-size: 1.0em;font-weight: 300;">Contact us on <a href="mailto:support@fracktal.in" style="color: inherit;">support@fracktal.in</a> with the following details for any queries.</p>
+
+    <table style="display: block; margin: auto; text-align: center; margin-top: 3em; font-family: Montserrat;font-size: 0.9em;font-weight: 300; width: 40em;">
+      <tbody>
+        <tr>
+          <td style="width: 10em;" align="left">Order ID:</td>
+          <td align="left">{{ ORDERID }}</td>
+        </tr>
+        <tr>
+          <td style="width: 10em;" align="left">Date:</td>
+          <td align="left" id="date">{{ TXNDATE }}</td>
+        </tr>
+        <tr>
+          <td style="width: 10em;" align="left">Amount:</td>
+          <td align="left">{{ TXNAMOUNT }}</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p style="display: block; margin: auto; margin-top: 3em;text-align: center; font-family: Montserrat;font-size: 1.0em;font-weight: 300;">Taking you back to <a href="/cart" style="color: inherit;">cart page</a> in 10 seconds...</p>
+
+  </div>
+</div>
+<script>
+  document.getElementById("date").innerHTML = (new Date()).toString();
+  setTimeout(function(){ window.location.href="/cart" }, 10000);
+</script>
+</body>
+</html>

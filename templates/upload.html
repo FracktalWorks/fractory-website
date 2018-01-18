@@ -461,9 +461,9 @@ var createJob = function(job) {
   jobDiv += "          </div>\n";
   jobDiv += "        </div>\n";
   jobDiv += "      </div>\n";
-  jobDiv += "      <div class='attachadditionalfiles block text-left profiledetails'>\n";
-  jobDiv += "        <span class='cursorpointer'><i class='fa fa-paperclip' aria-hidden='true'></i> <a class='editaddress' data-toggle='tooltip' data-placement='auto' title='Attach part specifuc files like tolerance, threadings, finish details (PDF Only)'> Attach Additional Files</a></span>\n";
-  jobDiv += "      </div>\n";
+//  jobDiv += "      <div class='attachadditionalfiles block text-left profiledetails'>\n";
+//  jobDiv += "        <span class='cursorpointer'><i class='fa fa-paperclip' aria-hidden='true'></i> <a class='editaddress' data-toggle='tooltip' data-placement='auto' title='Attach part specifuc files like tolerance, threadings, finish details (PDF Only)'> Attach Additional Files</a></span>\n";
+//  jobDiv += "      </div>\n";
   jobDiv += "    </div>\n";
   jobDiv += "    <div class='anylysisofdesignstatus block sectionpadding10'>\n";
   jobDiv += "      <div class='flex justifycontent'>\n";
@@ -571,14 +571,14 @@ var configuration = {
   JOB_TYPES             : ['FDM','CNC'],
   FDM                   : {
     DEFAULT_MATERIAL    : 'White PLA',
-    MATERIALS           : ['White PLA','Black ABS'],
+    MATERIALS           : ['WHITE PLA', 'BLACK PLA', 'RED PLA', 'ORANGE PLA', 'YELLOW PLA', 'PEAK GREEN PLA', 'LIGHT GREY PLA', 'LIGHT BLUE PLA', 'WHITE ABS', 'BLACK ABS', 'COPPER FILL', 'WOOD FILL'],
     DEFAULT_FINISH      : 'NORMAL',
     FINISH              : ['COARSE', 'NORMAL', 'FINE'],
-    DEFAULT_DENSITY     : '0.1',
-    DENSITY             : ['0.1','0.3','0.5']
+    DEFAULT_DENSITY     : 'MEDIUM',
+    DENSITY             : ['LOW','MEDIUM','HIGH']
   },
   CNC                   : {
-    MATERIALS           : ['ALUMINIUM','COPPER'],
+    MATERIALS           : ['ALUMINIUM', 'MS', 'SS 302', 'SS 304', 'HSCR'],
     DEFAULT_FINISH      : 'NORMAL',
     FINISH              : ['NORMAL'],
     DENSITY             : []
