@@ -13,37 +13,40 @@
       <tr>
         <th style="display: none;">Last Updated</th>
         <th style="display: none;">Job ID</th>
-        <th>Last Updated</th>
-        <th>Name</th>
 <!--
-        <th>By</th>
+        <th>Last Updated</th>
 -->
+        <th>Name</th>
+        <th>By</th>
         <th>Type</th>
         <th>Settings</th>
         <th>File</th>
+<!--
         <th>Additional Files</th>
         <th>GCode</th>
+-->
         <th>Quote</th>
         <th>Message</th>
       </tr>
     </thead>
     <tbody>
-<!--
-/jobs/:id/set_quote/:quote
-/jobs/:id/model
-/jobs/:id/extra
-/jobs/:id/extra/:fid
-/jobs/:id/support/msg/usr
--->
     </tbody>
   </table>
   <script>
     var update_quote = function (id) {
       var quote = parseInt($("#" + id).find("[name=quote]").val());
       console.log(quote)
-      if ( quote > 10 ) {
+      if ( quote > 10 && jobs[id].cache.quote != quote ) {
         $("#" + id).find("[name=quote]").val(quote);
-        $.post("/jobs/" + id + "/set_quote/" + quote);
+        $.ajax({
+          uri: "/jobs/" + id + "/set_quote/" + quote,
+          url: "/jobs/" + id + "/set_quote/" + quote,
+          method: "POST",
+          type: "POST",
+          complete: function() {
+            window.location.reload();
+          }
+        });
       }
     }
 
@@ -56,9 +59,9 @@
         data: {body: $("#" + id).find("[name=msg]").val()}
       });
     }
-
-    var load_job = function(job, jid) {
-      console.log(jid);
+    var jobs = {};
+    var load_job = function(job) {
+      jobs[job.id] = job;
       var jobDiv = ""
       if ( job.cache.quote ) {
         jobDiv += "<tr id='" + job.id + "'>\n";
@@ -67,14 +70,15 @@
       }
       jobDiv += "  <td style='display: none;'>" +  (job.tracking.updated_at || job.tracking.uploaded_at) + "</td>\n";
       jobDiv += "  <td style='display: none;'>" + job.id + "</td>\n";
-      jobDiv += "  <td>" + new Date(job.tracking.updated_at*1000 || job.tracking.uploaded_at*1000) + "</td>\n";
+//      jobDiv += "  <td>" + new Date(job.tracking.updated_at*1000 || job.tracking.uploaded_at*1000) + "</td>\n";
+
       jobDiv += "  <td>" + job.name + "</td>\n";
-//      jobDiv += "  <td>" + job.user + "</td>\n";
+      jobDiv += "  <td>" + job.thumbnail + "</td>\n";
       jobDiv += "  <td>" + job.settings.job_type + "</td>\n";
-      jobDiv += "  <td>Material: " + job.settings.material + "<br/>Density: " + job.settings.density + "<br/>Finish: " + job.settings.material + "</td>\n";
+      jobDiv += "  <td>Material: " + job.settings.material + "<br/>Density: " + job.settings.density + "<br/>Finish: " + job.settings.finish + "</td>\n";
       jobDiv += "  <td><a href='/jobs/" + job.id + "/model'><button>Download</button></td></a>\n";
-      jobDiv += "  <td><a href='/jobs/" + job.id + "/extra'><button>Download</button></td></a>\n";
-      jobDiv += "  <td><button onclick='upload_gcode(\"" + job.id + "\")'>Upload</button></td>\n";
+//      jobDiv += "  <td><a href='/jobs/" + job.id + "/extra'><button>Download</button></td></a>\n";
+//      jobDiv += "  <td><button onclick='upload_gcode(\"" + job.id + "\")'>Upload</button></td>\n";
       jobDiv += "  <td><input type='text' name='quote' value='" + job.cache.quote + "'></input><button onclick='update_quote(\"" + job.id + "\")'>Update</button></td>\n";
       jobDiv += "  <td><textarea rows='4' cols='50' name='msg'></textarea><button onclick='send_msg(\"" + job.id + "\")'>Send</button></td>\n";
       jobDiv += "</tr>\n";
@@ -85,7 +89,6 @@
     {% for job in jobs %}
       load_job({{ job }});
     {% endfor %}
-
 
     (function() {
       var table, rows, switching, i, x, y, shouldSwitch;
