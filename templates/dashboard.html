@@ -76,7 +76,7 @@
       jobDiv += "  <td><a href='/jobs/" + job.id + "/extra'><button>Download</button></td></a>\n";
       jobDiv += "  <td><button onclick='upload_gcode(\"" + job.id + "\")'>Upload</button></td>\n";
       jobDiv += "  <td><input type='text' name='quote' value='" + job.cache.quote + "'></input><button onclick='update_quote(\"" + job.id + "\")'>Update</button></td>\n";
-      jobDiv += "  <td><textarea rows='4' cols='50' name='msg'><button onclick='send_msg(\"" + job.id + "\")'>Send</button></td>\n";
+      jobDiv += "  <td><textarea rows='4' cols='50' name='msg'></textarea><button onclick='send_msg(\"" + job.id + "\")'>Send</button></td>\n";
       jobDiv += "</tr>\n";
 
       $('tbody').prepend(jobDiv);

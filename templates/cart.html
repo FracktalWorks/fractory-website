@@ -510,7 +510,7 @@ var refresh_cart = function() {
   var subtotal = 0;
   var discount = 0;
   var tax      = 0;
-  var shipping = 40;
+  var shipping = 140;
   var total    = 0;
 
   var ship_by_div  = $("#ship_by_div");
@@ -530,7 +530,7 @@ var refresh_cart = function() {
   if ( ship_date.getDay() > 4 ) {
     ship_date.setDate(ship_date.getDate() + 1);
   }
-  ship_date.setDate(ship_date.getDate() + 2);
+  ship_date.setDate(ship_date.getDate() + 3);
 
   var days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
   var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
@@ -541,7 +541,7 @@ var refresh_cart = function() {
   for ( i in jobs ) {
     if ( jobs[i].cache && jobs[i].cache.quote && jobs[i].settings.quantity ) {
       subtotal += parseInt(jobs[i].cache.quote) * parseInt(jobs[i].settings.quantity);
-      shipping += jobs[i].settings.quantity * 30;
+      shipping += jobs[i].settings.quantity * 60;
     }
   }
 
