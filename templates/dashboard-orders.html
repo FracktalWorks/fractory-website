@@ -1,0 +1,121 @@
+<html>
+<head>
+  <title>Order Dashboard</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+  <table id="jobs" class="table table-bordered table-responsive">
+    <thead>
+      <tr>
+        <th>Ship By</th>
+        <th>ID</th>
+        <th>Name</th>
+        <th>By</th>
+        <th>Type</th>
+        <th>Settings</th>
+        <th>File</th>
+<!--
+        <th>Additional Files</th>
+        <th>GCode</th>
+-->
+        <th>Quote</th>
+        <th>Message</th>
+        <th>Address</th>
+      </tr>
+    </thead>
+    <tbody>
+    </tbody>
+  </table>
+  <script>
+    var send_msg = function (id) {
+      console.log($("#" + id).find("[name=msg]").val());
+      $.ajax({
+        method: "POST",
+        type: "POST",
+        url: "/jobs/" + id + "/support/msg/usr",
+        data: {body: $("#" + id).find("[name=msg]").val()}
+      });
+    }
+
+    var jobs = {};
+    var orders = {};
+    var sorted_orders = {};
+    var users = {};
+
+    var load_user = function(user) {
+      users[user._id] = user.fname;
+    }
+
+    var load_job = function(job) {
+      jobs[job.id] = job;
+    }
+
+    var load_order = function(order) {
+      orders[order.id] = order;
+      sorted_orders[(new Date(order.ship_by)).getTime() + "-" + order.id] = order.id;
+    }
+
+    var display = function() {
+      for (key in sorted_orders) {
+        var order = orders[sorted_orders[key]];
+        console.log("###");
+        console.log(order);
+        for ( var j = 0; j < order.jobs.length; j++ ) {
+          var row = "";
+          var job = jobs[order.jobs[j]];
+          row += "<tr>\n";
+          row += "  <td></td>\n";
+          row += "  <td>" + job.id + "</td>\n";
+          row += "  <td>" + job.name + "</td>\n";
+          row += "  <td></td>\n";
+          row += "  <td>" + job.settings.job_type + "</td>\n";
+          row += "  <td>Material: " + job.settings.material + "<br/>Density: " + job.settings.density + "<br/>Finish: " + job.settings.finish + "</td>\n";
+          row += "  <td><a href='/jobs/" + job.id + "/model'><button>Download</button></td></a>\n";
+//          row += "  <td><a href='/jobs/" + job.id + "/extra'><button>Download</button></td></a>\n";
+//          row += "  <td><button onclick='upload_gcode(\"" + job.id + "\")'>Upload</button></td>\n";
+          row += "  <td>" + job.cache.quote + "</td>\n";
+          row += "  <td></td>\n";
+          row += "  <td></td>\n";
+          row += "</tr>\n";
+          $('tbody').prepend(row);
+        }
+        var row = ""
+        row += "<tr>\n";
+        row += "  <td style='white-space: nowrap;'>" + order.ship_by + "</td>\n";
+        row += "  <td>" + order.id + "</td>\n";
+        row += "  <td></td>\n";
+        row += "  <td>" + users[order.user] + "</td>\n";
+        row += "  <td>" + "TRACKING" + "</td>\n";
+        row += "  <td>" + order.note + "</td>\n";
+        row += "  <td></td>\n";
+//        row += "  <td></td>\n";
+//        row += "  <td></td>\n";
+        row += "  <td>" + JSON.stringify(order.totals) + "</td>\n";
+        row += "  <td><textarea rows='4' cols='50' name='msg'></textarea><button onclick='send_msg(\"" + order.id + "\")'>Send</button></td>\n";
+        row += "  <td>" + JSON.stringify(order.shipping_address) + "</td>\n";
+        row += "</tr>\n";
+        $('tbody').prepend(row);
+      }
+    }
+
+    {% for user in users %}
+      load_user({{ user }});
+    {% endfor %}
+
+    {% for job in jobs %}
+      load_job({{ job }});
+    {% endfor %}
+
+    {% for order in orders %}
+      load_order({{ order }});
+    {% endfor %}
+
+    display();
+
+  </script>
+</body>
+</html>

@@ -213,13 +213,13 @@ jQuery(document).ready(function () {
     wheelSpeed: 80,
     touchSpeed: 50
   });
-
+/*
   $(".triggerOrderDetails_js").click(function () {
     $(".triggerOrderDetails_js").removeClass("active");
     $(this).addClass("active");
     $(".orderdetialswrapper").addClass("active");
   });
-
+*/
   $(".closeOrderDeatils_js").click(function () {
     $(".triggerOrderDetails_js").removeClass("active");
     $(".orderdetialswrapper").removeClass("active");

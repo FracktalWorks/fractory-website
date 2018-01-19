@@ -8,13 +8,13 @@
             <section class="block displayflex profilewrapper">
                 <div class="profilemenuwrapper block whitecolor text-center">
                     <img src="media/avatar.png" class="img-responsive displayinline marginbottom40" alt="" />
-                    <h3>Hi <span>Kewal</span></h3>
+                    <h3>Hi <span>{{ user.fname }}</span></h3>
 
                     <ul class="block sectionpadding50 text-left">
-                        <li><a href="profile.html">Profile</a></li>
-                        <li><a href="orders-listing.html" class="active">Orders</a></li>
-                        <li><a href="#0">Payment Methods</a></li>
-                        <li><a href="address-book.html">Address Book</a></li>
+                        <li><a href="/profile">Profile</a></li>
+                        <li><a href="/orders" class="active">Orders</a></li>
+                        <li><a href="/upload" class="active">Uploads</a></li>
+                        <li><a href="/address-book">Address Book</a></li>
                     </ul>
 
                     <button type="button" class="btn block themebg">Logout</button>
@@ -32,80 +32,10 @@
                                         <th>Date</th>
                                         <th>Total Amount</th>
                                         <th>Order Status</th>
-                                        <th>Quantity</th>
+                                        <th>Transaction ID</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr class="triggerOrderDetails_js">
-                                        <td class="text-left cursorpointer">ORD 103393</td>
-                                        <td>12-10-2017</td>
-                                        <td>INR 13393</td>
-                                        <td>Pending</td>
-                                        <td>3</td>
-                                    </tr>
-                                    <tr class="triggerOrderDetails_js">
-                                        <td class="text-left cursorpointer">ORD 344533</td>
-                                        <td>30-09-2017</td>
-                                        <td>INR 4533</td>
-                                        <td>Shipped</td>
-                                        <td>1</td>
-                                    </tr>
-                                    <tr class="triggerOrderDetails_js">
-                                        <td class="text-left cursorpointer">ORD 237824</td>
-                                        <td>17-07-2017</td>
-                                        <td>INR 37824</td>
-                                        <td>Delivered</td>
-                                        <td>4</td>
-                                    </tr>
-                                    <tr class="triggerOrderDetails_js">
-                                        <td class="text-left cursorpointer">ORD 874637</td>
-                                        <td>12-05-2017</td>
-                                        <td>INR 4637</td>
-                                        <td>Delivered</td>
-                                        <td>12</td>
-                                    </tr>
-                                    <tr class="triggerOrderDetails_js">
-                                        <td class="text-left cursorpointer">ORD 382373</td>
-                                        <td>02-03-2017</td>
-                                        <td>INR 2373</td>
-                                        <td>Cancelled</td>
-                                        <td>1</td>
-                                    </tr>
-                                    <tr class="triggerOrderDetails_js">
-                                        <td class="text-left cursorpointer">ORD 783733</td>
-                                        <td>20-11-2016</td>
-                                        <td>INR 3733</td>
-                                        <td>Delivered</td>
-                                        <td>4</td>
-                                    </tr>
-                                    <tr class="triggerOrderDetails_js">
-                                        <td class="text-left cursorpointer">ORD 246522</td>
-                                        <td>07-10-2016</td>
-                                        <td>INR 26522</td>
-                                        <td>Delivered</td>
-                                        <td>8</td>
-                                    </tr>
-                                    <tr class="triggerOrderDetails_js">
-                                        <td class="text-left cursorpointer">ORD 382373</td>
-                                        <td>02-03-2017</td>
-                                        <td>INR 2373</td>
-                                        <td>Cancelled</td>
-                                        <td>1</td>
-                                    </tr>
-                                    <tr class="triggerOrderDetails_js">
-                                        <td class="text-left cursorpointer">ORD 783733</td>
-                                        <td>20-11-2016</td>
-                                        <td>INR 3733</td>
-                                        <td>Delivered</td>
-                                        <td>4</td>
-                                    </tr>
-                                    <tr class="triggerOrderDetails_js">
-                                        <td class="text-left cursorpointer">ORD 246522</td>
-                                        <td>07-10-2016</td>
-                                        <td>INR 26522</td>
-                                        <td>Delivered</td>
-                                        <td>8</td>
-                                    </tr>
                                 </tbody>
                             </table>
                         </div>
@@ -119,107 +49,6 @@
                             <a class="closeOrderDeatils_js whitebg pull-right cursorpointer"><img src="media/closebtn.png" class="img-responsive" alt=""/></a>
                         </div>
                         <div class="detailswrapper">
-                            <h4 class="marginbottom30">Order ID : ORD 103393</h4>
-
-                            <h5 class="marginbottom15">Shipping Address</h5>
-                            <div class="shippingandorder-details block">
-                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 nopad">
-                                    <address>
-                                        40, Primrose Rd,<br/>
-                                        Sivanchetti Gardens,<br/>
-                                        Bengaluru<br/>
-                                        Karnataka<br/>
-                                        560025
-                                    </address>
-
-                                </div>
-                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 nopad">
-                                    <div class="datesdetails-wrapper  block">
-                                        <ul class="flex">
-                                            <li class="flex1 text-right boldfont">Order date</li>
-                                            <li class="flex1">12-10-2017</li>
-                                        </ul>
-                                        <ul class="flex">
-                                            <li class="flex1 text-right boldfont">Shipping date</li>
-                                            <li class="flex1">14-10-2017</li>
-                                        </ul>
-                                        <ul class="flex">
-                                            <li class="flex1 text-right boldfont">Quantity</li>
-                                            <li class="flex1">3</li>
-                                        </ul>
-                                        <ul class="flex">
-                                            <li class="flex1 text-right boldfont">Total</li>
-                                            <li class="flex1">INR 13393</li>
-                                        </ul>
-                                    </div>
-
-                                </div>
-                            </div>
-                            <div class="order-status-bar block sectionpadding30">
-                                <ul>
-                                    <li class="active">Ordered</li>
-                                    <li>Processing </li>
-                                    <li>Shipping</li>
-                                    <li>Delivered</li>
-                                </ul>
-                            </div>
-                            <div class="orderedproducts block ">
-                                <div class="productsdiv block flex sectionpadding10">
-                                    <div class="product-image block whitebg displayflex">
-                                        <img src="" class="img-responsive" alt="" />
-                                    </div>
-                                    <div class="product-description block">
-                                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                                            <div class="details">
-                                                <ul>
-                                                    <li><span class="boldfont">Delta.stl</span></li>
-                                                    <li><span class="boldfont">Material:</span> ABS</li>
-                                                    <li><span class="boldfont">Quantity:</span> 2</li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                                            <div class="details statusandamount">
-                                                <ul>
-                                                    <li class="hidden-xs">&nbsp;</li>
-                                                    <li><span class="text-right displayinlineblock boldfont">Status:</span> Printing</li>
-                                                    <li><span class="text-right displayinlineblock boldfont">Amount:</span> INR 3393</li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="productsdiv block flex sectionpadding10">
-                                    <div class="product-image block whitebg displayflex">
-                                        <img src="" class="img-responsive" alt="" />
-                                    </div>
-                                    <div class="product-description block">
-                                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                                            <div class="details">
-                                                <ul>
-                                                    <li><span class="boldfont">Delta.stl</span></li>
-                                                    <li><span class="boldfont">Material:</span> ABS</li>
-                                                    <li><span class="boldfont">Quantity:</span> 2</li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                                            <div class="details statusandamount">
-                                                <ul>
-                                                    <li class="hidden-xs">&nbsp;</li>
-                                                    <li><span class="text-right displayinlineblock boldfont">Status:</span> Printing</li>
-                                                    <li><span class="text-right displayinlineblock boldfont">Amount:</span> INR 10000</li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="profiledetails block displayflex sectionpadding20">
-                                <a class="editaddress cursorpointer">Cancel Order</a>
-                                <a class="editaddress cursorpointer">Contact Support</a>
-                                <button type="button" class="btn btnwidth greenbg whitecolor block pull-right">Download Invoice</button>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -244,8 +73,51 @@
     <script src="libraries/intlTelInput/js/intlTelInput.min.js"></script>
     <script src="js/profile.js"></script>
     <script>
-    {% for order in orders %}
-      console.log({{ order }});
-    {% endfor %}
+      var jobs = {};
+      var orders = {};
+
+      var load_job = function(job) {
+        jobs[job.id] = job;
+      }
+
+      var days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+      var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+
+      var load_order = function(order) {
+        orders[order.id] = order;
+        var row = ""
+        row += "<tr class='triggerOrderDetails_js' onclick='display_order(\"" + order.id + "\")'>\n";
+        row += "  <td class='text-left cursorpointer'>" + order.id.substring(order.id.length - 10) + "</td>\n";
+        if (order.tracking && order.tracking.created_at) {
+          var d = new Date(order.tracking.created_at * 1000);
+          row += "  <td>" + days[d.getDay()] + " " + months[d.getMonth()] + " " + d.getDate() + " " + (d.getYear() + 1900) + "</td>\n";
+        } else {
+//          var d = new Date(order.ship_by);
+//          d.setDate(d.getDate() - 3);
+//          row += "  <td>" + days[d.getDay()] + " " + months[d.getMonth()] + " " + d.getDate() + " " + (d.getYear() + 1900) + "</td>\n";
+          row += "  <td> --- </td>\n";
+        }
+        row += "  <td>INR " + order.totals.total + "</td>\n";
+        if ( order.tracking && order.tracking.state ) {
+          row += "  <td>" + order.tracking.state + "</td>\n";
+        } else if ( order.txnid ) {
+          row += "  <td>" + "Placed" + "</td>\n";
+        } else {
+          row += "  <td>" + "Pending" + "</td>\n";
+        }
+        row += "  <td>" + order.txnid + "</td>\n";
+        row += "</tr>\n";
+        $('tbody').prepend(row);
+      }
+
+      var display_order(id) {
+
+}
+      {% for job in jobs %}
+        load_job({{ jobs }});
+      {% endfor %}
+      {% for order in orders %}
+        load_order({{ order }});
+      {% endfor %}
     </script>
 {% endblock %}
