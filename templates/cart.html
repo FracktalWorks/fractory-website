@@ -573,6 +573,10 @@ var make_payment = function() {
   order.id = oid;
   order.address = $("address").index($("address.selected"));
   order.jobs = [];
+  if ( order.address == "-1" ) {
+    alert("Please select an address!");
+    return;
+  }
 
   for ( job in jobs ) {
     order.jobs.push(job);
