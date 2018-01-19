@@ -67,7 +67,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="block marginbottom40">
+                                <div class="block marginbottom40" style="display: none;">
                                     <h6 class="text-uppercase marginbottom10">Enter COUPON CODE</h6>
                                     <div class="formelements block displayflex flexend ">
                                         <div class="flex2 txet-center">
@@ -143,7 +143,7 @@
                                                     <i class='fa fa-inr' aria-hidden='true' style="padding-right: 5px;"></i><span id="subtotal_div"></span>
                                                 </div>
                                             </div>
-                                            <div class="displayflex block">
+                                            <div class="displayflex block" style="display: none;">
                                                 <div class="flex2">
                                                     Discount
                                                 </div>
@@ -500,9 +500,9 @@ $('.cartitemsheader').append(jobDiv);
     {% for job in jobs %}
       load_job({{ job }});
     {% endfor %}
-
+var oid = window.user.id + "-" +  ((new Date()).getTime().toString() + Math.random().toString().substring(2));
 var refresh_cart = function() {
-  var id = window.user.id + "-" +  ((new Date()).getTime().toString() + Math.random().toString().substring(2))
+  var id = oid.substring(oid.length - 10);
   var ship_date = new Date();
 
   var subtotal = 0;
@@ -545,7 +545,7 @@ var refresh_cart = function() {
 
   // TODO discount
 
-  tax = Math.round((subtotal - discount)*18)/100;
+  tax = Math.round((subtotal - discount + shipping)*18)/100;
   total = subtotal - discount + tax + shipping;
 
   console.log(subtotal);
@@ -570,7 +570,7 @@ var select_address = function(id) {
 
 var make_payment = function() {
   var order = {}
-  order.id = window.user.id + "-" +  ((new Date()).getTime().toString().substring(5) + Math.random().toString().substring(2));
+  order.id = oid;
   order.address = $("address").index($("address.selected"));
   order.jobs = [];
 

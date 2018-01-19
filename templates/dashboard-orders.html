@@ -23,6 +23,7 @@
         <th>GCode</th>
 -->
         <th>Quote</th>
+        <th>State</th>
         <th>Message</th>
         <th>Address</th>
       </tr>
@@ -31,12 +32,32 @@
     </tbody>
   </table>
   <script>
+    var change_order_state = function (id) {
+      console.log($("#" + id).find("select").val());
+      if ( $("#" + id).find("select").val() ) {
+      $.ajax({
+        method: "POST",
+        type: "POST",
+        url: "/orders/" + id + "/" + $("#" + id).find("select").val().toLowerCase(),
+      });
+      }
+    }
+
+    var change_job_state = function (id) {
+      console.log($("#" + id).find("select").val());
+      $.ajax({
+        method: "POST",
+        type: "POST",
+        url: "/jobs/" + id + "/" + $("#" + id).find("select").val().toLowerCase(),
+      });
+    }
+
     var send_msg = function (id) {
       console.log($("#" + id).find("[name=msg]").val());
       $.ajax({
         method: "POST",
         type: "POST",
-        url: "/jobs/" + id + "/support/msg/usr",
+        url: "/orders/" + id + "/support/msg/usr",
         data: {body: $("#" + id).find("[name=msg]").val()}
       });
     }
@@ -44,6 +65,8 @@
     var jobs = {};
     var orders = {};
     var sorted_orders = {};
+    var pending_orders = {};
+    var delivered_orders = {};
     var users = {};
 
     var load_user = function(user) {
@@ -56,49 +79,108 @@
 
     var load_order = function(order) {
       orders[order.id] = order;
-      sorted_orders[(new Date(order.ship_by)).getTime() + "-" + order.id] = order.id;
+      if ( order.tracking && order.tracking.state == "DELIVERED" ) {
+        delivered_orders[(new Date(order.ship_by)).getTime() + "-" + order.id] = order.id;
+      } else if ( order.txnid ) {
+        sorted_orders[(new Date(order.ship_by)).getTime() + "-" + order.id] = order.id;
+      } else {
+        pending_orders[(new Date(order.ship_by)).getTime() + "-" + order.id] = order.id;
+      }
     }
 
-    var display = function() {
-      for (key in sorted_orders) {
-        var order = orders[sorted_orders[key]];
+    var display = function(orders_class) {
+      for (key in orders_class) {
+        var order = orders[orders_class[key]];
         console.log("###");
         console.log(order);
         for ( var j = 0; j < order.jobs.length; j++ ) {
           var row = "";
           var job = jobs[order.jobs[j]];
-          row += "<tr>\n";
+          row += "<tr id='" + job.id + "'>\n";
           row += "  <td></td>\n";
           row += "  <td>" + job.id + "</td>\n";
-          row += "  <td>" + job.name + "</td>\n";
+          row += "  <td style='white-space: nowrap;'>" + job.name + "</td>\n";
           row += "  <td></td>\n";
           row += "  <td>" + job.settings.job_type + "</td>\n";
-          row += "  <td>Material: " + job.settings.material + "<br/>Density: " + job.settings.density + "<br/>Finish: " + job.settings.finish + "</td>\n";
+          row += "  <td style='white-space: nowrap;'>Material: " + job.settings.material + "<br/>Density: " + job.settings.density + "<br/>Finish: " + job.settings.finish + "</td>\n";
           row += "  <td><a href='/jobs/" + job.id + "/model'><button>Download</button></td></a>\n";
 //          row += "  <td><a href='/jobs/" + job.id + "/extra'><button>Download</button></td></a>\n";
 //          row += "  <td><button onclick='upload_gcode(\"" + job.id + "\")'>Upload</button></td>\n";
           row += "  <td>" + job.cache.quote + "</td>\n";
+          row += "  <td>\n";
+          row += "    <select onchange='change_job_state(\"" + job.id + "\")'>\n";
+          row += "      <option value='PLACED'>Placed</option>\n";
+          row += "      <option value='CONFIRMED'>Confirmed</option>\n";
+          row += "      <option value='PRINTING'>Printing</option>\n";
+          row += "      <option value='READY'>Ready</option>\n";
+          row += "      <option value='SHIPPED'>Shipped</option>\n";
+          row += "      <option value='DELIVERED'>Delivered</option>\n";
+          row += "    </select>\n";
+          row += "  </td>\n";
           row += "  <td></td>\n";
           row += "  <td></td>\n";
           row += "</tr>\n";
           $('tbody').prepend(row);
+          console.log(job.tracking.state.toUpperCase())
+          if ( job.tracking.state.toUpperCase() == "CREATED" ||
+               job.tracking.state.toUpperCase() == "UPLOADED" ||
+               job.tracking.state.toUpperCase() == "ANALYSED" ||
+               job.tracking.state.toUpperCase() == "CARTED" ) {
+            jobs[order.jobs[j]].tracking.state = "PLACED";
+            job.tracking.state = "PLACED";
+            change_job_state(job.id);
+          }
+          $("#" + job.id ).find('select').val(job.tracking.state.toUpperCase());
         }
         var row = ""
-        row += "<tr>\n";
+        row += "<tr id='" + order.id + "' style='border-top: black; border-top-style: double;'>\n";
         row += "  <td style='white-space: nowrap;'>" + order.ship_by + "</td>\n";
         row += "  <td>" + order.id + "</td>\n";
         row += "  <td></td>\n";
         row += "  <td>" + users[order.user] + "</td>\n";
-        row += "  <td>" + "TRACKING" + "</td>\n";
+        row += "  <td></td>\n";
         row += "  <td>" + order.note + "</td>\n";
         row += "  <td></td>\n";
 //        row += "  <td></td>\n";
 //        row += "  <td></td>\n";
-        row += "  <td>" + JSON.stringify(order.totals) + "</td>\n";
+        row += "  <td style='white-space: nowrap;'>Subtotal: " + order.totals.subtotal + "<br/>Discount: " + order.totals.discount + "<br/>Shipping: " + order.totals.shipping + "<br/>Tax: " + order.totals.tax + "<br/><b>Total: " + order.totals.total + "</b></td>\n";
+        if ( order.tracking && order.tracking.state ) {
+          if (order.tracking.state == "PENDING") {
+            row += "  <td><b style='color: red;'>PENDING</b></td>";
+          } else {
+            row += "  <td>\n";
+            row += "    <select onchange='change_order_state(\"" + order.id + "\")'>\n";
+            row += "      <option value='PLACED' selected>Placed</option>\n";
+            row += "      <option value='CONFIRMED'>Confirmed</option>\n";
+            row += "      <option value='PRINTING'>Printing</option>\n";
+            row += "      <option value='READY'>Ready</option>\n";
+            row += "      <option value='SHIPPED'>Shipped</option>\n";
+            row += "      <option value='DELIVERED'>Delivered</option>\n";
+            row += "    </select>\n";
+            row += "  </td>\n";
+          }
+        } else if ( order.txnid ) {
+          row += "  <td>\n";
+          row += "    <select onchange='change_order_state(\"" + order.id + "\")'>\n";
+          row += "      <option value='PLACED' selected>Placed</option>\n";
+          row += "      <option value='CONFIRMED'>Confirmed</option>\n";
+          row += "      <option value='PRINTING'>Printing</option>\n";
+          row += "      <option value='READY'>Ready</option>\n";
+          row += "      <option value='SHIPPED'>Shipped</option>\n";
+          row += "      <option value='DELIVERED'>Delivered</option>\n";
+          row += "    </select>\n";
+          row += "  </td>\n";
+        } else {
+          row += "  <td><b style='color: red;'>PENDING</b></td>";
+        }
         row += "  <td><textarea rows='4' cols='50' name='msg'></textarea><button onclick='send_msg(\"" + order.id + "\")'>Send</button></td>\n";
-        row += "  <td>" + JSON.stringify(order.shipping_address) + "</td>\n";
+        row += "  <td style='white-space: nowrap;'>" + order.shipping_address.full_name + "<br/>" + order.shipping_address.organisation + "<br/>" + order.shipping_address.line_1 + "<br/>" + order.shipping_address.line_2 + "<br/>" + order.shipping_address.city + " " + order.shipping_address.area_code + "<br/>" + order.shipping_address.state + "<br/>" + order.shipping_address.phone + "</td>\n";
         row += "</tr>\n";
         $('tbody').prepend(row);
+        if ( order.tracking && order.tracking.state ) {
+          $("#" + order.id ).find('select').val(order.tracking.state.toUpperCase());
+        }
+        change_order_state(order.id);
       }
     }
 
@@ -114,7 +196,9 @@
       load_order({{ order }});
     {% endfor %}
 
-    display();
+    display(delivered_orders);
+    display(pending_orders);
+    display(sorted_orders);
 
   </script>
 </body>

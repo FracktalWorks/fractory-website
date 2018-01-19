@@ -89,7 +89,7 @@
         row += "<tr class='triggerOrderDetails_js' onclick='display_order(\"" + order.id + "\")'>\n";
         row += "  <td class='text-left cursorpointer'>" + order.id.substring(order.id.length - 10) + "</td>\n";
         if (order.tracking && order.tracking.created_at) {
-          var d = new Date(order.tracking.created_at * 1000);
+          var d = new Date(order.tracking.created_at);
           row += "  <td>" + days[d.getDay()] + " " + months[d.getMonth()] + " " + d.getDate() + " " + (d.getYear() + 1900) + "</td>\n";
         } else {
 //          var d = new Date(order.ship_by);
@@ -101,18 +101,22 @@
         if ( order.tracking && order.tracking.state ) {
           row += "  <td>" + order.tracking.state + "</td>\n";
         } else if ( order.txnid ) {
-          row += "  <td>" + "Placed" + "</td>\n";
+          row += "  <td>" + "PLACED" + "</td>\n";
         } else {
-          row += "  <td>" + "Pending" + "</td>\n";
+          row += "  <td>" + "PENDING" + "</td>\n";
         }
-        row += "  <td>" + order.txnid + "</td>\n";
+        if ( order.txnid ) {
+         row += "  <td>" + order.txnid + "</td>\n";
+        } else {
+         row += "  <td> --- </td>\n";
+        }
         row += "</tr>\n";
         $('tbody').prepend(row);
       }
 
-      var display_order(id) {
+      var display_order = function(id) {
+      }
 
-}
       {% for job in jobs %}
         load_job({{ jobs }});
       {% endfor %}

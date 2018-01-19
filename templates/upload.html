@@ -884,7 +884,7 @@ var refresh_job = function(id) {
       msg   : ""
     };
     onChangeJobAnalysis(job.id);
-  } else if ( job.tracking.state == "Uploaded" && job.cache.part_volume ) {
+  } else if ( job.tracking.state == "Uploaded" ) {
     job.tracking.state = "Analysed";
     job.tracking.analysed_at = Math.floor( (new Date).getTime() / 1000 );
     job.tracking.analysis_result = {
