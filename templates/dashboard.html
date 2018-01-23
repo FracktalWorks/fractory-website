@@ -11,11 +11,9 @@
   <table id="jobs" class="table table-bordered table-responsive">
     <thead>
       <tr>
-        <th style="display: none;">Last Updated</th>
+        <th style="display: none;">Uploaded</th>
         <th style="display: none;">Job ID</th>
-<!--
-        <th>Last Updated</th>
--->
+        <th>Uploaded</th>
         <th>Name</th>
         <th>By</th>
         <th>Type</th>
@@ -27,6 +25,8 @@
 -->
         <th>Quote</th>
         <th>Message</th>
+        <th>Assign Fractory</th>
+        <th>Address</th>
       </tr>
     </thead>
     <tbody>
@@ -50,6 +50,17 @@
       }
     }
 
+    var set_fractory = function (id) {
+      var quote = $("#" + id).find("[name=fractory]").val();
+      console.log(quote)
+      $.ajax({
+        uri: "/jobs/" + id + "/set_fractory/" + quote,
+        url: "/jobs/" + id + "/set_fractory/" + quote,
+        method: "POST",
+        type: "POST"
+      });
+    }
+
     var send_msg = function (id) {
       console.log($("#" + id).find("[name=msg]").val());
       $.ajax({
@@ -68,9 +79,9 @@
       } else {
         jobDiv += "<tr class='danger' id='" + job.id + "'>\n";
       }
-      jobDiv += "  <td style='display: none;'>" +  (job.tracking.updated_at || job.tracking.uploaded_at) + "</td>\n";
+      jobDiv += "  <td style='display: none;'>" +  (job.tracking.uploaded_at) + "</td>\n";
       jobDiv += "  <td style='display: none;'>" + job.id + "</td>\n";
-//      jobDiv += "  <td>" + new Date(job.tracking.updated_at*1000 || job.tracking.uploaded_at*1000) + "</td>\n";
+      jobDiv += "  <td>" + new Date(job.tracking.uploaded_at) + "</td>\n";
 
       jobDiv += "  <td>" + job.name + "</td>\n";
       jobDiv += "  <td>" + job.thumbnail + "</td>\n";
@@ -81,9 +92,17 @@
 //      jobDiv += "  <td><button onclick='upload_gcode(\"" + job.id + "\")'>Upload</button></td>\n";
       jobDiv += "  <td><input type='text' name='quote' value='" + job.cache.quote + "'></input><button onclick='update_quote(\"" + job.id + "\")'>Update</button></td>\n";
       jobDiv += "  <td><textarea rows='4' cols='50' name='msg'></textarea><button onclick='send_msg(\"" + job.id + "\")'>Send</button></td>\n";
+      jobDiv += "  <td>\n";
+      jobDiv += "    <select name='fractory' onchange='set_fractory(\"" + job.id + "\")'>\n";
+      jobDiv += "      <option selected disabled>Select Fractory</option>\n";
+      jobDiv += "      <option value='001'>Fractory 001</option>\n";
+      jobDiv += "      <option value='002'>Fractory 002</option>\n";
+      jobDiv += "  </td>\n";
+      jobDiv += "  <td></td>";
       jobDiv += "</tr>\n";
 
       $('tbody').prepend(jobDiv);
+      $("#" + job.id ).find('select').val(job.fractory);
     }
 
     {% for job in jobs %}

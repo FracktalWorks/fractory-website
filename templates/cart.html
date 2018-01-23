@@ -500,7 +500,7 @@ $('.cartitemsheader').append(jobDiv);
     {% for job in jobs %}
       load_job({{ job }});
     {% endfor %}
-var oid = window.user.id + "-" +  ((new Date()).getTime().toString() + Math.random().toString().substring(2));
+var oid = window.user.id + "-" +  ((new Date()).getTime().toString().substring(5) + Math.random().toString().substring(2));
 var refresh_cart = function() {
   var id = oid.substring(oid.length - 10);
   var ship_date = new Date();

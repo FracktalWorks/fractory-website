@@ -25,7 +25,9 @@
         <th>Quote</th>
         <th>State</th>
         <th>Message</th>
+<!--
         <th>Address</th>
+-->
       </tr>
     </thead>
     <tbody>
@@ -79,7 +81,8 @@
 
     var load_order = function(order) {
       orders[order.id] = order;
-      if ( order.tracking && order.tracking.state == "DELIVERED" ) {
+      if ( order.tracking && order.tracking.state == "FAILED" ) {
+      } else if ( order.tracking && order.tracking.state == "DELIVERED" ) {
         delivered_orders[(new Date(order.ship_by)).getTime() + "-" + order.id] = order.id;
       } else if ( order.txnid ) {
         sorted_orders[(new Date(order.ship_by)).getTime() + "-" + order.id] = order.id;
@@ -91,11 +94,11 @@
     var display = function(orders_class) {
       for (key in orders_class) {
         var order = orders[orders_class[key]];
-        console.log("###");
-        console.log(order);
+        var visible = 0;
         for ( var j = 0; j < order.jobs.length; j++ ) {
           var row = "";
           var job = jobs[order.jobs[j]];
+          if ( job ) {
           row += "<tr id='" + job.id + "'>\n";
           row += "  <td></td>\n";
           row += "  <td>" + job.id + "</td>\n";
@@ -131,7 +134,10 @@
             change_job_state(job.id);
           }
           $("#" + job.id ).find('select').val(job.tracking.state.toUpperCase());
+          visible = 1;
+          }
         }
+        if ( visible ) {
         var row = ""
         row += "<tr id='" + order.id + "' style='border-top: black; border-top-style: double;'>\n";
         row += "  <td style='white-space: nowrap;'>" + order.ship_by + "</td>\n";
@@ -145,7 +151,7 @@
 //        row += "  <td></td>\n";
         row += "  <td style='white-space: nowrap;'>Subtotal: " + order.totals.subtotal + "<br/>Discount: " + order.totals.discount + "<br/>Shipping: " + order.totals.shipping + "<br/>Tax: " + order.totals.tax + "<br/><b>Total: " + order.totals.total + "</b></td>\n";
         if ( order.tracking && order.tracking.state ) {
-          if (order.tracking.state == "PENDING") {
+          if (order.tracking.state.toUpperCase() == "PENDING") {
             row += "  <td><b style='color: red;'>PENDING</b></td>";
           } else {
             row += "  <td>\n";
@@ -175,13 +181,14 @@
         }
         row += "  <td><textarea rows='4' cols='50' name='msg'></textarea><button onclick='send_msg(\"" + order.id + "\")'>Send</button></td>\n";
 //        row += "  <td style='white-space: nowrap;'>" + order.shipping_address.full_name + "<br/>" + order.shipping_address.organisation + "<br/>" + order.shipping_address.line_1 + "<br/>" + order.shipping_address.line_2 + "<br/>" + order.shipping_address.city + " " + order.shipping_address.area_code + "<br/>" + order.shipping_address.state + "<br/>" + order.shipping_address.phone + "</td>\n";
-        row += "  <td style='white-space: nowrap;'>" + JSON.stringify(order.shipping_address, null, 2) + "</td>\n";
+//        row += "  <td style='white-space: nowrap;'>" + JSON.stringify(order.shipping_address, null, 2) + "</td>\n";
         row += "</tr>\n";
         $('tbody').prepend(row);
         if ( order.tracking && order.tracking.state ) {
           $("#" + order.id ).find('select').val(order.tracking.state.toUpperCase());
         }
         change_order_state(order.id);
+        }
       }
     }
 
