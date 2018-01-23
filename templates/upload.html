@@ -393,8 +393,8 @@ var createJob = function(job) {
   jobDiv += "  <div class='upload-product block cartitems marginbottom30'>\n";
   jobDiv += "    <figure class='block text-center whitebg'>\n";
   jobDiv += "      <img src='" + job.thumbnail + "' class='img-responsive displayinline' alt='' style='max-height: 121px; max-width: 310px;'>\n";
-  jobDiv += "      <figcaption class='block flex justifycontent flexend'>\n";
-  jobDiv += "        <h3 class='pull-left' style='max-width: 60%; overflow: hidden;'>" + job.name + "</h3>\n";
+  jobDiv += "      <figcaption class='block flex justifycontent flexend' style='height: 2.1em;'>\n";
+  jobDiv += "        <h3 class='pull-left' style='max-width: 60%; overflow: hidden; text-align: left; max-height: 2.1em; text-overflow: ellipsis; word-wrap: break-word;'>" + job.name + "</h3>\n";
   jobDiv += "        <h6 class='pull-right cursorpointer' onclick='viewJob(\"" + job.id + "\")'>Click to view in 3D</h6>\n";
   jobDiv += "      </figcaption>\n";
   jobDiv += "      <div class='closeuploadedproduct' onclick='deleteJob(\"" + job.id + "\")'>\n";
@@ -403,7 +403,7 @@ var createJob = function(job) {
   jobDiv += "    </figure>\n";
   jobDiv += "    <div class='uploaddetails block sectionpadding20'>\n";
   jobDiv += "      <div class='row'>\n";
-  jobDiv += "        <div class='col-lg-6 col-md-6 col-sm-6 col-xs-12'>\n";
+  jobDiv += "        <div class='col-lg-6 col-md-6 col-sm-6 col-xs-12' style='margin-bottom: 1.5em;'>\n";
   jobDiv += "          <div class='typematerialcolor block'>\n";
   jobDiv += "            <div class='form-group block jqtransform zindex3'>\n";
   jobDiv += "              <select class='customselect' onchange='onChangeJobType(\"" + job.id + "\")'>\n";
@@ -686,6 +686,7 @@ var configuration = {
 var onFilesDrop = function(e) {
   e.stopPropagation()
   e.preventDefault()
+  $(".draganddropwraper").removeClass("draganddropwraperhover");
 
   var files = [];
   if ( e.originalEvent.dataTransfer ) {
@@ -916,12 +917,16 @@ var refresh_job = function(id) {
   onChangeJobPrice(id);
 }
 
-$(document.body).on("dragover", function(e) { e.stopPropagation(); e.preventDefault(); });
+$(document.body).on("dragleave", function(e) { $(".draganddropwraper").removeClass("draganddropwraperhover");});
+$(document.body).on("dragover", function(e) { e.stopPropagation(); e.preventDefault(); $(".draganddropwraper").addClass("draganddropwraperhover");});
 $(document.body).on("drop", onFilesDrop);
 
 $("#fileuploadinput").on('change', onFilesDrop)
 
 
+window.onresize(function() {
+  $("#container").css("max-width", $("body").width() - 140);
+});
 
 function do_renderer_resize() {
   h = 600
