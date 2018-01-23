@@ -1165,6 +1165,10 @@ section.bodycontainer {
     box-shadow: 4px 10px 10px rgba(143, 143, 143, 0.75);
 }
 
+.draganddropwraperhover {
+    background-color: #e7e7e7;
+}
+
 .draganddropwraper:hover {
     background-color: #e7e7e7;
 }
@@ -1636,6 +1640,16 @@ select:focus::-ms-value {
     padding: 0 10px;
 }
 
+.fa-times {
+  cursor: pointer;
+  text-shadow: 1px 1px 5px rgba(143, 143, 143, 0.75);
+}
+
+.fa-times:hover {
+  text-shadow: 3px 3px 5px rgba(143, 143, 143, 0.75);
+  transform: translateY(-2px);
+  color: #f94b4b;
+}
 
 /* Cart Page Starts Here */
 
@@ -1668,7 +1682,12 @@ select:focus::-ms-value {
     font-size: 1rem;
 }
 
+.cartfloatingbutton:hover {
+    background-color: #ff6969;
+}
+
 .cartfloatingbutton {
+    cursor: pointer;
     position: fixed;
     background-color: #f94b4b;
     text-align: center;
