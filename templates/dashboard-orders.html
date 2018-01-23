@@ -25,9 +25,7 @@
         <th>Quote</th>
         <th>State</th>
         <th>Message</th>
-<!--
         <th>Address</th>
--->
       </tr>
     </thead>
     <tbody>
@@ -154,40 +152,21 @@
           if (order.tracking.state.toUpperCase() == "PENDING") {
             row += "  <td><b style='color: red;'>PENDING</b></td>";
           } else {
-            row += "  <td>\n";
-            row += "    <select onchange='change_order_state(\"" + order.id + "\")'>\n";
-            row += "      <option value='PLACED' selected>Placed</option>\n";
-            row += "      <option value='CONFIRMED'>Confirmed</option>\n";
-            row += "      <option value='PRINTING'>Printing</option>\n";
-            row += "      <option value='READY'>Ready</option>\n";
-            row += "      <option value='SHIPPED'>Shipped</option>\n";
-            row += "      <option value='DELIVERED'>Delivered</option>\n";
-            row += "    </select>\n";
-            row += "  </td>\n";
+            row += "  <td>" + order.tracking.state.toUpperCase() + "</td>";
           }
         } else if ( order.txnid ) {
-          row += "  <td>\n";
-          row += "    <select onchange='change_order_state(\"" + order.id + "\")'>\n";
-          row += "      <option value='PLACED' selected>Placed</option>\n";
-          row += "      <option value='CONFIRMED'>Confirmed</option>\n";
-          row += "      <option value='PRINTING'>Printing</option>\n";
-          row += "      <option value='READY'>Ready</option>\n";
-          row += "      <option value='SHIPPED'>Shipped</option>\n";
-          row += "      <option value='DELIVERED'>Delivered</option>\n";
-          row += "    </select>\n";
-          row += "  </td>\n";
+          row += "  <td>PLACED</td>";
         } else {
           row += "  <td><b style='color: red;'>PENDING</b></td>";
         }
         row += "  <td><textarea rows='4' cols='50' name='msg'></textarea><button onclick='send_msg(\"" + order.id + "\")'>Send</button></td>\n";
 //        row += "  <td style='white-space: nowrap;'>" + order.shipping_address.full_name + "<br/>" + order.shipping_address.organisation + "<br/>" + order.shipping_address.line_1 + "<br/>" + order.shipping_address.line_2 + "<br/>" + order.shipping_address.city + " " + order.shipping_address.area_code + "<br/>" + order.shipping_address.state + "<br/>" + order.shipping_address.phone + "</td>\n";
-//        row += "  <td style='white-space: nowrap;'>" + JSON.stringify(order.shipping_address, null, 2) + "</td>\n";
+        row += "  <td style='white-space: nowrap;'>" + JSON.stringify(order.shipping_address, null, 2) + "</td>\n";
         row += "</tr>\n";
         $('tbody').prepend(row);
         if ( order.tracking && order.tracking.state ) {
           $("#" + order.id ).find('select').val(order.tracking.state.toUpperCase());
         }
-        change_order_state(order.id);
         }
       }
     }

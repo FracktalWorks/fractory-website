@@ -23,6 +23,7 @@
         <th>Additional Files</th>
         <th>GCode</th>
 -->
+        <th>State</th>
         <th>Quote</th>
         <th>Message</th>
         <th>Assign Fractory</th>
@@ -71,6 +72,19 @@
       });
     }
     var jobs = {};
+    var orders = {};
+    var users = {};
+
+    var load_user = function(user) {
+      users[user['_id']] = user.fname;
+    }
+
+    var load_order = function(order) {
+      for ( var i = 0; i < order.jobs.length; i++ ) {
+        orders[order.jobs[i]] = order;
+      }
+    }
+
     var load_job = function(job) {
       jobs[job.id] = job;
       var jobDiv = ""
@@ -84,12 +98,13 @@
       jobDiv += "  <td>" + new Date(job.tracking.uploaded_at) + "</td>\n";
 
       jobDiv += "  <td>" + job.name + "</td>\n";
-      jobDiv += "  <td>" + job.thumbnail + "</td>\n";
+      jobDiv += "  <td>" + users[job.id.split('-')[0]] + "</td>\n";
       jobDiv += "  <td>" + job.settings.job_type + "</td>\n";
       jobDiv += "  <td>Material: " + job.settings.material + "<br/>Density: " + job.settings.density + "<br/>Finish: " + job.settings.finish + "</td>\n";
       jobDiv += "  <td><a href='/jobs/" + job.id + "/model'><button>Download</button></td></a>\n";
 //      jobDiv += "  <td><a href='/jobs/" + job.id + "/extra'><button>Download</button></td></a>\n";
 //      jobDiv += "  <td><button onclick='upload_gcode(\"" + job.id + "\")'>Upload</button></td>\n";
+      jobDiv += "  <td>" + job.tracking.state + "</td>\n";
       jobDiv += "  <td><input type='text' name='quote' value='" + job.cache.quote + "'></input><button onclick='update_quote(\"" + job.id + "\")'>Update</button></td>\n";
       jobDiv += "  <td><textarea rows='4' cols='50' name='msg'></textarea><button onclick='send_msg(\"" + job.id + "\")'>Send</button></td>\n";
       jobDiv += "  <td>\n";
@@ -98,13 +113,19 @@
       jobDiv += "      <option value='001'>Fractory 001</option>\n";
       jobDiv += "      <option value='002'>Fractory 002</option>\n";
       jobDiv += "  </td>\n";
-      jobDiv += "  <td></td>";
+      jobDiv += "  <td>" + JSON.stringify(orders[job.id].shipping_address, null, 2) + "</td>";
       jobDiv += "</tr>\n";
 
       $('tbody').prepend(jobDiv);
       $("#" + job.id ).find('select').val(job.fractory);
     }
 
+    {% for order in orders %}
+      load_order({{ order }});
+    {% endfor %}
+    {% for user in users %}
+      load_user({{ user }});
+    {% endfor %}
     {% for job in jobs %}
       load_job({{ job }});
     {% endfor %}
