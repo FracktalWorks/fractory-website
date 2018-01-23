@@ -113,7 +113,11 @@
       jobDiv += "      <option value='001'>Fractory 001</option>\n";
       jobDiv += "      <option value='002'>Fractory 002</option>\n";
       jobDiv += "  </td>\n";
-      jobDiv += "  <td>" + JSON.stringify(orders[job.id].shipping_address, null, 2) + "</td>";
+      if ( orders[job.id] ) {
+        jobDiv += "  <td>" + JSON.stringify(orders[job.id].shipping_address, null, 2) + "</td>";
+      } else {
+        jobDiv += "  <td></td>";
+      }
       jobDiv += "</tr>\n";
 
       $('tbody').prepend(jobDiv);
