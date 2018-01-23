@@ -1717,24 +1717,28 @@ address.selected {
 
 /* Media Queries Starts Here */
 
-@media (max-width: 768px)
-.cartfloatingbutton {
+@media (max-width: 768px) {
+  .cartfloatingbutton {
     display: none;
+  }
 }
 
-@media (min-width: 768px)
-.container {
+@media (min-width: 768px) {
+  .container {
     width: 660px;
+  }
 }
 
-@media (min-width: 1030px)
-.container {
+@media (min-width: 1030px) {
+  .container {
     width: 900px;
+  }
 }
 
-@media (min-width: 1300px)
-.container {
+@media (min-width: 1300px) {
+  .container {
     width: 1170px;
+  }
 }
 
 @media(min-width:992px) and (max-width:1199px) {

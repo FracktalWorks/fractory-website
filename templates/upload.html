@@ -924,10 +924,6 @@ $(document.body).on("drop", onFilesDrop);
 $("#fileuploadinput").on('change', onFilesDrop)
 
 
-window.onresize(function() {
-  $("#container").css("max-width", $("body").width() - 160);
-});
-
 function do_renderer_resize() {
   h = 600
   w = 600
