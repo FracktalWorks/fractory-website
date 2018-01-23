@@ -1646,9 +1646,10 @@ select:focus::-ms-value {
 }
 
 .fa-times:hover {
-  text-shadow: 2px 2px 5px rgba(143, 143, 143, 0.75);
-  transform: translate(-1px, -1px);
-  color: #591313;
+  -ms-transform: scale(1.2); /* IE 9 */
+  -webkit-transform: scale(1.2); /* Safari */
+  transform: scale(1.2); /* Standard syntax */
+  color: #e34343;
 }
 
 /* Cart Page Starts Here */
