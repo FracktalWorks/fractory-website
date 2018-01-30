@@ -161,34 +161,63 @@
         <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12">
           <div class="flex">
             <div class="logodiv active  hidden-md hidden-lg hidden-sm">
-              <a href="#body" class="logo transition"><img src="/media/fractory.svg" class="img-responsive" alt=""/></a>
+              <a href="#body" class="logo transition"><img src="/media/fractory.svg" class="img-responsive" alt="" style="margin-top:-10px"/></a>
             </div>
             <a class="mobilemenu_js cursorpointer hidden-md hidden-lg hidden-sm"><i class="fa fa-bars" aria-hidden="true"></i></a>
             <div class="logoandmenudiv">
               <ul class="flex">
                 <li class="transition active hidden-xs">
                   <div class="logodiv ">
-                    <a href="#body" class="logo transition"><img src="/media/fractory.svg" class="img-responsive" alt=""/></a>
+                    <a href="#body" class="logo transition"><img src="/media/fractory.svg" class="img-responsive" alt="" style="margin-top:-10px"/></a>
                   </div>
                 </li>
-                <li class="transition inactive"><a href="/orders" class="transition">Orders</a></li>
+          {% if user %}
                 <li class="transition inactive"><a href="/upload" class="transition">Upload</a></li>
-                <li class="transition inactive"><a href="#0" class="transition">Stories</a></li>
-                <li class="transition inactive"><a href="#0" class="transition">Contact</a></li>
-                <li class="transition hidden-lg hidden-md hidden-sm"><a class="transition cursorpointer">Sign in </a></li>
+                <li class="transition inactive"><a href="/almost-there" class="transition">How it works</a></li>
+                <li class="transition inactive"><a href="https://www.fracktal.in/blog/" class="transition">Stories</a></li>
+                <li class="transition inactive"><a href="https://desk.zoho.com/portal/fracktalworks/newticket" class="transition">Contact</a></li>
+                <li class="transition hidden-lg hidden-md hidden-sm"><a class="transition cursorpointer">Profile</a></li>
+                <li class="transition hidden-lg hidden-md hidden-sm"><a class="transition cursorpointer">Orders</a></li>
+                <li class="transition hidden-lg hidden-md hidden-sm"><a class="transition cursorpointer">Address Book</a></li>
+                <li class="transition hidden-lg hidden-md hidden-sm"><a class="transition cursorpointer">Cart</a></li>
+          {% else %}
+                <li class="transition inactive"><a href="/almost-there" class="transition">Services</a></li>
+                <li class="transition inactive"><a href="/almost-there" class="transition">How it works</a></li>
+                <li class="transition inactive"><a href="https://www.fracktal.in/blog/" class="transition">Stories</a></li>
+                <li class="transition inactive"><a href="https://desk.zoho.com/portal/fracktalworks/newticket" class="transition">Contact</a></li>
+                <li class="transition hidden-lg hidden-md hidden-sm"><a class="transition cursorpointer">Sign in</a></li>
                 <li class="transition hidden-lg hidden-md hidden-sm"><a class="transition cursorpointer">Register</a></li>
+          {% endif %}
                 <span class="hoveroverline transitionforappearing"></span>
               </ul>
             </div>
           </div>
         </div>
         <div class="col-lg-3 col-md-3 col-sm-3 hidden-xs">
+          {% if user %}
+          <div id="profiledropdownmenu" style="margin-top:50px;position: fixed;z-index: 99999;background-color: white;box-shadow: 5px 5px 6px 1px rgba(119, 119, 119, 0.72);padding: 20px;">
+            <a href="/profile">Profile</a><br>
+            <a href="/orders">Orders</a><br>
+            <a href="/address-book">Address Book</a><br>
+            <hr style="margin-top: 5px;margin-bottom: 5px;">
+            <a href="/cart">Cart</a><br>
+            <hr style="margin-top: 5px;margin-bottom: 5px;">
+            <a href="/signout">Sign out</a>
+          </div>
+          <div id="profiledropdown" style="display: inline-block; cursor:pointer;">
+            <span>Hey {{ user.fname }}!&nbsp;</span>
+            <img src="media/avatar.png" class="img-responsive displayinline" alt="" style="width: 3em;">
+            <span>&nbsp;</span>
+            <i class="fa fa-caret-down" aria-hidden="true"></i>
+          </div>
+          {% else %}
           <div class="signinandsignup transition">
             <ul>
               <li><a href="#body" class="transition cursorpointer">Sign in </a></li>
               <li><a href="#body" class="transition cursorpointer">Register</a></li>
             </ul>
           </div>
+          {% endif %}
         </div>
       </div>
     </div>
@@ -200,7 +229,6 @@
         <div class="row">
           <div class="col-lg-7 col-md-7 col-sm-7 col-xs-12">
             <div class="footerlinks block">
-              <h5 class="whitecolor marginbottom25">Company</h5>
               <div class="row">
                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                   <ul>
@@ -212,10 +240,9 @@
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                   <ul>
-                    <li><a href="#0">Support</a></li>
-                    <li><a href="#0">Legal</a></li>
-                    <li><a href="#0">Partners</a></li>
-                    <li><a href="#0">Careers</a></li>
+                    <li><a href="https://desk.zoho.com/portal/fracktalworks/home">Support</a></li>
+                    <li><a href="https://desk.zoho.com/portal/fracktalworks/newticket">Partners</a></li>
+                    <li><a href="https://angel.co/fracktal">Careers</a></li>
                   </ul>
                 </div>
               </div>
@@ -223,13 +250,12 @@
           </div>
           <div class="col-lg-5 col-md-5 col-sm-5 col-xs-12">
             <div class="footerlinks block">
-              <h5 class="whitecolor marginbottom25">Company</h5>
               <div class="socialmediafooter block">
                 <ul>
-                  <li><a href="https://www.facebook.com/" class="transition"><i class="fa fa-facebook" aria-hidden="true"></i> </a></li>
-                  <li><a href="#0" class="transition"><i class="fa fa-twitter" aria-hidden="true"></i> </a></li>
-                  <li><a href="#0" class="transition"><i class="fa fa-linkedin" aria-hidden="true"></i> </a></li>
-                  <li><a href="#0" class="transition"><i class="fa fa-youtube" aria-hidden="true"></i> </a></li>
+                  <li><a href="https://www.facebook.com/FracktalWorks/" class="transition"><i class="fa fa-facebook" aria-hidden="true"></i> </a></li>
+                  <li><a href="https://twitter.com/fracktalworks" class="transition"><i class="fa fa-twitter" aria-hidden="true"></i> </a></li>
+                  <li><a href="https://www.instagram.com/fracktalworks/" class="transition"><i class="fa fa-instagram" aria-hidden="true"></i> </a></li>
+                  <li><a href="https://www.youtube.com/channel/UC_t0LbCXdvND9Xyy0O0YCMw" class="transition"><i class="fa fa-youtube" aria-hidden="true"></i> </a></li>
                 </ul>
               </div>
             </div>
@@ -242,6 +268,16 @@
   {% block styles %}{% endblock %}
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script>
+  $("#profiledropdown").click(function() {
+    if ( $("#profiledropdownmenu").is(":visible") ) {
+      $("#profiledropdownmenu").slideUp(300);
+    } else {
+      $("#profiledropdownmenu").slideDown(300);
+    }
+  });
+      $("#profiledropdownmenu").slideUp(0);
+  </script>
   {% block scripts %}{% endblock %}
   <script>
     (function(){var w=window;var ic=w.Intercom;if(typeof ic==="function"){ic('reattach_activator');ic('update',intercomSettings);}else{var d=document;var i=function(){i.c(arguments)};i.q=[];i.c=function(args){i.q.push(args)};w.Intercom=i;function l(){var s=d.createElement('script');s.type='text/javascript';s.async=true;s.src='https://widget.intercom.io/widget/' + window.intercomSettings.app_id;var x=d.getElementsByTagName('script')[0];x.parentNode.insertBefore(s,x);}if(w.attachEvent){w.attachEvent('onload',l);}else{w.addEventListener('load',l,false);}}})()
