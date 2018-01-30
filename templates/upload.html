@@ -174,7 +174,7 @@ var onChangeJobType = function(id) {
     materials += "\n              <select class='customselect' onchange='onChangeJobMaterial(\"" + id + "\")'>\n";
     materials += "                <option value='---' disabled selected>Material</option>\n";
     for ( var i = 0; i < configuration[val].MATERIALS.length; i++ ) {
-      materials += "                <option value=" + configuration[val].MATERIALS[i] + ">" + configuration[val].MATERIALS[i] + "</option>\n";
+      materials += "                <option value='" + configuration[val].MATERIALS[i] + "'>" + configuration[val].MATERIALS[i] + "</option>\n";
     }
     materials += "              </select>\n";
     if ( materials.indexOf("value='" + configuration[val].DEFAULT_MATERIAL + "'") > 0 ) {
@@ -187,7 +187,7 @@ var onChangeJobType = function(id) {
     finish += "\n              <select class='customselect' onchange='onChangeJobFinish(\"" + id + "\")'>\n";
     finish += "                <option value='---' disabled>Finish</option>\n";
     for ( var i = 0; i < configuration[val].FINISH.length; i++ ) {
-      finish += "                <option value=" + configuration[val].FINISH[i] + ">" + configuration[val].FINISH[i] + "</option>\n";
+      finish += "                <option value='" + configuration[val].FINISH[i] + "'>" + configuration[val].FINISH[i] + "</option>\n";
     }
     finish += "              </select>\n";
     if ( finish.indexOf("value='" + configuration[val].DEFAULT_FINISH + "'") > 0 ) {
@@ -205,7 +205,7 @@ var onChangeJobType = function(id) {
     density += "\n              <select class='customselect' onchange='onChangeJobDensity(\"" + id + "\")'>\n";
     density += "                <option value='---' disabled>Density</option>\n";
     for ( var i = 0; i < configuration[val].DENSITY.length; i++ ) {
-      density += "                <option value=" + configuration[val].DENSITY[i] + ">" + configuration[val].DENSITY[i] + "</option>\n";
+      density += "                <option value='" + configuration[val].DENSITY[i] + "'>" + configuration[val].DENSITY[i] + "</option>\n";
     }
     density += "              </select>\n";
     if ( density.indexOf("value='" + configuration[val].DEFAULT_DENSITY + "'") > 0 ) {
