@@ -195,6 +195,11 @@ var onChangeJobType = function(id) {
     } else {
       finish.replace("value='---'", "value='---' selected")
     }
+    if ( configuration[val].FINISH && configuration[val].FINISH.length > 0 ) {
+      $("#job" + id).find(".zindex1").css("opacity",1);
+    } else {
+      $("#job" + id).find(".zindex1").css("opacity",0);
+    }
 
     var density = "";
     density += "\n              <select class='customselect' onchange='onChangeJobDensity(\"" + id + "\")'>\n";
@@ -593,7 +598,7 @@ var configuration = {
     'STP'               : 'CNC',
     'STEP'              : 'CNC'
   },
-  JOB_TYPES             : ['FDM','CNC'],
+  JOB_TYPES             : ['FDM','CNC','SLS'],
   FDM                   : {
     DEFAULT_MATERIAL    : 'White PLA',
     MATERIALS           : ['WHITE PLA', 'BLACK PLA', 'RED PLA', 'ORANGE PLA', 'YELLOW PLA', 'PEAK GREEN PLA', 'LIGHT GREY PLA', 'LIGHT BLUE PLA', 'WHITE ABS', 'BLACK ABS', 'COPPER FILL', 'WOOD FILL'],
@@ -606,6 +611,11 @@ var configuration = {
     MATERIALS           : ['ALUMINIUM', 'MS', 'SS 302', 'SS 304', 'HSCR', 'NYLON', 'BRASS', 'COPPER', 'WOOD'],
     DEFAULT_FINISH      : 'AS MACHINED',
     FINISH              : ['AS MACHINED'],
+    DENSITY             : []
+  },
+  SLS                   : {
+    MATERIALS           : ['DEFAULT'],
+    FINISH              : [],
     DENSITY             : []
   },
   JOB_TEMPLATE          : {
@@ -695,7 +705,7 @@ var onFilesDrop = function(e) {
     files = e.originalEvent.target.files;
   }
   if ( files.length > 0 ) {
-    for (i = 0; i < files.length; i++ ) {
+    for (var i = 0; i < files.length; i++ ) {
       if ( files[i].size > (configuration.MAX_FILE_SIZE * 1048576) ) {
         alert("File: '" + files[i].name + "' is too big! Maximum allowed size is " + configuration.MAX_FILE_SIZE + "MB");
         continue;
@@ -743,11 +753,11 @@ var onFilesDrop = function(e) {
             case 'geometry':
               var faces = [];
               var vertices = [];
-              for ( var i = 0; i < event.data.faces.length; i++ ) {
-                faces.push(new THREE.Face3(event.data.faces[i].a,event.data.faces[i].b,event.data.faces[i].c))
+              for ( var j = 0; j < event.data.faces.length; j++ ) {
+                faces.push(new THREE.Face3(event.data.faces[j].a,event.data.faces[j].b,event.data.faces[j].c))
               }
-              for ( var i = 0; i < event.data.vertices.length; i++ ) {
-                vertices.push(new THREE.Vector3(event.data.vertices[i].x,event.data.vertices[i].y,event.data.vertices[i].z));
+              for ( var k = 0; k < event.data.vertices.length; k++ ) {
+                vertices.push(new THREE.Vector3(event.data.vertices[k].x,event.data.vertices[k].y,event.data.vertices[k].z));
               }
 
               var geometry = new THREE.Geometry;
@@ -791,7 +801,6 @@ var update_geometry = function(jid, geometry) {
               scene.add(mesh);
               setTimeout(function() {
                 $("#job" + jid).find("img").attr("src", renderer.domElement.toDataURL("image/png").replace("image/png", "image/octet-stream"))
-                mesh_lock = false;
 
                 var job_form = new FormData();
                 job_form.append("data", $("#job" + jid).find("img").attr("src"));
@@ -811,6 +820,11 @@ var update_geometry = function(jid, geometry) {
                   async: true,
                   timeout: 30*1000
                 });
+
+                setTimeout(function() {
+                  mesh_lock = false;
+                }, 100 );
+
               }, 100);
 }
 

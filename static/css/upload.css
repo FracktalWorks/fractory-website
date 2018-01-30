@@ -1652,6 +1652,10 @@ select:focus::-ms-value {
   color: #e34343;
 }
 
+.jqTransformSelectWrapper li:first-child { 
+    pointer-events: none;
+}
+
 /* Cart Page Starts Here */
 
 .cartwrapper .products img {
