@@ -118,7 +118,7 @@ self.onmessage = function(e) {
           parse_file(job_file);
           job_file = undefined;
         }
-        var vf_data = {action: "geometry", vertices: geometry.vertices, faces: geometry.faces};
+        var vf_data = {action: "geometry", vertices: geometry.vertices, faces: geometry.faces, id: job.id};
         self.postMessage(vf_data);
         break;
       case 'stop':
@@ -414,6 +414,7 @@ finish_full_analysis = function() {
 
     job.cache.exp_print_time = Math.min(exp_print_time.x_plus, exp_print_time.x_minus, exp_print_time.y_plus, exp_print_time.y_minus, exp_print_time.z_plus, exp_print_time.z_minus)
     job.cache.quote = Math.round(job.cache.exp_print_time * 6.944)/100;
+    job.cache.id = job.id;
 
     self.postMessage(job.cache);
     logger.debug("Finished stage I analysis for '" + job.name + "'...");
@@ -459,6 +460,7 @@ finish_full_analysis = function() {
 }
 
 do_full_analysis = function() {
+  status.id = job.id;
   prev_analysis_progress = 0;
   status.analysis_progress = 0;
   status.analysis_tag = "Analysis...";
@@ -485,6 +487,7 @@ do_full_analysis = function() {
   support_iterator_start();
   logger.debug("Starting stage I analysis for '" + job.name + "'...");
   for(var i = 0; i < geometry.faces.length; i++) {
+    status.id = job.id;
     status.analysis_progress = Math.floor(100 * (i+1) / geometry.faces.length);
     if ( status.analysis_progress - prev_analysis_progress > 5 || status.analysis_progress == 100 || status.analysis_progress < prev_analysis_progress ) {
       prev_analysis_progress = status.analysis_progress;
@@ -501,6 +504,7 @@ do_full_analysis = function() {
 //  } else {
 //    job.cache.quote = undefined;
 //  }
+  job.cache.id = job.id;
   self.postMessage(job.cache);
 
     var job_form = new FormData();
@@ -530,6 +534,7 @@ do_full_analysis = function() {
 
 create_mesh = function(vf_data) {
   vf_data.action = "geometry";
+  vf_data.id = job.id;
   self.postMessage(vf_data);
 
   geometry = null;
@@ -547,6 +552,7 @@ var parse_file = function(buffer) {
   prev_analysis_progress = 0;
   status.analysis_progress = 0;
   status.analysis_tag = "Parsing...";
+  status.id = job.id;
   self.postMessage(status)
   logger.debug("Attempting to parse '" + job.name + "'...");
   if ( parsers[job.name.split('.').pop().toUpperCase()] ) {
@@ -559,6 +565,7 @@ var parse_file = function(buffer) {
     status.analysis_progress = 100;
     status.analysis_tag      = "Analysis...";
     status.errors.code       = 503;
+    status.id = job.id;
     postMessage(status);
     delete buffer;
   }
@@ -607,6 +614,7 @@ var load_from_file = function(file) {
           status.errors = {'fatal': "File read failed!"};
       }
       status.errors.code = 404;
+      status.id = job.id;
       self.postMessage(status);
     }
 
@@ -625,14 +633,15 @@ var load_from_file = function(file) {
       if ( status.analysis_progress - prev_analysis_progress > 5 || status.analysis_progress == 100 || status.analysis_progress < prev_analysis_progress ) {
         prev_analysis_progress = status.analysis_progress;
         logger.debug("Reading '" + job.name + "': " + ( e.loaded / e.total * 100 ) + "%");
+        status.id = job.id;
         self.postMessage(status);
       }
 
       if ( status.upload_progress == -1 ) {
         status.upload_progress = 0;
         logger.debug("Starting upload for '" + job.name + "'...");
+        status.id = job.id;
         self.postMessage(status);
-
         var job_form = new FormData();
 
         job_form.append("name", job.name);
@@ -672,6 +681,7 @@ var load_from_file = function(file) {
                     if ( status.upload_progress - prev_upload_progress > 5 || status.upload_progress == 100 || status.upload_progress < prev_upload_progress ) {
                       prev_upload_progress = status.upload_progress;
                       logger.debug("File upload for '" + job.name + "': " + status.upload_progress + "%...");
+                      status.id = job.id;
                       postMessage(status);
                     }
                   }, false);

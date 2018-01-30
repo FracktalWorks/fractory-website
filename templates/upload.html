@@ -158,9 +158,9 @@ var requestQuote = function(id) {
 var cancelQuote = function(id) {
   logger.debug("[" + id + "] Job quote reset");
   $("#job" + id).find(".price").html("");
-  $("#job" + id).find("button").html("Get Quote");
+  $("#job" + id).find("button").html("Waiting for Quote");
   $("#job" + id).find("button").removeClass("active");
-  $("#job" + id).find("button").addClass("getquote");
+//  $("#job" + id).find("button").addClass("getquote");
 }
 
 var onChangeJobType = function(id) {
@@ -367,13 +367,13 @@ var onChangeJobPrice = function(id) {
       }
     } else {
       $("#job" + id).find(".price").html("");
-      $("#job" + id).find("button").html("Get Quote");
-      $("#job" + id).find("button").addClass("getquote");
+      $("#job" + id).find("button").html("Waiting for Quote");
+//      $("#job" + id).find("button").addClass("getquote");
     }
 /*
   } else {
     $("#job" + id).find(".price").html("");
-    $("#job" + id).find("button").html("Get Quote");
+    $("#job" + id).find("button").html("Waiting for Quote");
     $("#job" + id).find("button").removeClass("active");
     $("#job" + id).find("button").removeClass("getquote");
 */
@@ -415,6 +415,7 @@ var createJob = function(job) {
   jobDiv += "                <option value='---' disabled selected>Job Type</option>\n";
   jobDiv += "                <option value='CNC'>CNC</option>\n";
   jobDiv += "                <option value='FDM'>3D Print - FDM</option>\n";
+  jobDiv += "                <option value='SLS'>3D Print - SLS</option>\n";
   jobDiv += "              </select>\n";
   jobDiv += "            </div>\n";
   jobDiv += "            <div class='form-group block jqtransform zindex2'>\n";
@@ -488,7 +489,7 @@ var createJob = function(job) {
   if (job.cache.quote) {
     jobDiv += "        <button class='button block active' onclick='onJobButtonClick(\"" + job.id + "\")'>Add to Cart</button>\n";
   } else {
-    jobDiv += "        <button class='button block getquote' onclick='onJobButtonClick(\"" + job.id + "\")'>Get Quote</button>\n";
+    jobDiv += "        <button class='button block' onclick='onJobButtonClick(\"" + job.id + "\")'>Waiting for Quote</button>\n";
   }
   jobDiv += "      </div>\n";
   jobDiv += "    </div>\n";
@@ -598,22 +599,25 @@ var configuration = {
     'STP'               : 'CNC',
     'STEP'              : 'CNC'
   },
+  ANALYSIS_POSSIBLE     : ['STL', 'OBJ', 'VF'],
   JOB_TYPES             : ['FDM','CNC','SLS'],
   FDM                   : {
-    DEFAULT_MATERIAL    : 'White PLA',
+    DEFAULT_MATERIAL    : 'WHITE PLA',
     MATERIALS           : ['WHITE PLA', 'BLACK PLA', 'RED PLA', 'ORANGE PLA', 'YELLOW PLA', 'PEAK GREEN PLA', 'LIGHT GREY PLA', 'LIGHT BLUE PLA', 'WHITE ABS', 'BLACK ABS', 'COPPER FILL', 'WOOD FILL'],
-    DEFAULT_FINISH      : 'NORMAL',
-    FINISH              : ['COARSE', 'NORMAL', 'FINE'],
-    DEFAULT_DENSITY     : 'MEDIUM',
-    DENSITY             : ['LOW','MEDIUM','HIGH']
+    DEFAULT_FINISH      : 'NORMAL (200 &#181;m)',
+    FINISH              : ['COARSE (300 &#181;m)', 'NORMAL (200 &#181;m)', 'FINE (100 &#181;m)'],
+    DEFAULT_DENSITY     : 'MEDIUM (15%)',
+    DENSITY             : ['LOW (5%)','MEDIUM (15%)','HIGH (25%)', 'ULTRA HIGH (50%)', 'CUSTOM']
   },
   CNC                   : {
+    DEFAULT_MATERIAL    : 'ALUMINIUM',
     MATERIALS           : ['ALUMINIUM', 'MS', 'SS 302', 'SS 304', 'HSCR', 'NYLON', 'BRASS', 'COPPER', 'WOOD'],
     DEFAULT_FINISH      : 'AS MACHINED',
     FINISH              : ['AS MACHINED'],
     DENSITY             : []
   },
   SLS                   : {
+    DEFAULT_MATERIAL    : 'DEFAULT',
     MATERIALS           : ['DEFAULT'],
     FINISH              : [],
     DENSITY             : []
@@ -736,19 +740,19 @@ var onFilesDrop = function(e) {
       worker.onmessage = function(event) {
         try {
           if (event.data.action != "geometry") {
-            logger.debug("[" + job.id + "] Received message from worker " + JSON.stringify(event.data, null, 3));
+            logger.debug("[" + event.data.id + "] Received message from worker " + JSON.stringify(event.data, null, 3));
           }
           switch(event.data.action) {
             case 'status':
-              jobs[job.id].analysis_progress = event.data.analysis_progress;
-              jobs[job.id].upload_progress = event.data.upload_progress;
-              jobs[job.id].analysis_tag = event.data.analysis_tag;
-              jobs[job.id].errors = event.data.errors;
-              refresh_job(job.id);
+              jobs[event.data.id].analysis_progress = event.data.analysis_progress;
+              jobs[event.data.id].upload_progress = event.data.upload_progress;
+              jobs[event.data.id].analysis_tag = event.data.analysis_tag;
+              jobs[event.data.id].errors = event.data.errors;
+              refresh_job(event.data.id);
               break;
             case 'cache':
-              jobs[job.id].cache = event.data;
-              refresh_job(job.id);
+              jobs[event.data.id].cache = event.data;
+              refresh_job(event.data.id);
               break;
             case 'geometry':
               var faces = [];
@@ -767,7 +771,7 @@ var onFilesDrop = function(e) {
               geometry.computeFaceNormals();
               THREE.GeometryUtils.center(geometry);
 
-              update_geometry(job.id, geometry);
+              update_geometry(event.data.id, geometry);
               break;
             default:
           }
@@ -839,18 +843,20 @@ var load_job = function(job) {
 
     worker.onmessage = function(event) {
       try {
-        logger.debug("[" + job.id + "] Received message from worker " + JSON.stringify(event.data, null, 3));
+          if (event.data.action != "geometry") {
+            logger.debug("[" + event.data.id + "] Received message from worker " + JSON.stringify(event.data, null, 3));
+          }
         switch(event.data.action) {
           case 'status':
-            jobs[job.id].analysis_progress = event.data.analysis_progress;
-            jobs[job.id].upload_progress = 100;
-            jobs[job.id].analysis_tag = event.data.analysis_tag;
-            jobs[job.id].errors = event.data.errors;
-            refresh_job(job.id);
+            jobs[event.data.id].analysis_progress = event.data.analysis_progress;
+            jobs[event.data.id].upload_progress = 100;
+            jobs[event.data.id].analysis_tag = event.data.analysis_tag;
+            jobs[event.data.id].errors = event.data.errors;
+            refresh_job(event.data.id);
             break;
           case 'cache':
-            jobs[job.id].cache = event.data;
-            refresh_job(job.id);
+            jobs[event.data.id].cache = event.data;
+            refresh_job(event.data.id);
             break;
           case 'geometry':
             var faces = [];
@@ -869,7 +875,7 @@ var load_job = function(job) {
             geometry.computeFaceNormals();
             THREE.GeometryUtils.center(geometry);
 
-            update_geometry(job.id, geometry);
+            update_geometry(event.data.id, geometry);
           default:
         }
       } catch(err) {
@@ -891,6 +897,7 @@ var load_job = function(job) {
 
 var refresh_job = function(id) {
   var job = jobs[id];
+  console.log("################################# REFRESHING JOB: " + id + ", " + job.upload_progress + ", " + job.analysis_progress);
   if ( job.tracking.state == "Created" && job.upload_progress == 100 ) {
     job.tracking.state = "Uploaded";
     job.tracking.uploaded_at = Math.floor( (new Date).getTime() / 1000 );
@@ -899,7 +906,9 @@ var refresh_job = function(id) {
       msg   : ""
     };
     onChangeJobAnalysis(job.id);
-  } else if ( job.tracking.state == "Uploaded" ) {
+  }
+
+  if ( job.tracking.state == "Uploaded" && ( job.analysis_progress == 100 || (! configuration.ANALYSIS_POSSIBLE.includes(job.name.split('.').pop().toUpperCase())) )) {
     job.tracking.state = "Analysed";
     job.tracking.analysed_at = Math.floor( (new Date).getTime() / 1000 );
     job.tracking.analysis_result = {

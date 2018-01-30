@@ -1656,6 +1656,14 @@ select:focus::-ms-value {
     pointer-events: none;
 }
 
+.jqTransformSelectWrapper ul {
+  text-transform: none;
+}
+
+.jqTransformSelectWrapper div span {
+  text-transform: none;
+}
+
 /* Cart Page Starts Here */
 
 .cartwrapper .products img {
