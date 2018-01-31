@@ -1,0 +1,255 @@
+<html>
+<head>
+  <title>Fractory {{ fractory }} Dashboard</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <style>
+    .disabled {
+      pointer-events: none;
+      color: grey;
+      cursor: not-allowed;
+    }
+    .success {
+      color: green;
+    }
+    .fail {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <table id="jobs" class="table table-bordered table-responsive">
+    <thead>
+      <tr style='border-bottom: black; border-bottom-style: solid; border-bottom-width: thick;'>
+        <th>Ship By</th>
+        <th>Order ID</th>
+        <th>Job Name</th>
+        <th>Settings</th>
+        <th>Additional Files</th>
+        <th>GCode</th>
+        <th>Action</th>
+        <th>Shipping Label</th>
+      </tr>
+    </thead>
+    <tbody>
+    </tbody>
+  </table>
+  <div id='inputs' style='display: none;'>
+  </div>
+  <script>
+    var ORDER_STATES = ['FAILED', 'PENDING', 'PLACED', 'CONFIRMED', 'PRINTING', 'READY', 'SHIPPED', 'DELIVERED', 'SAVED'];
+    var JOB_STATES = ['CREATED', 'UPLOADED', 'ANALYSED', 'CARTED', 'PLACED', 'CONFIRMED', 'PRINTING', 'READY', 'SHIPPED', 'DELIVERED', 'ANCIENT', 'SAVED'];
+    var JOB_STATES_ACTIONS = ['ERROR', 'ERROR', 'ERROR', 'ERROR', 'Waiting for GCode', 'Mark as printing', 'Mark as ready', 'Mark as shipped', 'SHIPPED', 'SHIPPED', 'SHIPPED', 'SHIPPED'];
+
+    var promote_job = function (id) {
+      job = jobs[id];
+      switch (job.tracking.state) {
+        case  0:
+        case  1:
+        case  2:
+        case  3:
+        case 11:
+          alert("Oops! You shouldn't be seeing this job!");
+          window.location.reload();
+          break;
+        case  5:
+        case  6:
+        case  7:
+          if (confirm("Are you sure you want to mark " + job.name + " as " + JOB_STATES[job.tracking.state + 1].toLowerCase() + "?")) {
+            $.ajax({
+              method: "POST",
+              type: "POST",
+              uri: "/jobs/" + id + "/" + JOB_STATES[job.tracking.state + 1].toLowerCase(),
+              url: "/jobs/" + id + "/" + JOB_STATES[job.tracking.state + 1].toLowerCase(),
+              complete: function() {
+                window.location.reload();
+              }
+            });
+          }
+          break;
+        case  4:
+        case  8:
+        case  9:
+        case 10:
+          alert("Oops! Something went wrong!");
+          window.location.reload();
+          break;
+      }
+    }
+
+    var upload_gcode = function (id) {
+      console.log("upload gcode called");
+      if ( document.getElementById('gcodeuploadinput' + id).files.length > 1 ) {
+        alert("Please select a single file!!!");
+      } else if ( document.getElementById('gcodeuploadinput' + id).files.length == 1 ) {
+
+        $("#gcodeuploadstatus" + id).html("Uploading 0% ...");
+        $("#gcodeuploadbutton" + id).slideUp(300);
+        setTimeout( function() {
+          $("#gcodeuploadstatus" + id).slideDown(300);
+        }, 500);
+        $("#gcodeuploadstatus" + id).removeClass('fail');
+        $("#gcodeuploadstatus" + id).addClass('success');
+        $("#gcodeuploadbutton" + id).addClass('disabled');
+        $("#gcodedownloadbutton" + id).addClass('disabled');
+        $("#gcodedownloadlink" + id).addClass('disabled');
+
+        var upload_progress = 0;
+        var prev_upload_progress = 0;
+
+        var file = document.getElementById('gcodeuploadinput' + id).files[0];
+        var upload_form = new FormData();
+        upload_form.append("file", file, file.name);
+        upload_form.append("upload_file", true);
+        $.ajax({
+          type        : "POST",
+          method      : "POST",
+          url         : "/jobs/" + id + "/gcode",
+          data        : upload_form,
+          cache       : false,
+          contentType : false,
+          processData : false,
+          xhr         : function () {
+            var myXhr = $.ajaxSettings.xhr();
+            if (myXhr.upload) {
+              myXhr.upload.addEventListener('progress', function (event) {
+                var percent = 0;
+                var position = event.loaded || event.position;
+                var total = event.total;
+                upload_progress = Math.ceil(position / total * 100);
+                if ( upload_progress - prev_upload_progress > 5 || upload_progress == 100 || upload_progress < prev_upload_progress ) {
+                  prev_upload_progress = upload_progress;
+                  $("#gcodeuploadstatus" + id).html("Uploading " + upload_progress + "% ...");
+                  $("#gcodeuploadstatus" + id).slideDown();
+                }
+              }, false);
+            }
+            return myXhr;
+          },
+          success: function (data) {
+            $("#gcodeuploadstatus" + id).html("Uploaded :D");
+            $("#actiontd" + id).html("<button onclick='promote_job(\"" + id + "\")' style='width: 150px; text-align: center;'>Mark as Printing</button>");
+          },
+          error: function (e) {
+            $("#gcodeuploadstatus" + id).html("Failed :(");
+            $("#gcodeuploadstatus" + id).removeClass('success');
+            $("#gcodeuploadstatus" + id).addClass('fail');
+          },
+          complete: function() {
+            setTimeout(function() {
+                $("#gcodeuploadstatus" + id).slideUp(300, function() {
+                  $("#gcodeuploadbutton" + id).slideDown(300);
+                });
+              }, 2000);
+            $("#gcodeuploadbutton" + id).removeClass('disabled');
+            $("#gcodedownloadbutton" + id).removeClass('disabled');
+            $("#gcodedownloadlink" + id).removeClass('disabled');
+          },
+          async: true,
+          timeout: 30*60*1000
+        });
+      }
+    }
+
+    var print_label = function (id) {
+      alert("Not yet implemented!");
+    }
+
+    var jobs = {};
+    var orders = {};
+    var sorted_orders = {};
+    var delivered_orders = {};
+
+    var load_job = function(job) {
+      console.log(job.id + ": " + job.tracking.state);
+      job.tracking.state = JOB_STATES.indexOf(job.tracking.state.toUpperCase());
+      console.log(job.id + ": " + job.tracking.state);
+      if ( job.tracking.state < 10 && job.tracking.state > 3) {
+        jobs[job.id] = job;
+      }
+    }
+
+    var load_order = function(order) {
+      order.tracking.state = ORDER_STATES.indexOf(order.tracking.state.toUpperCase());
+      if ( order.tracking.state > 1 ) {
+        orders[order.id] = order;
+        if ( order.tracking.state == 6 || order.tracking.state == 7 ) {
+          delivered_orders[(new Date(order.ship_by)).getTime() + "-" + order.id] = order.id;
+        } else if ( order.tracking.state < 6 && order.tracking.state > 1 ) {
+          sorted_orders[(new Date(order.ship_by)).getTime() + "-" + order.id] = order.id;
+        }
+      }
+    }
+
+    var display = function(_orders) {
+      for (key in _orders) {
+        var order = orders[_orders[key]];
+        var first_row = true;
+        for ( var j = 0; j < order.jobs.length; j++ ) {
+          var job = jobs[order.jobs[j]];
+          if ( job ) {
+            var row = "";
+            if (first_row) {
+              row += "<tr id='" + job.id + "' style='border-bottom: black; border-bottom-style: solid; border-bottom-width: thick;'>\n";
+            } else {
+              row += "<tr id='" + job.id + "'>\n";
+            }
+            row += "  <td style='white-space: nowrap;'>" + order.ship_by + "</td>\n";
+            row += "  <td style='white-space: nowrap;'>" + order._id + "</td>\n";
+            if ( job.name.length > 50 ) {
+              job.name = job.name.substring(0,47) + "...";
+            }
+            row += "  <td style='white-space: nowrap;'>\n";
+            row += "    <a href='/jobs/" + job.id + "/model' style='display: inline-block; padding: 10px; box-shadow: 3px 3px 6px 1px rgba(119,119,119, 0.8); text-decoration: none; color: inherit; width: 500px;'>\n";
+            row += "      <img src='" + job.thumbnail + "' style='width: 72px; height: 72px;'/>\n";
+            row += "      <span style='padding: 10px; white-space: initial; display: inline-block; word-wrap: break-word; overflow: hidden;'>" + job.name + "</span>\n";
+            row += "    </a>\n";
+            row += "  </td>\n";
+            row += "  <td style='white-space: nowrap;'>Type: " + job.settings.job_type + "<br/>Material: " + job.settings.material + "<br/>Density: " + job.settings.density + "<br/>Finish: " + job.settings.finish + "</td>\n";
+            row += "  <td style='white-space: nowrap;'>No additional files</td>\n";
+            if ( job.tracking.state > 5 ) {
+              row += "  <td style='white-space: nowrap;'>\n";
+              row += "    <a href='/jobs/" + job.id + "/gcode' style='text-decoration: none; color: inherit;'><button style='width: 100px;'>Download</button></a>\n";
+              row += "  </td>\n";
+            } else {
+              row += "  <td style='white-space: nowrap;'>\n";
+              row += "    <button id='gcodeuploadbutton" + job.id + "' onclick='document.getElementById(\"gcodeuploadinput" + job.id + "\").click();' style='width: 100px;'>Upload</button>\n";
+              row += "    <span id='gcodeuploadstatus" + job.id + "' style='display: none'>You shouldn't be seeing this!</span><br/>\n";
+              row += "    <a id='gcodedownloadlink" + job.id + "' href='/jobs/" + job.id + "/gcode' style='text-decoration: none; color: inherit;'><button id='gcodedownloadbutton" + job.id + "' style='width: 100px; margin-top: 10px;'>Download</button></a>\n";
+              row += "  </td>\n";
+            }
+            if ( job.tracking.state < 8 && job.tracking.state > 4 ) {
+              row += "  <td style='white-space: nowrap;'><button onclick='promote_job(\"" + job.id + "\")' style='width: 150px; text-align: center;'>" + JOB_STATES_ACTIONS[job.tracking.state] + "</button></td>\n";
+            } else {
+              row += "  <td id='actiontd" + job.id + "' style='white-space: nowrap;'><b>" + JOB_STATES_ACTIONS[job.tracking.state] + "</b></td>\n";
+            }
+            if (first_row) {
+              row += "  <td style='white-space: nowrap;'><button style='width: 100px;' onclick='print_label(\"" + job.id + "\")'>Download</button></td>\n";
+              first_row = false;
+            } else {
+              row += "  <td style='white-space: nowrap;'></td>\n";
+            }
+            row += "</tr>\n";
+            $('tbody').prepend(row);
+            $('#inputs').prepend("<input id='gcodeuploadinput" + job.id + "' type='file' onchange='upload_gcode(\"" + job.id + "\")'>\n");
+          }
+        }
+      }
+    }
+
+    {% for job in jobs %}
+      load_job({{ job }});
+    {% endfor %}
+
+    {% for order in orders %}
+      load_order({{ order }});
+    {% endfor %}
+
+    display(delivered_orders);
+    display(sorted_orders);
+  </script>
+</body>
+</html>
