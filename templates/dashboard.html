@@ -93,13 +93,13 @@
       } else {
         jobDiv += "<tr class='danger' id='" + job.id + "'>\n";
       }
-      jobDiv += "  <td style='display: none;'>" +  (job.tracking.uploaded_at) + "</td>\n";
+      jobDiv += "  <td style='display: none;'>" +  (job.tracking.created_at) + "</td>\n";
       jobDiv += "  <td style='display: none;'>" + job.id + "</td>\n";
       var d = new Date(0);
-      d.setUTCSeconds(job.tracking.uploaded_at)
+      d.setUTCSeconds(job.tracking.created_at)
       jobDiv += "  <td>" + d + "</td>\n";
 
-      jobDiv += "  <td>" + job.name + "</td>\n";
+      jobDiv += "  <td>" + job.name.substring(0,job.name.lastIndexOf('.')) + '_' + job.id.slice(-10) + job.name.substring(job.name.lastIndexOf('.')) + "</td>\n";
       jobDiv += "  <td>" + users[job.id.split('-')[0]] + "</td>\n";
       jobDiv += "  <td>" + job.settings.job_type + "</td>\n";
       jobDiv += "  <td>Material: " + job.settings.material + "<br/>Density: " + job.settings.density + "<br/>Finish: " + job.settings.finish + "</td>\n";
