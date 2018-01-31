@@ -95,7 +95,9 @@
       }
       jobDiv += "  <td style='display: none;'>" +  (job.tracking.uploaded_at) + "</td>\n";
       jobDiv += "  <td style='display: none;'>" + job.id + "</td>\n";
-      jobDiv += "  <td>" + new Date(job.tracking.uploaded_at * 1000) + "</td>\n";
+      var d = new Date(0);
+      d.setUTCSeconds(job.tracking.uploaded_at)
+      jobDiv += "  <td>" + d + "</td>\n";
 
       jobDiv += "  <td>" + job.name + "</td>\n";
       jobDiv += "  <td>" + users[job.id.split('-')[0]] + "</td>\n";
