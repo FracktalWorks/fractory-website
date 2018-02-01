@@ -61,7 +61,8 @@ var cache_template = {
   },
   exp_print_time    : undefined,
   act_print_time    : undefined,
-  quote             : undefined
+  quote             : undefined,
+  verified          : false
 };
 
 var prev_analysis_progress = 0;
@@ -107,10 +108,23 @@ self.onmessage = function(e) {
         logger.critical("Recevied 'init' message after worker is initialised! Skipping...");
         break;
       case 'settings':
-        job.settings = e.data.settings;
         if (job_file) {
           parse_file(job_file);
           job_file = undefined;
+        }
+        if (e.data.settings.units != job.settings.units) {
+          console.log("JOB UNITS CHANGED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+          job.settings = e.data.settings;
+          job.cache.quote = undefined;
+          job.cache.id = job.id;
+          job.tracking.analysis_progress = 0;
+          job.cache.part_volume = -1;
+          self.postMessage(job.cache);
+          do_full_analysis()
+        } else {
+          console.log("job units not changde!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+          job.settings = e.data.settings;
+          requote();
         }
         break;
       case 'geometry':
@@ -131,6 +145,222 @@ self.onmessage = function(e) {
   } catch(err) {
     logger.error("Something went wrong while parsing command!\n" + err.stack);
   }
+}
+
+var requote = function() {
+  console.log("===========================================================")
+  console.log("Trying to requote")
+  console.log(job)
+  job.cache.quote = undefined;
+  job.cache.id = job.id;
+  self.postMessage(job.cache);
+
+  status.analysis_progress = 100;
+  status.analysis_tag = "";
+  status.id = job.id;
+  self.postMessage(job.cache);
+
+  var query = {};
+  query.job_type = encodeURIComponent(job.settings.job_type);
+  query.material = encodeURIComponent(job.settings.material);
+  query.bbox_volume = job.cache.bounding_box.z * job.cache.bounding_box.y * job.cache.bounding_box.x;
+
+  if ((typeof job.settings.finish) == 'string') {
+    query.finish = encodeURIComponent(job.settings.finish.substring(0,job.settings.finish.indexOf(' ')).toLowerCase());
+  } else {
+    query.finish = 'default';
+  }
+
+  if ((typeof job.settings.density) == 'string') {
+    query.density = job.settings.density.substring(0,job.settings.density.indexOf(' ')).toLowerCase();
+  } else {
+    query.density = 'default';
+  }
+
+  console.log(query);
+  console.log("/jobs/analysis/params?job_type=" + query.job_type + "&material=" + query.material + "&finish=" + query.finish + "&density=" + query.density  + "&bbox_volume=" + query.bbox_volume);
+
+  $.ajax({
+    type: "GET",
+    method: "GET",
+    uri: "/jobs/analysis/params?job_type=" + query.job_type + "&material=" + query.material + "&finish=" + query.finish + "&density=" + query.density  + "&bbox_volume=" + query.bbox_volume,
+    url: "/jobs/analysis/params?job_type=" + query.job_type + "&material=" + query.material + "&finish=" + query.finish + "&density=" + query.density  + "&bbox_volume=" + query.bbox_volume,
+    success: function(params) {
+      console.log("-----------------------------");
+      console.log("quote params success: params: " + JSON.stringify(params));
+      var finish = 'default';
+      if ((typeof job.settings.finish) == 'string') {
+        finish = encodeURIComponent(job.settings.finish.substring(0,job.settings.finish.indexOf(' ')).toLowerCase());
+      }
+      var density = 'default';
+      if ((typeof job.settings.density) == 'string') {
+        density = job.settings.density.substring(0,job.settings.density.indexOf(' ')).toLowerCase();
+      }
+
+      if ( params.query.job_type == job.settings.job_type &&
+           params.query.material == job.settings.material ) {
+        switch(params.query.job_type) {
+          case 'FDM':
+            console.log("checking params for fdm");
+            console.log(finish);
+            console.log(density);
+            console.log(job.cache.bounding_box.z * job.cache.bounding_box.y * job.cache.bounding_box.x);
+            if (params.query.finish == finish) { console.log("finish match"); }
+            if (params.query.density == density) { console.log("denity match"); }
+            if (params.bbox_volume == (job.cache.bounding_box.z * job.cache.bounding_box.y * job.cache.bounding_box.x) ) { console.log("vol match"); }
+            if (params.query.finish == finish &&
+                params.query.density == density) {
+              console.log("valid params!");
+              var orientation = "z_plus";
+              if ( job.cache.support_volume.x_plus < job.cache.support_volume[orientation] ) {
+                orientation = "x_plus";
+              }
+              if ( job.cache.support_volume.y_plus < job.cache.support_volume[orientation] ) {
+                orientation = "y_plus";
+              }
+              if ( job.cache.support_volume.x_minus < job.cache.support_volume[orientation] ) {
+                orientation = "x_minus";
+              }
+              if ( job.cache.support_volume.y_minus < job.cache.support_volume[orientation] ) {
+                orientation = "y_minus";
+              }
+              if ( job.cache.support_volume.z_minus < job.cache.support_volume[orientation] ) {
+                orientation = "z_minus";
+              }
+              console.log("Prefered orientation " + orientation);
+              console.log(params);
+              console.log(job.cache);
+              switch (orientation) {
+                case 'x_plus':
+                  job.cache.exp_print_time = params.part_volume * job.cache.part_volume + params.part_surface_area * job.cache.part_area + params.support_volume * job.cache.support_volume.x_plus +
+                                             params.bounding_box_height * job.cache.bounding_box.x + params.bounding_box_area * job.cache.bounding_box.y * job.cache.bounding_box.z +
+                                             params.bounding_box_volume * job.cache.bounding_box.x * job.cache.bounding_box.y * job.cache.bounding_box.z;
+                  job.cache.quote = job.cache.exp_print_time * params.scale;
+                  job.cache.quote = Math.round(job.cache.quote * 100)/100;
+                  job.cache.id = job.id;
+                  self.postMessage(job.cache);
+                  $.ajax({
+                    type: "POST",
+                    method: "POST",
+                    uri: "/jobs/" + job.id + "/set_quote/" + job.cache.quote,
+                    url: "/jobs/" + job.id + "/set_quote/" + job.cache.quote,
+                  });
+                  break;
+                case 'x_minus':
+                  job.cache.exp_print_time = params.part_volume * job.cache.part_volume + params.part_surface_area * job.cache.part_area + params.support_volume * job.cache.support_volume.x_minus +
+                                             params.bounding_box_height * job.cache.bounding_box.x + params.bounding_box_area * job.cache.bounding_box.y * job.cache.bounding_box.z +
+                                             params.bounding_box_volume * job.cache.bounding_box.x * job.cache.bounding_box.y * job.cache.bounding_box.z;
+                  job.cache.quote = job.cache.exp_print_time * params.scale;
+                  job.cache.quote = Math.round(job.cache.quote * 100)/100;
+                  job.cache.id = job.id;
+                  self.postMessage(job.cache);
+                  $.ajax({
+                    type: "POST",
+                    method: "POST",
+                    uri: "/jobs/" + job.id + "/set_quote/" + job.cache.quote,
+                    url: "/jobs/" + job.id + "/set_quote/" + job.cache.quote,
+                  });
+                  break;
+                case 'y_plus':
+                  job.cache.exp_print_time = params.part_volume * job.cache.part_volume + params.part_surface_area * job.cache.part_area + params.support_volume * job.cache.support_volume.y_plus +
+                                             params.bounding_box_height * job.cache.bounding_box.y + params.bounding_box_area * job.cache.bounding_box.z * job.cache.bounding_box.x +
+                                             params.bounding_box_volume * job.cache.bounding_box.x * job.cache.bounding_box.y * job.cache.bounding_box.z;
+                  job.cache.quote = job.cache.exp_print_time * params.scale;
+                  job.cache.quote = Math.round(job.cache.quote * 100)/100;
+                  job.cache.id = job.id;
+                  self.postMessage(job.cache);
+                  $.ajax({
+                    type: "POST",
+                    method: "POST",
+                    uri: "/jobs/" + job.id + "/set_quote/" + job.cache.quote,
+                    url: "/jobs/" + job.id + "/set_quote/" + job.cache.quote,
+                  });
+                  break;
+                case 'y_minus':
+                  job.cache.exp_print_time = params.part_volume * job.cache.part_volume + params.part_surface_area * job.cache.part_area + params.support_volume * job.cache.support_volume.y_minus +
+                                             params.bounding_box_height * job.cache.bounding_box.y + params.bounding_box_area * job.cache.bounding_box.z * job.cache.bounding_box.x +
+                                             params.bounding_box_volume * job.cache.bounding_box.x * job.cache.bounding_box.y * job.cache.bounding_box.z;
+                  job.cache.quote = job.cache.exp_print_time * params.scale;
+                  job.cache.quote = Math.round(job.cache.quote * 100)/100;
+                  job.cache.id = job.id;
+                  self.postMessage(job.cache);
+                  $.ajax({
+                    type: "POST",
+                    method: "POST",
+                    uri: "/jobs/" + job.id + "/set_quote/" + job.cache.quote,
+                    url: "/jobs/" + job.id + "/set_quote/" + job.cache.quote,
+                  });
+                  break;
+                case 'z_plus':
+                  job.cache.exp_print_time = params.part_volume * job.cache.part_volume + params.part_surface_area * job.cache.part_area + params.support_volume * job.cache.support_volume.z_plus +
+                                             params.bounding_box_height * job.cache.bounding_box.z + params.bounding_box_area * job.cache.bounding_box.y * job.cache.bounding_box.x +
+                                             params.bounding_box_volume * job.cache.bounding_box.x * job.cache.bounding_box.y * job.cache.bounding_box.z;
+                  job.cache.quote = job.cache.exp_print_time * params.scale;
+                  job.cache.quote = Math.round(job.cache.quote * 100)/100;
+                  job.cache.id = job.id;
+                  self.postMessage(job.cache);
+                  $.ajax({
+                    type: "POST",
+                    method: "POST",
+                    uri: "/jobs/" + job.id + "/set_quote/" + job.cache.quote,
+                    url: "/jobs/" + job.id + "/set_quote/" + job.cache.quote,
+                  });
+                  break;
+                case 'z_minus':
+                  job.cache.exp_print_time = params.part_volume * job.cache.part_volume + params.part_surface_area * job.cache.part_area + params.support_volume * job.cache.support_volume.z_minus +
+                                             params.bounding_box_height * job.cache.bounding_box.z + params.bounding_box_area * job.cache.bounding_box.y * job.cache.bounding_box.x +
+                                             params.bounding_box_volume * job.cache.bounding_box.x * job.cache.bounding_box.y * job.cache.bounding_box.z;
+                  job.cache.quote = job.cache.exp_print_time * params.scale;
+                  job.cache.quote = Math.round(job.cache.quote * 100)/100;
+                  job.cache.id = job.id;
+                  self.postMessage(job.cache);
+                  $.ajax({
+                    type: "POST",
+                    method: "POST",
+                    uri: "/jobs/" + job.id + "/set_quote/" + job.cache.quote,
+                    url: "/jobs/" + job.id + "/set_quote/" + job.cache.quote,
+                  });
+                  break;
+                default:
+                  console.log('invalid orientation');
+              }
+              console.log(job.cache);
+            } else {
+              console.log("outdated params!");
+            }
+            break;
+          case 'SLS':
+            console.log("valid params!");
+            job.cache.quote = job.cache.part_volume * params['scale'];
+            job.cache.quote = Math.round(job.cache.quote * 100)/100;
+            job.cache.id = job.id;
+            self.postMessage(job.cache);
+            $.ajax({
+              type: "POST",
+              method: "POST",
+              uri: "/jobs/" + job.id + "/set_quote/" + job.cache.quote,
+              url: "/jobs/" + job.id + "/set_quote/" + job.cache.quote,
+            });
+            break;
+          default:
+            console.log("fishy params!");
+        }
+      } else {
+        console.log("outdated params!");
+      }
+      console.log("-----------------------------");
+    },
+    error: function(a,b,c) {
+      console.log("-----------------------------");
+      console.log("quote params error: B:" + b + "; C: " + c);
+      console.log("-----------------------------");
+    },
+    complete: function() {
+//      waiting_for_params = 1;
+    }
+  });
+
+
 }
 
 function volume_iterator_start() {
@@ -355,7 +585,10 @@ function support_iterator_end_helper(dir) {
       volume += pcl[x][y].reduce(function(a, b){return a + b;},0)
     });
   });
-  return [-1 * volume, interface_area];
+  var volscl = configuration.MESH_UNIT_SCALING[job.settings.units] * configuration.MESH_UNIT_SCALING[job.settings.units] * configuration.MESH_UNIT_SCALING[job.settings.units];
+  var arscl = configuration.MESH_UNIT_SCALING[job.settings.units] * configuration.MESH_UNIT_SCALING[job.settings.units];
+
+  return [-1 * volume * volscl, interface_area * arscl];
 }
 
 function support_iterator_end() {
@@ -415,7 +648,6 @@ finish_full_analysis = function() {
     job.cache.exp_print_time = Math.min(exp_print_time.x_plus, exp_print_time.x_minus, exp_print_time.y_plus, exp_print_time.y_minus, exp_print_time.z_plus, exp_print_time.z_minus)
     job.cache.quote = Math.round(job.cache.exp_print_time * 6.944)/100;
     job.cache.id = job.id;
-
     self.postMessage(job.cache);
     logger.debug("Finished stage I analysis for '" + job.name + "'...");
     logger.debug("Finished full analysis for '" + job.name + "'...");
@@ -467,45 +699,57 @@ do_full_analysis = function() {
   self.postMessage(status);
   logger.debug("Starting full analysis for '" + job.name + "'...");
 
-  job.cache.bounding_box.x = geometry.boundingBox.max.x - geometry.boundingBox.min.x;
-  job.cache.bounding_box.y = geometry.boundingBox.max.y - geometry.boundingBox.min.y;
-  job.cache.bounding_box.z = geometry.boundingBox.max.z - geometry.boundingBox.min.z;
   params = undefined;
   waiting_for_params = 0;
-//  $.get("/jobs/" + job.id + "/analysis/fetch_params", function(data, status) {
-//    if ( status == success ) {
-//      params = data;
-//    } else {
-//      params = {}
-//    }
-//  });
 
   if ( job.cache.part_volume > 0 ) {
-  logger.debug("Using analysis cache for '" + job.name + "'...");
+//  if ( false ) {
+    logger.debug("Using analysis cache for '" + job.name + "'...");
   } else {
-  volume_iterator_start();
-  support_iterator_start();
-  logger.debug("Starting stage I analysis for '" + job.name + "'...");
-  for(var i = 0; i < geometry.faces.length; i++) {
-    status.id = job.id;
-    status.analysis_progress = Math.floor(100 * (i+1) / geometry.faces.length);
-    if ( status.analysis_progress - prev_analysis_progress > 5 || status.analysis_progress == 100 || status.analysis_progress < prev_analysis_progress ) {
-      prev_analysis_progress = status.analysis_progress;
-      logger.debug("Stage I analysis for '" + job.name + "': " + status.analysis_progress + "%...");
-      self.postMessage(status);
+    job.cache = JSON.parse(JSON.stringify(cache_template));
+    job.cache.bounding_box.x = (geometry.boundingBox.max.x - geometry.boundingBox.min.x) * configuration.MESH_UNIT_SCALING[job.settings.units];
+    job.cache.bounding_box.y = (geometry.boundingBox.max.y - geometry.boundingBox.min.y) * configuration.MESH_UNIT_SCALING[job.settings.units];
+    job.cache.bounding_box.z = (geometry.boundingBox.max.z - geometry.boundingBox.min.z) * configuration.MESH_UNIT_SCALING[job.settings.units];
+    var support = true;
+    if ( Math.max(job.cache.bounding_box.z, job.cache.bounding_box.x, job.cache.bounding_box.y) > 250 ) {
+     support = false;
+     if ( job.settings.job_type == 'FDM' ) {
+       status.analysis_progress = -100;
+       status.analysis_tag = "FDM parts have to be less than 250mm maximum dimension"
+       status.id = job.id;
+       self.postMessage(status);
+       return;
+     }
     }
-    volume_iterator(i);
-    support_iterator(i);
-  }
-  volume_iterator_end();
-  support_iterator_end();
-//  if ( job.settings.job_type == "FDM" ) {
-//    job.cache.quote = Math.round(job.cache.part_volume * 0.8)/100;
-//  } else {
-//    job.cache.quote = undefined;
-//  }
-  job.cache.id = job.id;
-  self.postMessage(job.cache);
+    console.log("######################################################################################");
+    console.log(configuration.MESH_UNIT_SCALING);
+    console.log(job.settings);
+    console.log(job.cache.bounding_box);
+    console.log("######################################################################################");
+    volume_iterator_start();
+    if ( support ) {
+      support_iterator_start();
+    }
+    logger.debug("Starting stage I analysis for '" + job.name + "'...");
+    for(var i = 0; i < geometry.faces.length; i++) {
+      status.id = job.id;
+      status.analysis_progress = Math.floor(100 * (i+1) / geometry.faces.length);
+      if ( status.analysis_progress - prev_analysis_progress > 5 || status.analysis_progress == 100 || status.analysis_progress < prev_analysis_progress ) {
+        prev_analysis_progress = status.analysis_progress;
+        logger.debug("Stage I analysis for '" + job.name + "': " + status.analysis_progress + "%...");
+        self.postMessage(status);
+      }
+      volume_iterator(i);
+      if ( support ) {
+        support_iterator(i);
+      }
+    }
+    volume_iterator_end();
+    if ( support ) {
+      support_iterator_end();
+    }
+    job.cache.id = job.id;
+    self.postMessage(job.cache);
 
     var job_form = new FormData();
 
@@ -530,6 +774,7 @@ do_full_analysis = function() {
     });
 //  finish_full_analysis();
   }
+  requote();
 }
 
 create_mesh = function(vf_data) {

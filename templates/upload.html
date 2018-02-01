@@ -153,6 +153,7 @@ var requestQuote = function(id) {
         });
 
   // TODO ask quote from worker
+  workers[id].postMessage({'action': 'settings', 'settings': job.settings});
 }
 
 var cancelQuote = function(id) {
@@ -338,14 +339,24 @@ var onChangeJobUnits = function(id, val) {
   }
   logger.debug("[" + id + "] Job units changed to '" + val + "'");
 
+  var job = jobs[id];
   cancelQuote(id);
   jobs[id].settings.units = val;
+
+    job.tracking.state = "Uploaded";
+    job.tracking.uploaded_at = Math.floor( (new Date).getTime() / 1000 );
+    job.tracking.analysis_result = {
+      status: 202,
+      msg   : ""
+    };
+    onChangeJobAnalysis(job.id);
+
   requestQuote(id);
 }
 
 var onChangeJobPrice = function(id) {
   var job = jobs[id];
-  if ( job.cache.quote ) {
+  if ( job.cache.quote > 10 ) {
       $("#job" + id).find(".price").html("<i class='fa fa-inr' aria-hidden='true'></i>&nbsp;" + Math.round(job.cache.quote * job.settings.quantity * 100)/100)
 
       $("#job" + id).find("button").removeClass("active");
@@ -355,7 +366,7 @@ var onChangeJobPrice = function(id) {
       return;
   }
   if ( job.analysis_progress == 100 && job.analysis_tag == "Analysis...") {
-    if ( job.cache.quote ) {
+    if ( job.cache.quote > 10 ) {
       $("#job" + id).find(".price").html("<i class='fa fa-inr' aria-hidden='true'></i>&nbsp;" + Math.round(job.cache.quote * job.settings.quantity * 100)/100)
 
       $("#job" + id).find("button").removeClass("active");
@@ -479,14 +490,14 @@ var createJob = function(job) {
   jobDiv += "    </div>\n";
   jobDiv += "    <div class='cartandpricebtn block flex'>\n";
   jobDiv += "      <div class='flex1 displayflex'>\n";
-  if (job.cache.quote) {
+  if (job.cache.quote > 10) {
     jobDiv += "        <div class='price'><i class='fa fa-inr' aria-hidden='true'></i>&nbsp;" + job.cache.quote + "</div>\n";
   } else {
     jobDiv += "        <div class='price'></div>\n";
   }
   jobDiv += "      </div>\n";
   jobDiv += "      <div class='flex1'>\n";
-  if (job.cache.quote) {
+  if (job.cache.quote > 10) {
     jobDiv += "        <button class='button block active' onclick='onJobButtonClick(\"" + job.id + "\")'>Add to Cart</button>\n";
   } else {
     jobDiv += "        <button class='button block' onclick='onJobButtonClick(\"" + job.id + "\")'>Waiting for Quote</button>\n";
@@ -560,7 +571,7 @@ var onChangeJobAnalysis = function(id) {
     job.find(".anylysisofdesignstatus > div > span").addClass("analysisfailed");
     job.find(".anylysisofdesignstatus > div > span").html("<i class='fa fa-times' aria-hidden='true'></i>");
     job.find(".anylysisofdesignstatus > div > h6").html('Analysing Failed');
-    job.find(".anylysisofdesignstatus > p").html('The Model has <a class="triggerthreedpopup_js">issues</a>. <a style="margin-left: 15px;">Contact Support</a>');
+    job.find(".anylysisofdesignstatus > p").html(result.msg + '. <a style="margin-left: 15px;">Contact Support</a>');
   } else {
     job.find(".anylysisofdesignstatus > div > span").removeClass("analysisfailed");
     job.find(".anylysisofdesignstatus > div > span").removeClass("analysisdone");
@@ -617,8 +628,8 @@ var configuration = {
     DENSITY             : []
   },
   SLS                   : {
-    DEFAULT_MATERIAL    : 'DEFAULT',
-    MATERIALS           : ['DEFAULT'],
+    DEFAULT_MATERIAL    : 'NYLON 415G',
+    MATERIALS           : ['NYLON 415G'],
     FINISH              : [],
     DENSITY             : []
   },
@@ -833,6 +844,50 @@ var update_geometry = function(jid, geometry) {
 }
 
 var load_job = function(job) {
+    job.cache = {
+  bounding_box      : {
+    x               : undefined,
+    y               : undefined,
+    z               : undefined
+  },
+  bounding_box      : {
+    x               : undefined,
+    y               : undefined,
+    z               : undefined
+  },
+  part_volume       : undefined,
+  part_area         : undefined,
+  support_volume    : {
+    x_plus          : undefined,
+    x_minus         : undefined,
+    y_plus          : undefined,
+    y_minus         : undefined,
+    z_plus          : undefined,
+    z_minus         : undefined
+  },
+  support_required  : true,
+  support_z_area    : {
+    x_plus          : undefined,
+    x_minus         : undefined,
+    y_plus          : undefined,
+    y_minus         : undefined,
+    z_plus          : undefined,
+    z_minus         : undefined
+  },
+  support_xy_area   : {
+    x_plus          : undefined,
+    x_minus         : undefined,
+    y_plus          : undefined,
+    y_minus         : undefined,
+    z_plus          : undefined,
+    z_minus         : undefined
+  },
+  exp_print_time    : undefined,
+  act_print_time    : undefined,
+  quote             : undefined,
+  verified          : false
+};
+
     logger.debug("[" + job.id + "] Creating a new job:\n" + JSON.stringify(job, null, 3));
     jobs[job.id] = job;
     createJob(job);
@@ -908,7 +963,7 @@ var refresh_job = function(id) {
     onChangeJobAnalysis(job.id);
   }
 
-  if ( job.tracking.state == "Uploaded" && ( job.analysis_progress == 100 || (! configuration.ANALYSIS_POSSIBLE.includes(job.name.split('.').pop().toUpperCase())) )) {
+  if (( job.tracking.state == "Uploaded" || job.tracking.state == "Analysed")&& ( job.analysis_progress == 100 || (! configuration.ANALYSIS_POSSIBLE.includes(job.name.split('.').pop().toUpperCase())) )) {
     job.tracking.state = "Analysed";
     job.tracking.analysed_at = Math.floor( (new Date).getTime() / 1000 );
     job.tracking.analysis_result = {
@@ -936,6 +991,14 @@ var refresh_job = function(id) {
       async: true,
       timeout: 30*1000
     });
+  } else if ( job.analysis_progress == -100 ) {
+    job.tracking.state = "Analysed";
+    job.tracking.analysed_at = Math.floor( (new Date).getTime() / 1000 );
+    job.tracking.analysis_result = {
+      status: 400,
+      msg   : job.analysis_tag
+    };
+    onChangeJobAnalysis(job.id);
   }
   onChangeJobPrice(id);
 }

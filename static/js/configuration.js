@@ -1,6 +1,6 @@
 var configuration = {
   'MESH_COLOR'          : 0xD3D3D3,
-  'MESH_UNIT_SCALING'   : {'mm': 1},
+  'MESH_UNIT_SCALING'   : {'mm': 1, 'cm': 10, 'in': 25.4},
   'COSINE_SUPPORT_ANGLE': 0.7,
   'MIN_WALL_THICKNESS'  : 100,
 
@@ -11,7 +11,7 @@ var configuration = {
     'STP'               : 'CNC',
     'STEP'              : 'CNC'
   },
-  JOB_TYPES             : ['FDM','CNC'],
+  JOB_TYPES             : ['FDM','CNC','SLS'],
   FDM                   : {
     MATERIALS           : ['PLA','ABS'],
     DEFAULT_FINISH      : 'NORMAL',
