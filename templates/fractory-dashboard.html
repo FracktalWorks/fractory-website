@@ -165,7 +165,9 @@
 
     var load_job = function(job) {
       console.log(job.id + ": " + job.tracking.state);
-      job.tracking.state = JOB_STATES.indexOf(job.tracking.state.toUpperCase());
+      if ( typeof job.tracking.state == 'string' ) {
+        job.tracking.state = JOB_STATES.indexOf(job.tracking.state.toUpperCase());
+      }
       console.log(job.id + ": " + job.tracking.state);
       if ( job.tracking.state < 10 && job.tracking.state > 3) {
         jobs[job.id] = job;
@@ -173,7 +175,9 @@
     }
 
     var load_order = function(order) {
-      order.tracking.state = ORDER_STATES.indexOf(order.tracking.state.toUpperCase());
+      if ( typeof order.tracking.state == 'string' ) {
+        order.tracking.state = ORDER_STATES.indexOf(order.tracking.state.toUpperCase());
+      }
       if ( order.tracking.state > 1 ) {
         orders[order.id] = order;
         if ( order.tracking.state == 6 || order.tracking.state == 7 ) {

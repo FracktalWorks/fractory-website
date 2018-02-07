@@ -127,13 +127,19 @@
     }
 
     {% for order in orders %}
+      try {
       load_order({{ order }});
+      } catch(e) {}
     {% endfor %}
     {% for user in users %}
+      try {
       load_user({{ user }});
+      } catch(e) {}
     {% endfor %}
     {% for job in jobs %}
+      try {
       load_job({{ job }});
+      } catch(e) {}
     {% endfor %}
 
     (function() {

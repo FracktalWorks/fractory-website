@@ -614,7 +614,7 @@ var configuration = {
   JOB_TYPES             : ['FDM','CNC','SLS'],
   FDM                   : {
     DEFAULT_MATERIAL    : 'WHITE PLA',
-    MATERIALS           : ['WHITE PLA', 'BLACK PLA', 'RED PLA', 'ORANGE PLA', 'YELLOW PLA', 'PEAK GREEN PLA', 'LIGHT GREY PLA', 'LIGHT BLUE PLA', 'WHITE ABS', 'BLACK ABS', 'COPPER FILL', 'WOOD FILL'],
+    MATERIALS           : ['WHITE PLA', 'BLACK PLA', 'RED PLA', 'ORANGE PLA', 'YELLOW PLA', 'PEAK GREEN PLA', 'LIGHT GREY PLA', 'LIGHT BLUE PLA', 'WHITE ABS', 'BLACK ABS', 'COPPER FILL', 'WOOD FILL', 'WHITE CREOFLEX', 'BLUE NINJAFLEX', 'RED NINJAFLEX', 'RED FILAFLEX'],
     DEFAULT_FINISH      : 'NORMAL (200 &#181;m)',
     FINISH              : ['COARSE (300 &#181;m)', 'NORMAL (200 &#181;m)', 'FINE (100 &#181;m)'],
     DEFAULT_DENSITY     : 'MEDIUM (15%)',
@@ -844,6 +844,7 @@ var update_geometry = function(jid, geometry) {
 }
 
 var load_job = function(job) {
+var old_quote = job.cache.quote;
     job.cache = {
   bounding_box      : {
     x               : undefined,
@@ -884,7 +885,7 @@ var load_job = function(job) {
   },
   exp_print_time    : undefined,
   act_print_time    : undefined,
-  quote             : undefined,
+  quote             : old_quote,
   verified          : false
 };
 

@@ -153,7 +153,10 @@
                                             </div>
                                             <div class="displayflex block">
                                                 <div class="flex2">
-                                                    Shipping
+                                                    <span>Shipping</span>
+<!--
+&nbsp;&nbsp;&nbsp;<a href="#0" id="pickup_toggle" onclick="pickup" style="text-decoration: underline; color: #337ab7; font-size: 0.8em;">Pickup?</a>
+-->
                                                 </div>
                                                 <div class="flex1">
                                                     <i class='fa fa-inr' aria-hidden='true' style="padding-right: 5px;"></i><span id="shipping_div"></span>
@@ -180,12 +183,12 @@
                                                 </div>
                                             </div>
                                     </div>
-<!--
                                     <div class="profiledetails block emailordownloadquote">
-                                            <a class="editaddress cursorpointer pull-left">Email this Quote</a>
-                                            <a class="editaddress cursorpointer pull-right">Download</a>
-                                    </div>
+                                            <a class="editaddress cursorpointer pull-left" onclick="get_estimate()">Email this Quote</a>
+<!--
+                                            <a onclick="get_estimate()" class="editaddress cursorpointer pull-right">Download</a>
 -->
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -547,7 +550,7 @@ var refresh_cart = function() {
 
   tax = Math.round((subtotal - discount + shipping)*18)/100;
   total = subtotal - discount + tax + shipping;
-
+  total = Math.round(total*100)/100;
   console.log(subtotal);
   console.log(discount);
   console.log(tax);
@@ -627,6 +630,36 @@ var make_payment = function() {
         302: function() {
           window.location.href = window.location.protocol + "//" + window.location.host + "/?tag=signin&redirect=%2Fcart"
         }
+      }
+  });
+}
+var get_estimate = function() {
+  var order = {}
+  order.id = oid;
+  order.address_identifier = $("address").index($("address.selected"));
+  if ( order.address_identifier == "-1" ) {
+    alert("Please select an address!");
+    return;
+  }
+  order.ship_pickup = "Ship";
+
+  $.ajax({
+      uri:    "/cart/estimate",
+      url:    "/cart/estimate",
+      method: "POST",
+      type:   "POST",
+      cache:  false,
+      data:   JSON.parse(JSON.stringify(order)),
+      dataType: "json",
+      success: function(data) {
+        console.log(data);
+        alert("The quote has been mailed to you at '" + user.email + "'");
+      },
+      error: function(a,b,c) {
+        alert("Some error occurred! Please try again later...");
+        console.log(a);
+        console.log(b);
+        console.log(c);
       }
   });
 }

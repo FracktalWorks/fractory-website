@@ -113,6 +113,7 @@ self.onmessage = function(e) {
           job_file = undefined;
         }
         if (e.data.settings.units != job.settings.units) {
+    console.log("REQUOTE CALLED FROM SETTINGS..........................................................................................................................................................")
           console.log("JOB UNITS CHANGED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
           job.settings = e.data.settings;
           job.cache.quote = undefined;
@@ -120,11 +121,12 @@ self.onmessage = function(e) {
           job.tracking.analysis_progress = 0;
           job.cache.part_volume = -1;
           self.postMessage(job.cache);
-          do_full_analysis()
+          do_full_analysis(true);
         } else {
+    console.log("REQUOTE CALLED FROM SETTINGS..........................................................................................................................................................")
           console.log("job units not changde!!!!!!!!!!!!!!!!!!!!!!!!!!!")
           job.settings = e.data.settings;
-          requote();
+          requote(true);
         }
         break;
       case 'geometry':
@@ -147,7 +149,11 @@ self.onmessage = function(e) {
   }
 }
 
-var requote = function() {
+var requote = function(force_requote) {
+  if ( job.cache.quote > 0 && ! force_requote ) {
+    console.log("REQUOTE  ABORTED..........................................................................................................................................................")
+    return;
+  }
   console.log("===========================================================")
   console.log("Trying to requote")
   console.log(job)
@@ -160,206 +166,240 @@ var requote = function() {
   status.id = job.id;
   self.postMessage(job.cache);
 
-  var query = {};
-  query.job_type = encodeURIComponent(job.settings.job_type);
-  query.material = encodeURIComponent(job.settings.material);
-  query.bbox_volume = job.cache.bounding_box.z * job.cache.bounding_box.y * job.cache.bounding_box.x;
+  if ( (job.cache.part_area / job.cache.part_volume) < 2.5 ) {
+    var query = {};
+    console.log(job.settings);
+    query.job_type = encodeURIComponent(job.settings.job_type);
+    query.material = encodeURIComponent(job.settings.material);
+    query.bbox_volume = job.cache.bounding_box.z * job.cache.bounding_box.y * job.cache.bounding_box.x;
+    console.log(query);
 
-  if ((typeof job.settings.finish) == 'string') {
-    query.finish = encodeURIComponent(job.settings.finish.substring(0,job.settings.finish.indexOf(' ')).toLowerCase());
-  } else {
-    query.finish = 'default';
-  }
-
-  if ((typeof job.settings.density) == 'string') {
-    query.density = job.settings.density.substring(0,job.settings.density.indexOf(' ')).toLowerCase();
-  } else {
-    query.density = 'default';
-  }
-
-  console.log(query);
-  console.log("/jobs/analysis/params?job_type=" + query.job_type + "&material=" + query.material + "&finish=" + query.finish + "&density=" + query.density  + "&bbox_volume=" + query.bbox_volume);
-
-  $.ajax({
-    type: "GET",
-    method: "GET",
-    uri: "/jobs/analysis/params?job_type=" + query.job_type + "&material=" + query.material + "&finish=" + query.finish + "&density=" + query.density  + "&bbox_volume=" + query.bbox_volume,
-    url: "/jobs/analysis/params?job_type=" + query.job_type + "&material=" + query.material + "&finish=" + query.finish + "&density=" + query.density  + "&bbox_volume=" + query.bbox_volume,
-    success: function(params) {
-      console.log("-----------------------------");
-      console.log("quote params success: params: " + JSON.stringify(params));
-      var finish = 'default';
-      if ((typeof job.settings.finish) == 'string') {
-        finish = encodeURIComponent(job.settings.finish.substring(0,job.settings.finish.indexOf(' ')).toLowerCase());
-      }
-      var density = 'default';
-      if ((typeof job.settings.density) == 'string') {
-        density = job.settings.density.substring(0,job.settings.density.indexOf(' ')).toLowerCase();
-      }
-
-      if ( params.query.job_type == job.settings.job_type &&
-           params.query.material == job.settings.material ) {
-        switch(params.query.job_type) {
-          case 'FDM':
-            console.log("checking params for fdm");
-            console.log(finish);
-            console.log(density);
-            console.log(job.cache.bounding_box.z * job.cache.bounding_box.y * job.cache.bounding_box.x);
-            if (params.query.finish == finish) { console.log("finish match"); }
-            if (params.query.density == density) { console.log("denity match"); }
-            if (params.bbox_volume == (job.cache.bounding_box.z * job.cache.bounding_box.y * job.cache.bounding_box.x) ) { console.log("vol match"); }
-            if (params.query.finish == finish &&
-                params.query.density == density) {
-              console.log("valid params!");
-              var orientation = "z_plus";
-              if ( job.cache.support_volume.x_plus < job.cache.support_volume[orientation] ) {
-                orientation = "x_plus";
-              }
-              if ( job.cache.support_volume.y_plus < job.cache.support_volume[orientation] ) {
-                orientation = "y_plus";
-              }
-              if ( job.cache.support_volume.x_minus < job.cache.support_volume[orientation] ) {
-                orientation = "x_minus";
-              }
-              if ( job.cache.support_volume.y_minus < job.cache.support_volume[orientation] ) {
-                orientation = "y_minus";
-              }
-              if ( job.cache.support_volume.z_minus < job.cache.support_volume[orientation] ) {
-                orientation = "z_minus";
-              }
-              console.log("Prefered orientation " + orientation);
-              console.log(params);
-              console.log(job.cache);
-              switch (orientation) {
-                case 'x_plus':
-                  job.cache.exp_print_time = params.part_volume * job.cache.part_volume + params.part_surface_area * job.cache.part_area + params.support_volume * job.cache.support_volume.x_plus +
-                                             params.bounding_box_height * job.cache.bounding_box.x + params.bounding_box_area * job.cache.bounding_box.y * job.cache.bounding_box.z +
-                                             params.bounding_box_volume * job.cache.bounding_box.x * job.cache.bounding_box.y * job.cache.bounding_box.z;
-                  job.cache.quote = job.cache.exp_print_time * params.scale;
-                  job.cache.quote = Math.round(job.cache.quote * 100)/100;
-                  job.cache.id = job.id;
-                  self.postMessage(job.cache);
-                  $.ajax({
-                    type: "POST",
-                    method: "POST",
-                    uri: "/jobs/" + job.id + "/set_quote/" + job.cache.quote,
-                    url: "/jobs/" + job.id + "/set_quote/" + job.cache.quote,
-                  });
-                  break;
-                case 'x_minus':
-                  job.cache.exp_print_time = params.part_volume * job.cache.part_volume + params.part_surface_area * job.cache.part_area + params.support_volume * job.cache.support_volume.x_minus +
-                                             params.bounding_box_height * job.cache.bounding_box.x + params.bounding_box_area * job.cache.bounding_box.y * job.cache.bounding_box.z +
-                                             params.bounding_box_volume * job.cache.bounding_box.x * job.cache.bounding_box.y * job.cache.bounding_box.z;
-                  job.cache.quote = job.cache.exp_print_time * params.scale;
-                  job.cache.quote = Math.round(job.cache.quote * 100)/100;
-                  job.cache.id = job.id;
-                  self.postMessage(job.cache);
-                  $.ajax({
-                    type: "POST",
-                    method: "POST",
-                    uri: "/jobs/" + job.id + "/set_quote/" + job.cache.quote,
-                    url: "/jobs/" + job.id + "/set_quote/" + job.cache.quote,
-                  });
-                  break;
-                case 'y_plus':
-                  job.cache.exp_print_time = params.part_volume * job.cache.part_volume + params.part_surface_area * job.cache.part_area + params.support_volume * job.cache.support_volume.y_plus +
-                                             params.bounding_box_height * job.cache.bounding_box.y + params.bounding_box_area * job.cache.bounding_box.z * job.cache.bounding_box.x +
-                                             params.bounding_box_volume * job.cache.bounding_box.x * job.cache.bounding_box.y * job.cache.bounding_box.z;
-                  job.cache.quote = job.cache.exp_print_time * params.scale;
-                  job.cache.quote = Math.round(job.cache.quote * 100)/100;
-                  job.cache.id = job.id;
-                  self.postMessage(job.cache);
-                  $.ajax({
-                    type: "POST",
-                    method: "POST",
-                    uri: "/jobs/" + job.id + "/set_quote/" + job.cache.quote,
-                    url: "/jobs/" + job.id + "/set_quote/" + job.cache.quote,
-                  });
-                  break;
-                case 'y_minus':
-                  job.cache.exp_print_time = params.part_volume * job.cache.part_volume + params.part_surface_area * job.cache.part_area + params.support_volume * job.cache.support_volume.y_minus +
-                                             params.bounding_box_height * job.cache.bounding_box.y + params.bounding_box_area * job.cache.bounding_box.z * job.cache.bounding_box.x +
-                                             params.bounding_box_volume * job.cache.bounding_box.x * job.cache.bounding_box.y * job.cache.bounding_box.z;
-                  job.cache.quote = job.cache.exp_print_time * params.scale;
-                  job.cache.quote = Math.round(job.cache.quote * 100)/100;
-                  job.cache.id = job.id;
-                  self.postMessage(job.cache);
-                  $.ajax({
-                    type: "POST",
-                    method: "POST",
-                    uri: "/jobs/" + job.id + "/set_quote/" + job.cache.quote,
-                    url: "/jobs/" + job.id + "/set_quote/" + job.cache.quote,
-                  });
-                  break;
-                case 'z_plus':
-                  job.cache.exp_print_time = params.part_volume * job.cache.part_volume + params.part_surface_area * job.cache.part_area + params.support_volume * job.cache.support_volume.z_plus +
-                                             params.bounding_box_height * job.cache.bounding_box.z + params.bounding_box_area * job.cache.bounding_box.y * job.cache.bounding_box.x +
-                                             params.bounding_box_volume * job.cache.bounding_box.x * job.cache.bounding_box.y * job.cache.bounding_box.z;
-                  job.cache.quote = job.cache.exp_print_time * params.scale;
-                  job.cache.quote = Math.round(job.cache.quote * 100)/100;
-                  job.cache.id = job.id;
-                  self.postMessage(job.cache);
-                  $.ajax({
-                    type: "POST",
-                    method: "POST",
-                    uri: "/jobs/" + job.id + "/set_quote/" + job.cache.quote,
-                    url: "/jobs/" + job.id + "/set_quote/" + job.cache.quote,
-                  });
-                  break;
-                case 'z_minus':
-                  job.cache.exp_print_time = params.part_volume * job.cache.part_volume + params.part_surface_area * job.cache.part_area + params.support_volume * job.cache.support_volume.z_minus +
-                                             params.bounding_box_height * job.cache.bounding_box.z + params.bounding_box_area * job.cache.bounding_box.y * job.cache.bounding_box.x +
-                                             params.bounding_box_volume * job.cache.bounding_box.x * job.cache.bounding_box.y * job.cache.bounding_box.z;
-                  job.cache.quote = job.cache.exp_print_time * params.scale;
-                  job.cache.quote = Math.round(job.cache.quote * 100)/100;
-                  job.cache.id = job.id;
-                  self.postMessage(job.cache);
-                  $.ajax({
-                    type: "POST",
-                    method: "POST",
-                    uri: "/jobs/" + job.id + "/set_quote/" + job.cache.quote,
-                    url: "/jobs/" + job.id + "/set_quote/" + job.cache.quote,
-                  });
-                  break;
-                default:
-                  console.log('invalid orientation');
-              }
-              console.log(job.cache);
-            } else {
-              console.log("outdated params!");
-            }
-            break;
-          case 'SLS':
-            console.log("valid params!");
-            job.cache.quote = job.cache.part_volume * params['scale'];
-            job.cache.quote = Math.round(job.cache.quote * 100)/100;
-            job.cache.id = job.id;
-            self.postMessage(job.cache);
-            $.ajax({
-              type: "POST",
-              method: "POST",
-              uri: "/jobs/" + job.id + "/set_quote/" + job.cache.quote,
-              url: "/jobs/" + job.id + "/set_quote/" + job.cache.quote,
-            });
-            break;
-          default:
-            console.log("fishy params!");
-        }
-      } else {
-        console.log("outdated params!");
-      }
-      console.log("-----------------------------");
-    },
-    error: function(a,b,c) {
-      console.log("-----------------------------");
-      console.log("quote params error: B:" + b + "; C: " + c);
-      console.log("-----------------------------");
-    },
-    complete: function() {
-//      waiting_for_params = 1;
+    if ((typeof job.settings.finish) == 'string') {
+      query.finish = encodeURIComponent(job.settings.finish.substring(0,job.settings.finish.indexOf(' ')).toLowerCase());
+    } else {
+      query.finish = 'default';
     }
-  });
 
+    if ((typeof job.settings.density) == 'string') {
+      query.density = job.settings.density.substring(0,job.settings.density.indexOf(' ')).toLowerCase();
+    } else {
+      query.density = 'default';
+    }
+
+    console.log(query);
+    console.log("/jobs/analysis/params?job_type=" + query.job_type + "&material=" + query.material + "&finish=" + query.finish + "&density=" + query.density  + "&bbox_volume=" + query.bbox_volume);
+
+    $.ajax({
+      type: "GET",
+      method: "GET",
+      uri: "/jobs/analysis/params?job_type=" + query.job_type + "&material=" + query.material + "&finish=" + query.finish + "&density=" + query.density  + "&bbox_volume=" + query.bbox_volume,
+      url: "/jobs/analysis/params?job_type=" + query.job_type + "&material=" + query.material + "&finish=" + query.finish + "&density=" + query.density  + "&bbox_volume=" + query.bbox_volume,
+      success: function(params) {
+        console.log("-----------------------------");
+        console.log("quote params success: params: " + JSON.stringify(params));
+        var finish = 'default';
+        if ((typeof job.settings.finish) == 'string') {
+          finish = encodeURIComponent(job.settings.finish.substring(0,job.settings.finish.indexOf(' ')).toLowerCase());
+        }
+        var density = 'default';
+        if ((typeof job.settings.density) == 'string') {
+          density = job.settings.density.substring(0,job.settings.density.indexOf(' ')).toLowerCase();
+        }
+
+        if ( params.query.job_type == job.settings.job_type &&
+             params.query.material == job.settings.material ) {
+          switch(params.query.job_type) {
+            case 'FDM':
+              console.log("checking params for fdm");
+              if (params.query.finish == finish &&
+                  params.query.density == density) {
+                console.log("valid params!");
+                var orientation = "z_plus";
+                if ( job.cache.support_volume.x_plus < job.cache.support_volume[orientation] ) {
+                  orientation = "x_plus";
+                }
+                if ( job.cache.support_volume.y_plus < job.cache.support_volume[orientation] ) {
+                  orientation = "y_plus";
+                }
+                if ( job.cache.support_volume.x_minus < job.cache.support_volume[orientation] ) {
+                  orientation = "x_minus";
+                }
+                if ( job.cache.support_volume.y_minus < job.cache.support_volume[orientation] ) {
+                  orientation = "y_minus";
+                }
+                if ( job.cache.support_volume.z_minus < job.cache.support_volume[orientation] ) {
+                  orientation = "z_minus";
+                }
+                console.log("Prefered orientation " + orientation);
+                console.log(params);
+                console.log(job.cache);
+                switch (orientation) {
+                  case 'x_plus':
+                    job.cache.exp_print_time = params.part_volume * job.cache.part_volume + params.part_surface_area * job.cache.part_area + params.support_volume * job.cache.support_volume.x_plus +
+                                               params.bounding_box_height * job.cache.bounding_box.x + params.bounding_box_area * job.cache.bounding_box.y * job.cache.bounding_box.z +
+                                               params.bounding_box_volume * job.cache.bounding_box.x * job.cache.bounding_box.y * job.cache.bounding_box.z;
+                    job.cache.quote = job.cache.exp_print_time * params.scale;
+                    job.cache.quote = Math.round(job.cache.quote * 100)/100;
+                    job.cache.id = job.id;
+                    if ( job.cache.quote > 50 ) {
+                      self.postMessage(job.cache);
+                      $.ajax({
+                        type: "POST",
+                        method: "POST",
+                        uri: "/jobs/" + job.id + "/set_quote/" + job.cache.quote,
+                        url: "/jobs/" + job.id + "/set_quote/" + job.cache.quote,
+                      });
+                    } else {
+                      job.cache.quote = undefined;
+                      self.postMessage(job.cache);
+                    }
+                    break;
+                  case 'x_minus':
+                    job.cache.exp_print_time = params.part_volume * job.cache.part_volume + params.part_surface_area * job.cache.part_area + params.support_volume * job.cache.support_volume.x_minus +
+                                               params.bounding_box_height * job.cache.bounding_box.x + params.bounding_box_area * job.cache.bounding_box.y * job.cache.bounding_box.z +
+                                               params.bounding_box_volume * job.cache.bounding_box.x * job.cache.bounding_box.y * job.cache.bounding_box.z;
+                    job.cache.quote = job.cache.exp_print_time * params.scale;
+                    job.cache.quote = Math.round(job.cache.quote * 100)/100;
+                    job.cache.id = job.id;
+                    if ( job.cache.quote > 50 ) {
+                      self.postMessage(job.cache);
+                      $.ajax({
+                        type: "POST",
+                        method: "POST",
+                        uri: "/jobs/" + job.id + "/set_quote/" + job.cache.quote,
+                        url: "/jobs/" + job.id + "/set_quote/" + job.cache.quote,
+                      });
+                    } else {
+                      job.cache.quote = undefined;
+                      self.postMessage(job.cache);
+                    }
+                    break;
+                  case 'y_plus':
+                    job.cache.exp_print_time = params.part_volume * job.cache.part_volume + params.part_surface_area * job.cache.part_area + params.support_volume * job.cache.support_volume.y_plus +
+                                               params.bounding_box_height * job.cache.bounding_box.y + params.bounding_box_area * job.cache.bounding_box.z * job.cache.bounding_box.x +
+                                               params.bounding_box_volume * job.cache.bounding_box.x * job.cache.bounding_box.y * job.cache.bounding_box.z;
+                    job.cache.quote = job.cache.exp_print_time * params.scale;
+                    job.cache.quote = Math.round(job.cache.quote * 100)/100;
+                    job.cache.id = job.id;
+                    if ( job.cache.quote > 50 ) {
+                      self.postMessage(job.cache);
+                      $.ajax({
+                        type: "POST",
+                        method: "POST",
+                        uri: "/jobs/" + job.id + "/set_quote/" + job.cache.quote,
+                        url: "/jobs/" + job.id + "/set_quote/" + job.cache.quote,
+                      });
+                    } else {
+                      job.cache.quote = undefined;
+                      self.postMessage(job.cache);
+                    }
+                    break;
+                  case 'y_minus':
+                    job.cache.exp_print_time = params.part_volume * job.cache.part_volume + params.part_surface_area * job.cache.part_area + params.support_volume * job.cache.support_volume.y_minus +
+                                               params.bounding_box_height * job.cache.bounding_box.y + params.bounding_box_area * job.cache.bounding_box.z * job.cache.bounding_box.x +
+                                               params.bounding_box_volume * job.cache.bounding_box.x * job.cache.bounding_box.y * job.cache.bounding_box.z;
+                    job.cache.quote = job.cache.exp_print_time * params.scale;
+                    job.cache.quote = Math.round(job.cache.quote * 100)/100;
+                    job.cache.id = job.id;
+                    if ( job.cache.quote > 50 ) {
+                      self.postMessage(job.cache);
+                      $.ajax({
+                        type: "POST",
+                        method: "POST",
+                        uri: "/jobs/" + job.id + "/set_quote/" + job.cache.quote,
+                        url: "/jobs/" + job.id + "/set_quote/" + job.cache.quote,
+                      });
+                    } else {
+                      job.cache.quote = undefined;
+                      self.postMessage(job.cache);
+                    }
+                    break;
+                  case 'z_plus':
+                    job.cache.exp_print_time = params.part_volume * job.cache.part_volume + params.part_surface_area * job.cache.part_area + params.support_volume * job.cache.support_volume.z_plus +
+                                               params.bounding_box_height * job.cache.bounding_box.z + params.bounding_box_area * job.cache.bounding_box.y * job.cache.bounding_box.x +
+                                               params.bounding_box_volume * job.cache.bounding_box.x * job.cache.bounding_box.y * job.cache.bounding_box.z;
+                    job.cache.quote = job.cache.exp_print_time * params.scale;
+                    job.cache.quote = Math.round(job.cache.quote * 100)/100;
+                    job.cache.id = job.id;
+                    if ( job.cache.quote > 50 ) {
+                      self.postMessage(job.cache);
+                      $.ajax({
+                        type: "POST",
+                        method: "POST",
+                        uri: "/jobs/" + job.id + "/set_quote/" + job.cache.quote,
+                        url: "/jobs/" + job.id + "/set_quote/" + job.cache.quote,
+                      });
+                    } else {
+                      job.cache.quote = undefined;
+                      self.postMessage(job.cache);
+                    }
+                    break;
+                  case 'z_minus':
+                    job.cache.exp_print_time = params.part_volume * job.cache.part_volume + params.part_surface_area * job.cache.part_area + params.support_volume * job.cache.support_volume.z_minus +
+                                               params.bounding_box_height * job.cache.bounding_box.z + params.bounding_box_area * job.cache.bounding_box.y * job.cache.bounding_box.x +
+                                               params.bounding_box_volume * job.cache.bounding_box.x * job.cache.bounding_box.y * job.cache.bounding_box.z;
+                    job.cache.quote = job.cache.exp_print_time * params.scale;
+                    job.cache.quote = Math.round(job.cache.quote * 100)/100;
+                    job.cache.id = job.id;
+                    if ( job.cache.quote > 50 ) {
+                      self.postMessage(job.cache);
+                      $.ajax({
+                        type: "POST",
+                        method: "POST",
+                        uri: "/jobs/" + job.id + "/set_quote/" + job.cache.quote,
+                        url: "/jobs/" + job.id + "/set_quote/" + job.cache.quote,
+                      });
+                    } else {
+                      job.cache.quote = undefined;
+                      self.postMessage(job.cache);
+                    }
+                    break;
+                  default:
+                    console.log('invalid orientation');
+                }
+                console.log(job.cache);
+              } else {
+                console.log("outdated params!");
+              }
+              break;
+            case 'SLS':
+              console.log("valid params!");
+              job.cache.quote = job.cache.part_volume * params['scale'];
+              job.cache.quote = Math.round(job.cache.quote * 100)/100;
+              job.cache.id = job.id;
+              if ( job.cache.quote > 50 ) {
+                self.postMessage(job.cache);
+                $.ajax({
+                  type: "POST",
+                  method: "POST",
+                  uri: "/jobs/" + job.id + "/set_quote/" + job.cache.quote,
+                  url: "/jobs/" + job.id + "/set_quote/" + job.cache.quote,
+                });
+              } else {
+                job.cache.quote = undefined;
+                self.postMessage(job.cache);
+              }
+              break;
+            default:
+              console.log("fishy params!");
+          }
+        } else {
+          console.log("outdated params!");
+        }
+        console.log("-----------------------------");
+      },
+      error: function(a,b,c) {
+        console.log("-----------------------------");
+        console.log("quote params error: B:" + b + "; C: " + c);
+        console.log("-----------------------------");
+      },
+      complete: function() {
+//        waiting_for_params = 1;
+      }
+    });
+  } else {
+    console.log("PART too complicated");
+  }
 
 }
 
@@ -691,7 +731,7 @@ finish_full_analysis = function() {
   }
 }
 
-do_full_analysis = function() {
+do_full_analysis = function(force_requote) {
   status.id = job.id;
   prev_analysis_progress = 0;
   status.analysis_progress = 0;
@@ -706,7 +746,9 @@ do_full_analysis = function() {
 //  if ( false ) {
     logger.debug("Using analysis cache for '" + job.name + "'...");
   } else {
+    var old_quote = job.cache.quote;
     job.cache = JSON.parse(JSON.stringify(cache_template));
+    job.cache.quote = old_quote;
     job.cache.bounding_box.x = (geometry.boundingBox.max.x - geometry.boundingBox.min.x) * configuration.MESH_UNIT_SCALING[job.settings.units];
     job.cache.bounding_box.y = (geometry.boundingBox.max.y - geometry.boundingBox.min.y) * configuration.MESH_UNIT_SCALING[job.settings.units];
     job.cache.bounding_box.z = (geometry.boundingBox.max.z - geometry.boundingBox.min.z) * configuration.MESH_UNIT_SCALING[job.settings.units];
@@ -774,7 +816,7 @@ do_full_analysis = function() {
     });
 //  finish_full_analysis();
   }
-  requote();
+  requote(force_requote);
 }
 
 create_mesh = function(vf_data) {
@@ -790,7 +832,7 @@ create_mesh = function(vf_data) {
   geometry.computeFaceNormals();
   geometry.center();
 
-  do_full_analysis();
+  do_full_analysis(false);
 }
 
 var parse_file = function(buffer) {
